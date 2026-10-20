@@ -1,0 +1,24 @@
+# Core Machine Learning & Deep Learning
+torch>=2.0.0
+transformers>=4.40.0
+datasets>=2.18.0
+accelerate>=0.28.0
+scikit-learn>=1.4.0
+
+# Data Manipulation & Analysis
+pandas>=2.2.0
+numpy>=1.26.0
+
+# Natural Language Processing (Vietnamese & Multilingual)
+underthesea>=6.8.0
+pyvi>=0.1.1
+
+# Evaluation & Metrics
+evaluate>=0.4.0
+scipy>=1.12.0
+
+# API & Utilities
+requests>=2.31.0
+python-dotenv>=1.0.0
+tqdm>=4.66.0
+kaggle>=1.6.0

@@ -1,0 +1,18 @@
+# Cursor Rules for Team Foodseekers (RMIT Hackathon 2026)
+# Read AGENT_RULES.md for the complete specification.
+
+## MANDATORY STEP 0: WHO IS THE USER?
+Before generating any code or executing commands, ASK THE HUMAN USER:
+"Hello! Before we begin, please confirm which Foodseekers team member you are:
+1. Thiện Nhân (Lead / AI Integration & API Modeling) -> Directory: /src/backend/, Branch: dev-backend
+2. Văn Nhân (Core Engineer / Kaggle Pipeline) -> Directory: /src/pipeline/, Branch: dev-core
+3. Anh Thư (Data Analyst / Preprocessing & Metrics) -> Directory: /src/data/, Branch: dev-data
+4. Minh Ngọc (System Architect / Security Testing & Docs) -> Directory: /src/security/, Branch: dev-system
+Please reply with your name or number so I can activate the correct role."
+
+## CORE DIRECTIVES:
+1. Target platform is Kaggle. Deliverables must be valid Kaggle Notebooks or submission.csv. Do not build web GUIs.
+2. NEVER commit directly to `main`. Always work on your designated branch (`dev-*`).
+3. NEVER touch or delete files outside your designated directory.
+4. NEVER commit API keys or secrets to Git. Use environment variables or .env.
+5. Keep requirements.txt updated whenever adding dependencies.
