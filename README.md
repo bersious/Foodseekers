@@ -18,7 +18,7 @@ Dự án tham gia cuộc thi **RMIT Hackathon 2026** (Tổ chức đồng thời
 | :---: | :--- | :--- | :--- |
 | **1** | **Nguyễn Thành Thiện Nhân** | Trí tuệ nhân tạo (TTNT) | **Team Lead & AI Integration:** Tích hợp mô hình AI, Prompt Engineering, kết nối API và điều phối kỹ thuật. |
 | **2** | **Nguyễn Văn Nhân** | Khoa học máy tính (KHMT) | **Core Engineer & Pipeline:** Xây dựng logic code chính, ráp nối pipeline dữ liệu/mô hình, quản lý môi trường và xử lý lỗi kỹ thuật. |
-| **3** | **Nguyễn Trần Anh Thư** | Khoa học dữ liệu (KHDL) | **Data Analyst & Evaluation:** Phân tích và làm sạch dữ liệu (Data Preprocessing), theo dõi các chỉ số đánh giá (Metrics) và định dạng file nộp bài Kaggle. |
+| **3** | **Trần Nguyễn Anh Thư** | Khoa học dữ liệu (KHDL) | **Data Analyst & Evaluation:** Phân tích và làm sạch dữ liệu (Data Preprocessing), theo dõi các chỉ số đánh giá (Metrics) và định dạng file nộp bài Kaggle. |
 | **4** | **Trần Minh Ngọc** | Hệ thống thông tin (HTTT) | **System Architecture & Security Testing:** Thiết kế kiến trúc luồng hệ thống, xây dựng các kịch bản kiểm thử bảo mật đối kháng và hoàn thiện tài liệu, báo cáo. |
 
 ---
