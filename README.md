@@ -79,14 +79,4 @@ Foodseekers/
 | 22/10 | **18:00** | **Hạn chót nộp bài** |
 | 23/10 | 10:00 – 13:30 | Lễ trao giải |
 
----
-
-## 📞 Liên hệ nhanh (Quick Links)
-
-* **Tài liệu cuộc thi:** `C:\Users\nguye\Desktop\RMIT\` (Booklet thi)
-* **Repo:** https://github.com/bersious/Foodseekers
-* **Liên hệ BTC tại sảnh:** Ms Thư - `0901468697`
-
----
-
 **Foodseekers — UIT — RMIT Hackathon 2026** 🚀
