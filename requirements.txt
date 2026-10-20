@@ -9,9 +9,13 @@ scikit-learn>=1.4.0
 pandas>=2.2.0
 numpy>=1.26.0
 
-# Natural Language Processing (Vietnamese & Multilingual)
-underthesea>=6.8.0
-pyvi>=0.1.1
+# Vietnamese Text Processing
+# underthesea and pyvi pull in sklearn-crfsuite / python-crfsuite, which have
+# no prebuilt wheels for Python 3.14 and can fail to build from source.
+# Only install them on Python 3.10-3.13 AND only if you truly need word
+# segmentation. Uncomment the lines below on a compatible Python version.
+# underthesea>=6.8.0
+# pyvi>=0.1.1
 
 # Evaluation & Metrics
 evaluate>=0.4.0

@@ -105,3 +105,35 @@ To maintain seamless cross-machine synchronization without network sockets, all 
   - Example: `* [Agent 3 - Anh Thư] (10:30): Đã tiền xử lý xong tập train, lưu tại /data/clean_train.csv. Mời Agent 2 vào lấy train.`
   - Example: `* [Agent 1 - Thiện Nhân] (11:00): Đã dựng xong hàm gọi API LLM tại /src/backend/model.py. Đầu ra nhãn 0/1.`
 * Commit and push this update so other agents receive the notification!
+
+---
+
+## 5. MERGE PROTOCOL & DEADLINE MANAGEMENT
+
+### Who Merges to `main`
+* **ONLY the Team Lead (Thiện Nhân / `bersious`)** merges branches into `main`.
+* Other agents MUST NOT merge, MUST NOT force-push, MUST NOT rebase other people's branches.
+* If your work is done, push your branch and post a line in `TEAM_CHAT.md`. The Lead will handle the merge.
+
+### Deadline Safety Net (22/10/2026)
+| Time | Action |
+| :---: | :--- |
+| **16:00** | All agents should have a working, runnable version committed. |
+| **17:00** | All agents: final `git add . && git commit && git push origin dev-<your-branch>`. |
+| **17:30** | Agents post "final" status in `TEAM_CHAT.md` and notify the Lead. |
+| **17:30 – 18:00** | Lead merges all branches into `main` and submits to Kaggle. |
+| **18:00** | **HARD DEADLINE — submission closes.** |
+
+### Rules Modification Policy
+* **Documentation** (`README.md`, `CODE_INDEX.md`, `TEAM_CHAT.md`): anyone may edit freely.
+* **Rules & Structure** (`AGENT_RULES.md`, `.cursorrules`, `.gitignore`, `requirements.txt`, directory layout): **ask the Team Lead first.** Do not modify unilaterally.
+
+---
+
+## 6. ENVIRONMENT & DEPENDENCY NOTES
+
+* **Python version:** The team standard is **Python 3.10–3.13**. Some packages (notably `underthesea` / `sklearn-crfsuite` / `python-crfsuite`) do not have wheels for Python 3.14 and may fail to build. If `pip install -r requirements.txt` fails on `sklearn-crfsuite`, downgrade to Python 3.12 and re-create the venv.
+* **Virtual environment:** Always work inside `.venv` (already git-ignored). Never `pip install` into the global Python.
+* **Heavy packages:** `torch` is ~120 MB. Start the install early and let it run in the background while you do other work.
+* **Git identity:** Run `git config user.name` / `git config user.email` (repo-local, never `--global`) and confirm it is YOUR identity before your first commit.
+* **Kaggle:** Only the Team Lead needs Kaggle credentials (`kaggle.json`). Everyone else delivers code via GitHub.
