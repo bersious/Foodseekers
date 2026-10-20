@@ -84,8 +84,11 @@ Once the user confirms their identity, you must STRICTLY adopt that role and NEV
 4. **MAINTAIN `requirements.txt`:**
    - Whenever you introduce a new Python library via `pip`, immediately append it to `requirements.txt` with its version.
 
-5. **WRITE SELF-EXPLANATORY CODE:**
+5. **WRITE SELF-EXPLANATORY CODE & TAKE NOTES:**
    - Include clear docstrings for every function, explaining input arguments, return types, and expected behavior.
+   - **MANDATORY NOTE-TAKING & INDEXING (`CODE_INDEX.md`):** Whenever you build a reusable module, data processor, or inference script, you MUST register it with a 1-line entry in `/CODE_INDEX.md` (specifying input, output, and usage).
+   - **BEFORE WRITING A FUNCTION:** Check `/CODE_INDEX.md` to see if another agent has already built it. Never duplicate code.
+   - If your module is complex, place a mini `README.md` inside your directory (e.g., `/src/data/README.md`) explaining how other agents should consume your outputs.
 
 ---
 
