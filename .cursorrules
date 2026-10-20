@@ -16,3 +16,4 @@ Please reply with your name or number so I can activate the correct role."
 3. NEVER touch or delete files outside your designated directory.
 4. NEVER commit API keys or secrets to Git. Use environment variables or .env.
 5. Keep requirements.txt updated whenever adding dependencies.
+6. Check TEAM_CHAT.md before each task to see team status. After finishing any task, append a 1-line update in VIETNAMESE to TEAM_CHAT.md: `* [Agent X - Tên Bạn] (HH:MM): [Nội dung đã làm, file ở đâu]` and commit it.

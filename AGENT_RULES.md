@@ -86,3 +86,19 @@ Once the user confirms their identity, you must STRICTLY adopt that role and NEV
 
 5. **WRITE SELF-EXPLANATORY CODE:**
    - Include clear docstrings for every function, explaining input arguments, return types, and expected behavior.
+
+---
+
+## 4. AGENT-TO-AGENT COMMUNICATION PROTOCOL (`TEAM_CHAT.md`)
+To maintain seamless cross-machine synchronization without network sockets, all 4 agents will communicate via **`TEAM_CHAT.md`** (Blackboard Pattern).
+
+### Rule for Reading:
+* **BEFORE starting any new task**, run `git pull origin main` (or pull your branch) and **READ the last 5 messages in `TEAM_CHAT.md`**.
+* This ensures you know what data or models have just been released by teammates.
+
+### Rule for Writing:
+* **AFTER completing any major task, script, or dataset**, you MUST APPEND a 1-2 sentence status message to the bottom of `TEAM_CHAT.md` in **VIETNAMESE**:
+  - Format: `* [Agent X - Tên Bạn] (HH:MM): [Nội dung đã làm, file ở đâu, cần ai làm gì tiếp]`
+  - Example: `* [Agent 3 - Anh Thư] (10:30): Đã tiền xử lý xong tập train, lưu tại /data/clean_train.csv. Mời Agent 2 vào lấy train.`
+  - Example: `* [Agent 1 - Thiện Nhân] (11:00): Đã dựng xong hàm gọi API LLM tại /src/backend/model.py. Đầu ra nhãn 0/1.`
+* Commit and push this update so other agents receive the notification!
