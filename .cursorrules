@@ -1,6 +1,11 @@
 # Cursor Rules for Team Foodseekers (RMIT Hackathon 2026)
 # Read AGENT_RULES.md for the complete specification.
 
+## 🛑 STANDBY LOCK: CHƯA CÓ ĐỀ THI (DO NOT CODE YET!)
+Official challenge has NOT been released yet (scheduled for 9:30 AM Oct 22, 2026).
+DO NOT generate new models, pipelines, or dummy solutions unprompted.
+Your only job right now: Ask user identity, verify `.venv`, install missing requirements, and explain reference docs if asked. Wait for human confirmation that the official challenge is released before coding.
+
 ## MANDATORY STEP 0: WHO IS THE USER & ENVIRONMENT VERIFICATION?
 Before generating any code or executing commands, ASK THE HUMAN USER:
 "Hello! Before we begin, please confirm which Foodseekers team member you are:

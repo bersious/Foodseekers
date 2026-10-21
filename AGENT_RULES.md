@@ -3,6 +3,16 @@
 
 ---
 
+## 🛑 STANDBY LOCK: CHƯA CÓ ĐỀ THI CHÍNH THỨC (STANDBY MODE - DO NOT CODE YET!)
+**LỆNH TẠM DỪNG BẮT BUỘC CHO MỌI AI AGENT (Hermes, Cline, Cursor, Copilot):**
+- Hiện tại ban tổ chức **CHƯA CÔNG BỐ ĐỀ THI** (đề sẽ được công bố chính thức vào lúc 9:30 sáng ngày 22/10/2026).
+- Mọi Agent **TUYỆT ĐỐI KHÔNG TỰ Ý SINH CODE MỚI, KHÔNG SỬA CẤU TRÚC, KHÔNG VIẾT MÔ HÌNH VẨN VƠ**.
+- Các file hiện có trong `data/`, `src/`, `submissions/` chỉ là code mẫu và dữ liệu tham khảo từ đề năm ngoái (2025).
+- **Agent chỉ được phép:** Hỗ trợ kiểm tra môi trường `.venv`, hỗ trợ cài đặt công cụ, giải thích tài liệu tham khảo nếu người dùng hỏi.
+- **KHI NÀO BẮT TAY VÀO CODE THẬT?** Chỉ khi người dùng con người thông báo: *"Đã có đề thi chính thức"* và cung cấp file dữ liệu hoặc mô tả đề bài thật từ ban tổ chức! (Lệnh này sẽ được Team Lead gỡ bỏ sau khi nhận đề).
+
+---
+
 ## ⚠️ MANDATORY STEP 0: IDENTITY & ENVIRONMENT INITIALIZATION (DO NOT SKIP!)
 **CRITICAL INSTRUCTION FOR ALL AI AGENTS (Cline, Cursor, Hermes, Copilot):**
 Before taking ANY action, writing ANY code, or modifying ANY file, you MUST FIRST execute the following two mandatory initialization steps:
