@@ -22,7 +22,7 @@
 | :---: | :--- | :--- | :--- | :--- |
 | 1 | **Nguyễn Thành Thiện Nhân** | `bersious` | `dev-backend` | **Team Lead & AI Integration** — tích hợp mô hình AI, prompt engineering, API & nộp bài Kaggle. |
 | 2 | **Nguyễn Văn Nhân** | `NguyenNhan1107` | `dev-core` | **Core Engineer** — pipeline trên Kaggle, GPU runner, xử lý lỗi kỹ thuật. |
-| 3 | **Trần Nguyễn Anh Thư** | *(gửi username cho Lead)* | `dev-data` | **Data Analyst** — tiền xử lý văn bản, đo lường độ chính xác, định dạng file nộp bài. |
+| 3 | **Trần Nguyễn Anh Thư** | `tuna184` | `dev-data` | **Data Analyst** — tiền xử lý văn bản, đo lường độ chính xác, định dạng file nộp bài. |
 | 4 | **Trần Minh Ngọc** | *(gửi username cho Lead)* | `dev-system` | **System Architecture** — thiết kế kiến trúc, kịch bản kiểm thử bảo mật đối kháng, tài liệu & báo cáo. |
 
 ---
