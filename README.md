@@ -31,21 +31,28 @@
 
 ```text
 Foodseekers/
-├── README.md            # File này
+├── README.md            # Tài liệu tổng quan dự án
 ├── AGENT_RULES.md       # Quy tắc bắt buộc cho Agent và con người
-├── .cursorrules         # Quy tắc ngắn cho Cursor AI
-├── TEAM_CHAT.md         # Kênh chat nội bộ giữa 4 Agent
-├── CODE_INDEX.md        # Sổ tay tra cứu module, hàm, dataset
+├── .cursorrules         # Quy tắc ngắn cho Cursor / Cline AI
+├── TEAM_CHAT.md         # Kênh chat nội bộ cập nhật tiến độ liên tục
+├── CODE_INDEX.md        # Sổ tay tra cứu module và hàm dùng chung
 ├── requirements.txt     # Danh sách thư viện Python
-├── .gitignore           # File cấm đẩy lên Git (key, dataset nặng, ...)
+├── .gitignore           # File cấm đẩy lên Git (.env, key, data nặng)
 │
-├── data/                # (Agent 3) dữ liệu & pipeline tiền xử lý
-├── notebooks/           # (Agent 2) notebook chạy trên Kaggle
-├── src/
-│   ├── backend/         # (Agent 1) mô hình AI, prompt template, API
-│   ├── pipeline/        # (Agent 2) pipeline đầu cuối
-│   └── security/        # (Agent 4) kịch bản kiểm thử bảo mật
-└── docs/                # (Agent 4) báo cáo, sơ đồ kiến trúc
+├── submissions/         # (Lead) Nơi lưu các file submission.csv & sổ log điểm
+│   └── README.md        # Bảng theo dõi 10 lượt nộp Kaggle (CV vs LB)
+├── notebooks/           # (Core) Notebook huấn luyện trên Kaggle GPU
+├── data/                # (Data) Dữ liệu thô và dữ liệu sạch (train/test)
+├── docs/                # Tài liệu chiến lược, đề thi các năm, báo cáo kỹ thuật
+│   ├── STRATEGY.md      # Phân tích chiến lược thi bám sát đề 2025
+│   ├── DEADLINES.md     # Mốc thời gian chi tiết 2 ngày thi (22-23/10)
+│   └── rmit-de-quac-2024-2025.md # Dữ liệu tổng hợp đề thi thực tế
+│
+└── src/                 # Mã nguồn chia theo dòng dữ liệu (Pipeline)
+    ├── features/        # (Data) Tiền xử lý, bỏ dấu, tách từ, trích xuất đặc trưng
+    ├── models/          # (Lead) Baseline, PhoBERT, DeBERTa, Ensemble
+    ├── pipeline/        # (Core) Pipeline huấn luyện đầu cuối & xuất dự đoán
+    └── attacks/         # (System) Mẫu câu lệnh tấn công đối kháng (Red Teaming)
 ```
 
 ---

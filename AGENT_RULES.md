@@ -33,37 +33,37 @@ Once the user confirms their identity, you must STRICTLY adopt that role and NEV
 
 ## 2. TEAM ROLES & TERRITORY DIVISION (STRICT BOUNDARIES)
 
-### Role 1: Thiện Nhân — AI Integration & Prompt Engineering (Agent 1)
-* **Designated Directory:** `/src/backend/` and `/notebooks/`
+### Role 1: Thiện Nhân — AI Integration & Model Architect (Agent 1)
+* **Designated Directory:** `/src/models/` and `/notebooks/`
 * **Git Working Branch:** `dev-backend`
 * **Responsibilities:**
-  - LLM API integrations (OpenAI-compatible endpoints, Vilao, HuggingFace, etc.).
-  - Prompt Engineering, few-shot templates, and model inference logic.
-  - Core algorithmic reasoning and adversarial prompt defense.
+  - Xây dựng mô hình phân loại (Baseline TF-IDF Logistic Regression, PhoBERT, DeBERTa-v3).
+  - Tích hợp mô hình ngôn ngữ lớn (Vilao API, Hugging Face).
+  - Ghép mô hình (Ensemble) và **là người duy nhất phụ trách nộp file lên Kaggle**.
 
 ### Role 2: Văn Nhân — Core Pipeline & Kaggle Runtime (Agent 2)
 * **Designated Directory:** `/src/pipeline/` and `/notebooks/`
 * **Git Working Branch:** `dev-core`
 * **Responsibilities:**
-  - Stitching together data and model components into an end-to-end execution pipeline.
-  - Kaggle notebook compatibility, GPU acceleration, and batch processing.
-  - Debugging runtime errors, dependency management, and submission verification.
+  - Dựng notebook huấn luyện hoàn chỉnh, tối ưu tài nguyên GPU trên Kaggle.
+  - Xử lý xung đột thư viện, đảm bảo code chạy trơn tru từ đầu đến cuối không bị văng lỗi.
+  - Tự động hóa quá trình xuất dự đoán và kiểm tra tính toàn vẹn của file nộp bài.
 
-### Role 3: Anh Thư — Data Preprocessing & Evaluation (Agent 3)
-* **Designated Directory:** `/src/data/` and `/data/`
+### Role 3: Anh Thư — Data Preprocessing & Feature Engineering (Agent 3)
+* **Designated Directory:** `/src/features/` and `/data/`
 * **Git Working Branch:** `dev-data`
 * **Responsibilities:**
-  - Ingestion, text cleaning, and tokenization for low-resource languages.
-  - Data splitting (train/validation) and distribution analysis.
-  - Metric computation (Accuracy, F1-Score, Loss) and formatting the final `submission.csv`.
+  - Tiền xử lý dữ liệu văn bản đa ngữ và xử lý ngôn ngữ ít tài nguyên (Low-Resource Languages).
+  - Tách từ tiếng Việt (`underthesea`), loại bỏ dấu chuẩn (`unicodedata`), phát hiện ngôn ngữ (`langdetect`).
+  - Trích xuất các đặc trưng bề mặt, ký tự đặc biệt, cấu trúc câu lệnh tấn công (Jailbreak markers).
 
-### Role 4: Minh Ngọc — System Architecture & Security Testing (Agent 4)
-* **Designated Directory:** `/src/security/` and `/docs/`
+### Role 4: Minh Ngọc — System Architecture & Adversarial Robustness (Agent 4)
+* **Designated Directory:** `/src/attacks/` and `/docs/`
 * **Git Working Branch:** `dev-system`
 * **Responsibilities:**
-  - Generating adversarial test cases (Prompt Injections, Jailbreak attempts, boundary testing).
-  - System architecture diagrams, data flow specifications, and threat modeling.
-  - Compiling presentation slides, technical documentation, and judge briefing notes.
+  - Xây dựng các kịch bản và câu lệnh tấn công đối kháng (Prompt Injection, Red Teaming).
+  - Biên soạn sơ đồ kiến trúc hệ thống, tài liệu kỹ thuật và slide thuyết trình.
+  - Theo dõi nhật ký nộp bài tại `/submissions/README.md`.
 
 ---
 
@@ -73,9 +73,9 @@ Once the user confirms their identity, you must STRICTLY adopt that role and NEV
    - Always create and work in your designated feature branch (`dev-backend`, `dev-core`, `dev-data`, `dev-system`).
    - Only the designated human gatekeeper merges code into `main` after verification.
 
-2. **NEVER OVERWRITE OR DELETE TEAMMATE CODE:**
-   - Modify ONLY files within your designated directory.
-   - If you need functionality from another module, import it or communicate via interface contracts in `/docs/`.
+2. **CROSS-DIRECTORY COLLABORATION WITH AUDIT TRAIL:**
+   - Members are permitted to modify code across `/src/` subdirectories when integrating pipelines or fixing bugs.
+   - **MANDATORY AUDIT:** Immediately after touching another member's code, you MUST append 1 line to `TEAM_CHAT.md` stating clearly: *Which file was modified, what was changed, and why*.
 
 3. **NEVER COMMIT SECRETS OR API KEYS:**
    - All API keys, credentials, and tokens MUST be read from environment variables or a local `.env` file.
@@ -115,14 +115,16 @@ To maintain seamless cross-machine synchronization without network sockets, all 
 * Other agents MUST NOT merge, MUST NOT force-push, MUST NOT rebase other people's branches.
 * If your work is done, push your branch and post a line in `TEAM_CHAT.md`. The Lead will handle the merge.
 
-### Deadline Safety Net (22/10/2026)
-| Time | Action |
+### Deadline Safety Net (22 – 23/10/2026)
+| Day / Time | Target / Action |
 | :---: | :--- |
-| **16:00** | All agents should have a working, runnable version committed. |
-| **17:00** | All agents: final `git add . && git commit && git push origin dev-<your-branch>`. |
-| **17:30** | Agents post "final" status in `TEAM_CHAT.md` and notify the Lead. |
-| **17:30 – 18:00** | Lead merges all branches into `main` and submits to Kaggle. |
-| **18:00** | **HARD DEADLINE — submission closes.** |
+| **Day 1: 09:00 - 10:30** | Baseline TF-IDF + Logistic Regression completed & **Submitted Submission 1** (Unlock 20% Challenge 1 Warm-up marks). |
+| **Day 1: 16:00** | Working transformer/feature-rich pipeline committed and tested on GPU. |
+| **Day 1: 17:30** | Day 1 best predictions submitted (Submissions 4 - 6). Main branch synchronized. |
+| **Day 1: 18:00** | **END OF DAY 1 HACKATHON.** |
+| **Day 2: 09:00 - 10:30** | Model ensemble, probability threshold tuning, final submissions (Submissions 8 - 9). |
+| **Day 2: 10:45 - 11:15** | Final verification, **Submission 10** logged in `submissions/README.md`. |
+| **Day 2: 12:00** | **HARD DEADLINE — COMPETITION CLOSES.** |
 
 ### Rules Modification Policy
 * **Documentation** (`README.md`, `CODE_INDEX.md`, `TEAM_CHAT.md`): anyone may edit freely.

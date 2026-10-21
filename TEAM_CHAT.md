@@ -11,4 +11,4 @@
 
 ### 📜 LỊCH SỬ TIN NHẮN DỰ ÁN:
 
-* `[Khởi tạo hệ thống] (20/10/2026)`: Kênh trao đổi nội bộ chính thức được kích hoạt. Đội hình 4 thành viên UIT (Thiện Nhân, Văn Nhân, Anh Thư, Minh Ngọc) đã sẵn sàng tác chiến cho RMIT Hackathon 2026.
+* `[Agent 1 - Thiện Nhân] (08:30 21/10)`: Đã tái cấu trúc toàn bộ dự án bám sát đề thi Kaggle 2025 (70% điểm là Phân loại Jailbreak). Đã thêm thư mục `submissions/` để quản lý 10 lượt nộp Kaggle, tài liệu chiến lược `docs/STRATEGY.md` và lịch trình `docs/DEADLINES.md`. Toàn đội đọc ngay tài liệu để nắm chiến thuật.
