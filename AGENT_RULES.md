@@ -1,15 +1,53 @@
-# 🤖 AGENT RULES & OPERATIONAL SPECIFICATION — TEAM FOODSEEKERS
+# 🤖 HERMES AGENT RULES & COLLABORATION GUIDE — TEAM FOODSEEKERS
 # RMIT Hackathon 2026: Security × Generative AI × Low-Resource Languages
+# Tối ưu hóa 100% cho cụm 4 tác tử Hermes Agent (Desktop / CLI)
 
 ---
 
-## 🛑 STANDBY LOCK: CHƯA CÓ ĐỀ THI CHÍNH THỨC (STANDBY MODE - DO NOT CODE YET!)
-**LỆNH TẠM DỪNG BẮT BUỘC CHO MỌI AI AGENT (Hermes, Cline, Cursor, Copilot):**
-- Hiện tại ban tổ chức **CHƯA CÔNG BỐ ĐỀ THI** (đề sẽ được công bố chính thức vào lúc 9:30 sáng ngày 22/10/2026).
-- Mọi Agent **TUYỆT ĐỐI KHÔNG TỰ Ý SINH CODE MỚI, KHÔNG SỬA CẤU TRÚC, KHÔNG VIẾT MÔ HÌNH VẨN VƠ**.
-- Các file hiện có trong `data/`, `src/`, `submissions/` chỉ là code mẫu và dữ liệu tham khảo từ đề năm ngoái (2025).
-- **Agent chỉ được phép:** Hỗ trợ kiểm tra môi trường `.venv`, hỗ trợ cài đặt công cụ, giải thích tài liệu tham khảo nếu người dùng hỏi.
-- **KHI NÀO BẮT TAY VÀO CODE THẬT?** Chỉ khi người dùng con người thông báo: *"Đã có đề thi chính thức"* và cung cấp file dữ liệu hoặc mô tả đề bài thật từ ban tổ chức! (Lệnh này sẽ được Team Lead gỡ bỏ sau khi nhận đề).
+## 🛑 CHẾ ĐỘ CHỜ ĐỀ THI (STANDBY MODE - KHÔNG TỰ CODE TRƯỚC!)
+- Ban tổ chức **chưa công bố đề thi chính thức** (dự kiến phát đề lúc 9:30 sáng 22/10/2026).
+- Mọi Hermes Agent **chỉ hỗ trợ setup môi trường, giải thích tài liệu và trả lời câu hỏi**.
+- Tuyệt đối không tự ý viết code mô hình mới khi chưa có file dữ liệu và đề bài thật từ ban tổ chức.
+- **KHI NÀO BẮT TAY VÀO LÀM?** Khi người dùng báo: *"Đã có đề chính thức"* kèm dữ liệu thật.
+
+---
+
+## 🧭 BƯỚC 0: XÁC ĐỊNH VAI TRÒ & MÔI TRƯỜNG (.VENV)
+Khi phiên làm việc bắt đầu, Hermes xác nhận vai trò người dùng trên máy để định hướng hỗ trợ:
+* **Thiện Nhân (`dev-backend`):** Team Lead — tích hợp mô hình AI, quản lý nộp bài Kaggle (`src/models/`, `notebooks/`).
+* **Văn Nhân (`dev-core`):** Core Engineer — Kaggle runtime, tối ưu GPU, pipeline đầu cuối (`src/pipeline/`, `notebooks/`).
+* **Anh Thư (`dev-data`):** Data Analyst — tiền xử lý dữ liệu, phân tích đặc trưng đa ngữ (`src/features/`, `data/`).
+* **Minh Ngọc (`dev-system`):** System Architect — kiểm thử đối kháng, tài liệu kiến trúc, slide báo cáo (`src/attacks/`, `docs/`).
+
+**Kiểm tra môi trường:** Hermes chủ động kiểm tra thư viện trong `.venv`. Nếu thiếu, hỗ trợ người dùng cài đặt nhanh qua:
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## 🤝 NGUYÊN TẮC TÁC CHIẾN LINH HOẠT (KHÔNG GÒ BÓ, KHÔNG RẬP KHUÔN)
+1. **Linh hoạt tuyệt đối theo đề thi thật:**
+   * Mọi tài liệu và code mẫu hiện tại trong repo được xây dựng dựa trên đề thi 2025 làm tiền đề.
+   * Nếu đề thi năm nay có dạng khác (ví dụ: phát hiện mã độc mạng, tóm tắt văn bản, dịch máy, trắc nghiệm bảo mật, hoặc sinh prompt đối kháng), Hermes **lập tức thích ứng 100% theo yêu cầu của đề mới**, không bám chấp hay ép buộc người dùng làm theo khuôn mẫu cũ.
+2. **Hợp tác tự nhiên & Phối hợp liên thư mục (Cross-Directory):**
+   * Cho phép chỉnh sửa và gọi chéo các hàm trong thư mục `src/` khi phối hợp giải quyết bài toán.
+   * Để đồng đội nắm được tiến độ, khi hoàn thành một phần việc lớn hoặc tạo hàm mới, chỉ cần ghi 1 dòng ngắn gọn vào `TEAM_CHAT.md`.
+3. **Phân nhánh an toàn:**
+   * Làm việc trên nhánh riêng của từng người (`dev-backend`, `dev-core`, `dev-data`, `dev-system`).
+   * Chỉ Team Lead (Thiện Nhân) mới thực hiện gộp (merge) code vào nhánh `main` và nộp file lên Kaggle.
+4. **Bảo mật tuyệt đối:**
+   * Không bao giờ lưu API key hay mật khẩu thẳng vào file code. Luôn dùng biến môi trường hoặc file cấu hình `.env` (đã có trong `.gitignore`).
+
+---
+
+## ⏱️ MỐC THỜI GIAN NGÀY THI CHÍNH THỨC (22/10/2026)
+* **08:15 – 09:00:** Check-in cả đội tại Canopy Cổng chính Tòa nhà 2, RMIT Saigon South.
+* **09:30 – 10:00:** Nhận đề thi chính thức và họp nhanh phân chia công việc.
+* **10:00 – 12:00:** Chạy phiên 1 — Dựng baseline, kiểm tra luồng dữ liệu, nộp lượt đầu tiên mở khóa điểm khởi động.
+* **13:00 – 16:30:** Chạy phiên 2 — Tinh chỉnh mô hình, trích xuất đặc trưng, tối ưu hóa điểm số.
+* **17:00 – 18:00:** Chốt mô hình tốt nhất, đồng bộ vào `main` và nộp file kết quả chính thức.
+* **18:00 ĐÚNG:** **HẠN CHÓT NỘP BÀI TOÀN BỘ CUỘC THI.**
 
 ---
 
