@@ -53,3 +53,6 @@ models/checkpoints/*
 !.vscode/extensions.json
 .idea/
 *.swp
+
+# Temporary generation scripts
+docs/_make_word_doc*.py
