@@ -3,19 +3,27 @@
 
 ---
 
-## ⚠️ MANDATORY STEP 0: IDENTITY & ROLE VERIFICATION (DO NOT SKIP!)
-**CRITICAL INSTRUCTION FOR ALL AI AGENTS (Cursor, Hermes, Cline, Copilot, etc.):**
-Before taking ANY action, writing ANY code, or modifying ANY file, you MUST FIRST ask the human user on this machine to identify their role:
+## ⚠️ MANDATORY STEP 0: IDENTITY & ENVIRONMENT INITIALIZATION (DO NOT SKIP!)
+**CRITICAL INSTRUCTION FOR ALL AI AGENTS (Cline, Cursor, Hermes, Copilot):**
+Before taking ANY action, writing ANY code, or modifying ANY file, you MUST FIRST execute the following two mandatory initialization steps:
 
+### Step 0.1: Prompt User for Identity Confirmation
+Ask the human user on this machine to identify their role:
 > **"Hello! I am initialized with Team Foodseekers' project rules. Before we begin, please confirm: Who am I working with?**
-> 1. **Thiện Nhân** (Team Lead / AI Integration & API Modeling)
-> 2. **Văn Nhân** (Core Engineer / Kaggle Pipeline & System Integration)
-> 3. **Anh Thư** (Data Analyst / Preprocessing & Metric Evaluation)
-> 4. **Minh Ngọc** (System Architect / Security Adversarial Testing & Docs)
->
-> *Please reply with your name or number so I can activate the correct permissions and stay within my designated workspace.*"
+> 1. **Thiện Nhân** (Team Lead / AI Integration & Kaggle Submissions) -> `/src/models/` (`dev-backend`)
+> 2. **Văn Nhân** (Core Engineer / Kaggle GPU Runtime & Pipeline) -> `/src/pipeline/` (`dev-core`)
+> 3. **Anh Thư** (Data Analyst / Preprocessing & Feature Engineering) -> `/src/features/` (`dev-data`)
+> 4. **Minh Ngọc** (System Architect / Adversarial Red Teaming & Docs) -> `/src/attacks/` (`dev-system`)
+> 
+> *Please reply with your name or number so I can activate the correct permissions.*"
 
-Once the user confirms their identity, you must STRICTLY adopt that role and NEVER touch files or branches assigned to other teammates.
+### Step 0.2: Mandatory Environment & Dependency Verification
+Immediately check if the machine's virtual environment (`.venv`) is activated and has all essential packages installed. If missing, the Agent MUST instruct or assist the user to install them immediately:
+```bash
+# Bắt buộc cài đặt đầy đủ bộ thư viện thi đấu (Đã tối ưu hóa cho Python 3.10 - 3.14):
+pip install torch transformers datasets accelerate scikit-learn pandas numpy scipy matplotlib seaborn underthesea langdetect rapidfuzz evaluate sacrebleu jiwer beautifulsoup4 lxml requests python-dotenv tqdm kaggle
+```
+*Note:* `underthesea 9.5.0` works completely fine across Python 3.10 - 3.14. Do NOT skip text processing libraries.
 
 ---
 

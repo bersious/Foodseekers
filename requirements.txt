@@ -4,24 +4,30 @@ transformers>=4.40.0
 datasets>=2.18.0
 accelerate>=0.28.0
 scikit-learn>=1.4.0
+scipy>=1.12.0
 
-# Data Manipulation & Analysis
+# Data Manipulation & Visualization
 pandas>=2.2.0
 numpy>=1.26.0
+matplotlib>=3.8.0
+seaborn>=0.13.0
 
-# Vietnamese Text Processing
-# underthesea and pyvi pull in sklearn-crfsuite / python-crfsuite, which have
-# no prebuilt wheels for Python 3.14 and can fail to build from source.
-# Only install them on Python 3.10-3.13 AND only if you truly need word
-# segmentation. Uncomment the lines below on a compatible Python version.
-# underthesea>=6.8.0
-# pyvi>=0.1.1
+# Multilingual & Vietnamese NLP (Low-Resource Languages)
+underthesea>=9.5.0
+langdetect>=1.0.9
+regex>=2024.4.16
+rapidfuzz>=3.8.0
 
 # Evaluation & Metrics
 evaluate>=0.4.0
-scipy>=1.12.0
+sacrebleu>=2.4.0
+jiwer>=3.0.3
 
-# API & Utilities
+# Web Parsing & Threat Scenarios
+beautifulsoup4>=4.12.0
+lxml>=5.2.0
+
+# API & Automation Utilities
 requests>=2.31.0
 python-dotenv>=1.0.0
 tqdm>=4.66.0
