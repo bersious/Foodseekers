@@ -15,10 +15,11 @@ Cuộc thi **RMIT Hackathon 2026** gồm 2 thử thách diễn ra song song (H�
 
 ### 2. Thử thách 2 (Challenge 2 - Industry Challenge): UNLOCKED Hackathon (Tide × RMIT)
 * **Nhà tài trợ:** Hãng công nghệ bảo mật Tide ([tide.org/unlocked](https://tide.org/unlocked/)).
-* **Nhiệm vụ:** Xây dựng một ứng dụng mẫu (working prototype) tích hợp **TideCloak** và cơ chế **Emergent Authority** (quyền hạn tự sinh, không có quản trị viên hay máy chủ nào nắm giữ chìa khóa chủ / master key để giải mã dữ liệu đơn phương).
-* **Sản phẩm nộp:** Kho lưu trữ GitHub công khai có mã nguồn prototype, README chuẩn mẫu (≤300 từ trả lời 5 tiêu chí), video demo 2 phút (.mp4 dưới 100MB trong repo).
+* **Đề tài lựa chọn:** **Dự án "UNRELEASED"** (Ý tưởng số 5 — Không gian cộng tác âm nhạc và tác phẩm sáng tạo không cần trao quyền kiểm soát cho máy chủ lưu trữ).
+* **Nhiệm vụ:** Xây dựng một ứng dụng mẫu (working prototype) tích hợp **TideCloak** và cơ chế **Emergent Authority** (quyền hạn tự sinh, không có quản trị viên đám mây hay máy chủ nào nắm giữ chìa khóa chủ / master key để giải mã file nhạc demo của nghệ sĩ đơn phương).
+* **Sản phẩm nộp:** Kho lưu trữ GitHub công khai có mã nguồn prototype (`prototype/index.html`), README chuẩn mẫu (≤300 từ trả lời 5 tiêu chí), video demo 2 phút (.mp4 dưới 100MB trong repo).
 * **Kênh nộp bài:** [Google Form chính thức của Tide](https://forms.gle/HRHYjnqB86j1LFS97).
-* 📄 **Tài liệu hướng dẫn chi tiết:** Xem tại [`docs/CHALLENGE_2_TIDE_UNLOCKED.md`](./docs/CHALLENGE_2_TIDE_UNLOCKED.md).
+* 📄 **Tài liệu hướng dẫn chi tiết:** Xem tại [`docs/CHALLENGE_2_WINNING_STRATEGY.md`](./docs/CHALLENGE_2_WINNING_STRATEGY.md) và [`docs/CHALLENGE_2_AGENT_PLAYBOOK.md`](./docs/CHALLENGE_2_AGENT_PLAYBOOK.md).
 
 ---
 

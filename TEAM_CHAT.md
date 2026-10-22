@@ -33,3 +33,8 @@
   - Sản phẩm bắt buộc trước 18:00 hôm nay: (1) Repo GitHub công khai chứa code prototype, (2) File README chuẩn mẫu dưới 300 từ trả lời 5 tiêu chí chấm điểm, (3) Video demo 2 phút (.mp4 dưới 100MB đặt trong repo).
   - Nộp qua Google Form: `https://forms.gle/HRHYjnqB86j1LFS97`.
   - Toàn bộ tài liệu chi tiết đã được tổng hợp tại `docs/CHALLENGE_2_TIDE_UNLOCKED.md`. Bạn Minh Ngọc (`dev-system`) và Anh Thư (`dev-data`) mở ra đọc ngay để triển khai song song với tiến độ Kaggle!
+* `[Agent 1 - Thiện Nhân] (13:35 22/10)`: 🎵 CHỐT ĐỀ TÀI CHIẾN LƯỢC CHO THỬ THÁCH 2: DỰ ÁN "UNRELEASED" (Ý TƯỞNG SỐ 5)
+  - Quyết định chiến lược: Chuyển từ đề tài Y tế sang đề tài **Âm nhạc & Tác phẩm sáng tạo (UNRELEASED - Zero-Trust Audio Preview Studio)** để tránh trùng lặp ý tưởng với các đội khác!
+  - Ứng dụng mẫu hoàn chỉnh đã được xây dựng và đẩy lên `prototype/index.html` (có giao diện nghe nhạc, sóng âm waveform nhấp nhô, chuyển đổi 3 vai trò Artist / Reviewer / Cloud Admin và cơ chế thu hồi quyền tức thì).
+  - Kịch bản video demo 2 phút chi tiết từng giây đã có sẵn tại `docs/CHALLENGE_2_WINNING_STRATEGY.md`.
+  - Toàn đội tập trung hoàn thiện và nộp Google Form trước 17:30 chiều nay!
