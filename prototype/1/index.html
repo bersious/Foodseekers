@@ -112,14 +112,12 @@ body::before{content:'';position:fixed;inset:0;z-index:-2;background:radial-grad
       <input type="text" id="artist-login-user" class="form-input" value="alice_artist" placeholder="alice_artist">
     </div>
     <div class="form-group">
-      <label class="form-label">Mật Khẩu (Mặc định: 123)</label>
-      <input type="password" id="artist-login-pass" class="form-input" value="123" placeholder="123">
+      <label class="form-label">Mật Khẩu Xác Thực</label>
+      <input type="password" id="artist-login-pass" class="form-input" value="123" placeholder="••••••••">
     </div>
     <button class="btn btn-accent" style="width:100%;justify-content:center" onclick="loginArtist()">Đăng Nhập Vào Két Sắt</button>
 
-    <div style="margin-top:18px;font-size:12px;color:var(--dim);text-align:center">
-      Tài khoản mẫu: <code class="mono" style="color:var(--fg)">alice_artist</code> | Mật khẩu: <code class="mono" style="color:var(--accent)">123</code>
-    </div>
+    
   </div>
 
   <!-- GIAO DIỆN NGHỆ SĨ SAU KHI ĐĂNG NHẬP -->
@@ -177,7 +175,7 @@ body::before{content:'';position:fixed;inset:0;z-index:-2;background:radial-grad
 
 <footer class="footer">
   <span>UNRELEASED · Cổng Nghệ Sĩ · Powered by TideCloak</span>
-  <span class="mono">Mật khẩu hệ thống: 123</span>
+  <span class="mono">RMIT Hackathon 2026</span>
 </footer>
 
 <script>
@@ -277,7 +275,7 @@ function loginArtist(){
   const u=document.getElementById('artist-login-user').value.trim();
   const p=document.getElementById('artist-login-pass').value.trim();
   if(!u){alert('Vui lòng nhập tên tài khoản!');return;}
-  if(p!=='123'){alert('Mật khẩu không đúng! (Gợi ý: Mật khẩu là 123)');return;}
+  if(!p){alert('Vui lòng nhập mật khẩu xác thực!');return;}
   localStorage.setItem('tide_logged_artist',u);
   
 function updatePolicyViewer(){

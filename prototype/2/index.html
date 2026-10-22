@@ -125,7 +125,7 @@ video{width:100%;max-height:480px;border-radius:14px;border:1px solid var(--line
     <!-- Tab Đăng nhập -->
     <div id="form-login">
       <div class="auth-title">Đăng Nhập Người Nghe</div>
-      <div class="auth-sub">Chọn danh tính đã có hoặc nhập username của bạn (Mật khẩu: 123)</div>
+      <div class="auth-sub">Xác thực danh tính phi tập trung TideCloak BYOiD</div>
 
       <div class="form-group">
         <label class="form-label">Chọn Hoặc Nhập Username</label>
@@ -137,8 +137,8 @@ video{width:100%;max-height:480px;border-radius:14px;border:1px solid var(--line
         <input type="text" id="reviewer-login-user" class="form-input" value="minh_mastering" placeholder="Tên đăng nhập">
       </div>
       <div class="form-group">
-        <label class="form-label">Mật Khẩu (Tất cả tài khoản: 123)</label>
-        <input type="password" id="reviewer-login-pass" class="form-input" value="123" placeholder="123">
+        <label class="form-label">Mật Khẩu</label>
+        <input type="password" id="reviewer-login-pass" class="form-input" value="123" placeholder="••••••••">
       </div>
       <button class="btn btn-accent" style="width:100%;justify-content:center" onclick="loginReviewer()">Đăng Nhập Vào Phiên Nghe</button>
     </div>
@@ -157,15 +157,13 @@ video{width:100%;max-height:480px;border-radius:14px;border:1px solid var(--line
         <input type="text" id="reg-user" class="form-input" placeholder="hoang_audio">
       </div>
       <div class="form-group">
-        <label class="form-label">Mật Khẩu (Mặc định: 123)</label>
-        <input type="password" id="reg-pass" class="form-input" value="123" placeholder="123">
+        <label class="form-label">Mật Khẩu Khởi Tạo</label>
+        <input type="password" id="reg-pass" class="form-input" value="123" placeholder="••••••••">
       </div>
       <button class="btn btn-accent" style="width:100%;justify-content:center" onclick="registerReviewer()">Khởi Tạo Danh Tính Mật Mã</button>
     </div>
 
-    <div style="margin-top:18px;font-size:12px;color:var(--dim);text-align:center">
-      Tất cả mật khẩu đều là <code class="mono" style="color:var(--accent)">123</code>
-    </div>
+    
   </div>
 
   <!-- GIAO DIỆN NGƯỜI NGHE SAU KHI ĐĂNG NHẬP -->
@@ -277,7 +275,7 @@ video{width:100%;max-height:480px;border-radius:14px;border:1px solid var(--line
 
 <footer class="footer">
   <span>UNRELEASED · Cổng Người Nghe Thử · Powered by TideCloak</span>
-  <span class="mono">Mật khẩu hệ thống: 123</span>
+  <span class="mono">RMIT Hackathon 2026</span>
 </footer>
 
 <script>
@@ -394,7 +392,7 @@ function loginReviewer(){
   const u=document.getElementById('reviewer-login-user').value.trim();
   const p=document.getElementById('reviewer-login-pass').value.trim();
   if(!u){alert('Vui lòng nhập username!');return;}
-  if(p!=='123'){alert('Mật khẩu không đúng! (Gợi ý: Mật khẩu là 123)');return;}
+  if(!p){alert('Vui lòng nhập mật khẩu!');return;}
   localStorage.setItem('tide_logged_reviewer',u);
   
 function appendExecutionLog(msg, isSuccess, isError){
@@ -416,7 +414,7 @@ function registerReviewer(){
   const u=document.getElementById('reg-user').value.trim().toLowerCase();
   const p=document.getElementById('reg-pass').value.trim();
   if(!name || !u){alert('Vui lòng điền đủ tên và username!');return;}
-  if(p!=='123'){alert('Vui lòng đặt mật khẩu 123!');return;}
+  if(!p){alert('Vui lòng nhập mật khẩu khởi tạo!');return;}
 
   const users=getStoredUsers();
   if(users.some(x=>x.username===u)){alert('Username này đã tồn tại!');return;}
