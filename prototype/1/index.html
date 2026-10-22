@@ -317,6 +317,11 @@ async function fetchCloudState() {
         localStorage.setItem('tide_users', cloudUsersStr);
         hasChanged = true;
       }
+      const cloudReqStr = JSON.stringify(cloud.requests || []);
+      if (localStorage.getItem('tide_requests_v2') !== cloudReqStr) {
+        localStorage.setItem('tide_requests_v2', cloudReqStr);
+        hasChanged = true;
+      }
       // Đồng bộ cài đặt tự động duyệt
       const autoEl = document.getElementById('auto-toggle');
       if (autoEl) {
@@ -345,7 +350,13 @@ async function pushCloudUpdate(action, payload = {}) {
   }
 }
 
-setInterval(fetchCloudState, 2500);
+function onCloudSync(){
+  getStoredUsers();
+  renderArtistTracks();
+  renderRequests();
+  updatePolicyViewer();
+}
+setInterval(fetchCloudState, 2000);
 fetchCloudState();
 
 // ==================== LOCAL HELPERS ====================
@@ -496,26 +507,30 @@ function renderArtistTracks(){
 function renderRequests(){
   const stateRaw = localStorage.getItem('tide_requests_v2');
   const requests = stateRaw ? JSON.parse(stateRaw) : [];
+  const pendingRequests = requests.filter(r => r.status === 'PENDING');
   const box=document.getElementById('requests-list');
   const count=document.getElementById('req-count');
   box.innerHTML='';
-  if(!requests.length){
-    box.innerHTML='<div style="font-size:13px;color:var(--muted);padding:16px">Không có đơn xin quyền nào đang chờ duyệt.</div>';
+  if(!pendingRequests.length){
+    box.innerHTML='<div style="font-size:13px;color:var(--muted);padding:16px" class="mono">✓ Không có đơn xin quyền nào đang chờ duyệt.</div>';
     count.textContent='0 đơn chờ';
     return;
   }
-  count.textContent=requests.length+' đơn chờ';
-  requests.forEach(r=>{
+  count.textContent=pendingRequests.length+' đơn chờ';
+  const tracks = getStoredTracks();
+  pendingRequests.forEach(r=>{
+    const trk = tracks.find(x => x.id === r.trackId);
+    const trackTitle = trk ? trk.name : r.trackId;
     const card=document.createElement('div');
     card.className='req-card';
     card.innerHTML=`
       <div class="req-info">
-        <div class="req-title">${r.username} muốn nghe <strong>${r.trackName||r.trackId}</strong></div>
-        <div class="req-sub">Yêu cầu vào ${new Date(r.createdAt||Date.now()).toLocaleString()}</div>
+        <div class="req-title">👤 <strong>${r.username}</strong> xin quyền nghe: <span style="color:var(--accent)">${trackTitle}</span></div>
+        <div class="req-sub mono" style="font-size:11px;color:var(--muted);margin-top:2px">Thời gian: ${new Date(r.createdAt||Date.now()).toLocaleTimeString()}</div>
       </div>
       <div class="req-actions">
-        <button class="btn btn-ok btn-sm" onclick="resolveRequest('${r.id}','APPROVE')">Duyệt</button>
-        <button class="btn btn-danger btn-sm" onclick="resolveRequest('${r.id}','DENY')">Từ chối</button>
+        <button class="btn btn-ok btn-sm" onclick="resolveRequest('${r.id}','APPROVE')">✓ Duyệt Cấp Quyền</button>
+        <button class="btn btn-danger btn-sm" onclick="resolveRequest('${r.id}','DENY')">✕ Từ Chối</button>
       </div>
     `;
     box.appendChild(card);
