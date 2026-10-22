@@ -24,5 +24,9 @@
 | 13:50 22/10 | Thiện Nhân | `/src/backend/server.js` | HTTP Requests | JSON API & Auth tokens | Máy chủ Oblivious Proxy Node.js độc lập không giữ Master Key |
 | 13:52 22/10 | Thiện Nhân | `/src/security/exploit_simulation.js` | Kịch bản tấn công | Kết quả kiểm thử | Bộ kiểm thử tự động xác thực miễn nhiễm trước tấn công của Admin máy chủ |
 | 13:55 22/10 | Thiện Nhân | `/data/mock_assets/album_manifest.json` | Metadata bài hát | JSON Manifest | Siêu dữ liệu chuẩn FLAC/WAV cho album demo "MIDNIGHT CIPHER" |
+| 14:10 22/10 | Thiện Nhân | `/app/` (Next.js) | — | Dự án Next.js | Cấu trúc app Next.js chuẩn production: package.json, lib/tidecloak-client.js, README |
+| 14:12 22/10 | Thiện Nhân | `/app/src/lib/tidecloak-client.js` | trackId, userId | Promise JSON | Adapter client gọi API Oblivious Proxy và giải mã Just-in-Time trên RAM |
+| 14:15 22/10 | Thiện Nhân | `/src/security/e2e_integration_test.js` | — | Kết quả 5/5 PASS | Kiểm thử tích hợp đầu-cuối toàn bộ luồng: share → stream → admin denied → revoke → blocked |
+| 14:18 22/10 | Thiện Nhân | `/UNRELEASED_SUBMISSION.md` | — | README nộp bài | README chuẩn Tide 5 tiêu chí (<300 từ) sẵn sàng nộp cho ban giám khảo |
 
 *(Khi viết xong module mới, Agent hãy thêm một dòng vào cuối bảng trên và commit đẩy lên nhánh của mình)*

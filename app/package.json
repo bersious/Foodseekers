@@ -1,0 +1,27 @@
+{
+  "name": "unreleased-tidecloak",
+  "version": "1.0.0",
+  "private": true,
+  "description": "UNRELEASED — Zero-Trust Creative Audio Preview Studio built with TideCloak Emergent Authority (RMIT Hackathon 2026 Challenge 2)",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "server": "node ../src/backend/server.js",
+    "test:security": "node ../src/security/exploit_simulation.js"
+  },
+  "dependencies": {
+    "next": "14.2.5",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "@tidecloak/nextjs": "latest"
+  },
+  "keywords": [
+    "tidecloak",
+    "emergent-authority",
+    "zero-trust",
+    "e2ee",
+    "rmit-hackathon-2026"
+  ],
+  "license": "MIT"
+}
