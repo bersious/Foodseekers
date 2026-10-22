@@ -1,0 +1,29 @@
+{
+  "name": "foodseekers-unreleased",
+  "version": "1.0.0",
+  "private": true,
+  "description": "UNRELEASED — Zero-Trust Creative Audio Preview Vault built with TideCloak Emergent Authority (RMIT Hackathon 2026)",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "server": "node src/backend/server.js",
+    "test": "node src/security/exploit_simulation.js && node src/security/e2e_integration_test.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "vite": "^5.4.0"
+  },
+  "keywords": [
+    "tidecloak",
+    "emergent-authority",
+    "zero-trust",
+    "audio-security",
+    "rmit-hackathon-2026"
+  ],
+  "author": "Foodseekers Team (UIT - RMIT Hackathon 2026)",
+  "license": "MIT"
+}

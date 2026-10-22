@@ -1,149 +1,101 @@
-# 🍽️ Foodseekers — RMIT Hackathon 2026
-
 [![Built with TideCloak](https://tide.org/badges/built-with-tidecloak.svg)](https://tide.org/tidecloak?utm_source=github&utm_medium=readme&utm_campaign=unlocked)
 
-Dự án tham gia cuộc thi lập trình quốc tế **RMIT Hackathon 2026** (Việt Nam — Úc — Malaysia) bởi đội thi **Foodseekers** đến từ Trường Đại học Công nghệ Thông tin (UIT), ĐHQG-HCM.
+# UNRELEASED — Zero-Trust Audio/Video Preview Vault
 
----
+## Project overview
 
-## 🌐 Trải nghiệm Trực tuyến (Live Production Portal)
-
-Toàn bộ hệ thống sản phẩm đã được triển khai trực tiếp trên môi trường đám mây:
-
-* ⚡ **Cổng Điều Hướng Trung Tâm:** [https://bersious.io.vn/rmit](https://bersious.io.vn/rmit)
-* 🎧 **Cổng 01 · Két Sắt Nghệ Sĩ:** [https://bersious.io.vn/rmit/1](https://bersious.io.vn/rmit/1) *(Tải tệp, phân quyền, kiểm âm, tạo profile)*
-* 🎙️ **Cổng 02 · Phòng Nghe Thử Bảo Mật:** [https://bersious.io.vn/rmit/2](https://bersious.io.vn/rmit/2) *(Chọn nghệ sĩ, xin quyền, nghe in-memory, chống tải về, watermark)*
-* ⚠️ **Cổng 03 · Trình Giám Sát S3 (Oblivious Proxy):** [https://bersious.io.vn/rmit/3](https://bersious.io.vn/rmit/3) *(Bảng SOC giám sát mã hóa thời gian thực, mô phỏng tấn công root)*
-
-> **Thông tin xác thực kiểm thử:**  
-> Mật khẩu đăng nhập mặc định cho tất cả tài khoản là `123`.  
-> *Nghệ sĩ mẫu:* `alice_artist`, `endy_producer` (hoặc tự tạo nghệ sĩ mới).  
-> *Người nghe mẫu:* `minh_mastering`, `thu_producer`, `lan_soundcheck`, `nhânn` (hoặc tự tạo danh tính mới).
-
----
-
-## 🏆 THỬ THÁCH 2: DỰ ÁN "UNRELEASED" (Tide × RMIT 2026)
-
-### Project Overview
-**UNRELEASED** là studio cộng tác và nghe thử tác phẩm âm nhạc / video trước ngày phát hành áp dụng mô hình bảo mật **Zero-Trust & Zero-Custody**, tích hợp công nghệ **TideCloak** và cơ chế **Emergent Authority (Quyền hạn tự sinh)**. Nền tảng triệt tiêu hoàn toàn chìa khóa chủ (Master Key) trên máy chủ lưu trữ, bảo vệ nghệ sĩ tuyệt đối khỏi nguy cơ bị nhân viên đám mây lạm quyền hoặc hacker đánh cắp bản thu master.
+_UNRELEASED is a zero-trust creative pre-release preview vault that eliminates cloud master keys using TideCloak Emergent Authority, allowing artists to share unreleased masters with reviewers without risk of server-side leaks._
 
 Built with [TideCloak](https://tide.org/tidecloak?utm_source=github&utm_medium=readme&utm_campaign=unlocked).
 
-### 1. Vision & Originality
-Trong ngành công nghiệp âm nhạc, những vụ rò rỉ album chưa phát hành (pre-release leak) gây thiệt hại hàng triệu USD cho các nghệ sĩ lớn. Nguyên nhân cốt lõi là các nền tảng lưu trữ hiện nay (Dropbox, Google Drive, Box, Byta) đều hoạt động theo mô hình ủy thác chìa khóa: quản trị viên máy chủ hoặc quản trị viên cơ sở dữ liệu luôn nắm giữ chìa khóa giải mã master. Chúng tôi đề xuất **UNRELEASED**: một không gian chia sẻ tác phẩm sáng tạo mà **không cần trao quyền kiểm soát cho bất kỳ bên thứ ba nào**. Chìa khóa giải mã không bao giờ tồn tại ở dạng tĩnh trên máy chủ — nó chỉ tự sinh ra trong một phần nghìn giây trên bộ nhớ RAM của đúng người nghe được cấp phép.
+---
 
-### 2. Trust Constraint Insight
-Rào cản lòng tin hiện nay buộc các nhà sản xuất và nghệ sĩ phải dùng những biện pháp tiêu cực: không dám gửi bản thu chất lượng cao, chần chừ hợp tác từ xa, hoặc phải bay trực tiếp đến phòng thu để nghe demo. Khi loại bỏ nỗi sợ bị lạm quyền máy chủ và lộ dữ liệu, các nghệ sĩ độc lập có thể tự tin gửi bản master 24-bit FLAC không nén cho các kỹ sư hòa âm, giám đốc âm nhạc hay đài phát thanh trên toàn thế giới để thẩm định tức thì.
+### 🌐 Live Production Demo
 
-### 3. Value & Impact
-* **Nghệ sĩ & Hãng đĩa:** Kiểm soát 100% bản quyền tác phẩm. Thu hồi quyền nghe của đối tác chỉ trong 0.069ms.
-* **Kỹ sư âm thanh & Giám tuyển:** Trải nghiệm nghe thử âm thanh gốc trong bộ nhớ mà không cần tải file về ổ đĩa, loại bỏ gánh nặng pháp lý về việc vô tình làm lộ file demo.
+- **Central Portal:** [https://bersious.io.vn/rmit](https://bersious.io.vn/rmit)
+- **Portal 01 · Artist Vault:** [https://bersious.io.vn/rmit/1](https://bersious.io.vn/rmit/1) *(Upload masters, manage DID access, configure preview limits & audio watermarks)*
+- **Portal 02 · Reviewer Listening Room (SONORA):** [https://bersious.io.vn/rmit/2](https://bersious.io.vn/rmit/2) *(Browse artists, request access, in-memory stream, leave feedback, tamper protection)*
+- **Portal 03 · S3 Oblivious Proxy Inspector:** [https://bersious.io.vn/rmit/3](https://bersious.io.vn/rmit/3) *(Real-time SOC monitoring, root exploit simulation with 0 master keys)*
 
-### 4. Why TideCloak Matters
-Các hệ thống đăng nhập thông thường (OAuth2, Keycloak, JWT thông thường) chỉ kiểm tra tài khoản rồi trao token tải file về. Khi máy chủ đám mây bị xâm nhập, kẻ tấn công có thể tải toàn bộ bucket S3 và giải mã ngoại tuyến. **TideCloak mang lại sự khác biệt quyết định:**
-* **Emergent Authority:** Quyền hạn giải mã chỉ sinh ra khi có sự đồng thuận từ các node phân tán (Quorum Consensus).
-* **Oblivious Proxy:** Máy chủ lưu trữ đóng vai trò người chuyển thư vô can — máy chủ chỉ lưu khối nhị phân mã hóa (`.enc`), không hề có chìa khóa master.
-* **Tự hủy tức thì:** Khi nghệ sĩ bấm thu hồi quyền, các node Quorum hủy phiên trong chưa đầy 1ms, không token cũ hay bộ nhớ cache nào có thể tái tạo lại chìa khóa.
-
-### 5. Prototype & Storytelling
-Nguyên mẫu trực tuyến hôm nay chứng minh trọn vẹn 5 tính năng cốt lõi:
-1. **Quản lý đa nghệ sĩ:** Nghệ sĩ tạo hồ sơ mới, tải nhạc/video lên và phân quyền đích danh cho từng danh tính phi tập trung (DID).
-2. **Xin quyền tương tác hai chiều:** Người nghe gửi đơn xin quyền trực tiếp ➔ Nghệ sĩ duyệt trên Trang 1 ➔ Bài hát tự động mở khóa trên Trang 2 theo thời gian thực qua Cloud Database Upstash Redis.
-3. **Chế độ tự hủy sau 1 lần nghe (Single-Play):** Quyền giải mã tự động thu hồi vĩnh viễn ngay khi bài hát phát xong.
-4. **Giới hạn thời lượng nghe thử (10s / 15s / 30s / 60s):** Nghệ sĩ có thể giới hạn chỉ cho nghe đoạn teaser đầu. Trình phát tự động ngắt âm thanh khi chạm mốc thời gian.
-5. **Chống tải về & Chống thu âm ngoài loa:** Khóa thuộc tính `nodownload`, cấm chuột phải, kết hợp tính năng chèn **Watermark tiếng vịt kêu định kỳ** hoặc **Giọng đọc AI bản quyền** đè lên nhạc mỗi 9 giây, làm vô hiệu hóa hoàn toàn ý đồ dùng điện thoại kề loa để thu âm lậu.
-6. **Mô phỏng tấn công Root Admin:** Tại Trang 3, người dùng kích hoạt thử nghiệm hacker chiếm quyền root S3 để giải mã ➔ Hệ thống Quorum từ chối 403, rò rỉ dữ liệu = 0 bytes!
+> **Credentials for Testing:** All demo accounts use password `123`.  
+> - *Sample Artists:* `alice_artist`, `endy_producer` (or create a new artist profile).  
+> - *Sample Reviewers:* `minh_mastering`, `thu_producer`, `lan_soundcheck`, `nhânn` (or register a new identity).
 
 ---
 
-## 🛠️ Kiến trúc Kỹ thuật (Technical Architecture)
+### 1. Vision & originality
 
-```text
-┌─────────────────────────────────────────────────────────────────────────┐
-│                      1. CLIENT INTERFACE TIER                           │
-│  /rmit/1 (Artist Sovereign Vault)  │  /rmit/2 (Reviewer In-Memory Room) │
-│  - Client-side AES-256-GCM Encrypt │  - In-Memory Web Audio API Playback│
-│  - Entitlement Policy Management   │  - Anti-Download & Watermark Engine│
-└────────────────────────────────────┬────────────────────────────────────┘
-                                     │ Encrypted Stream / JIT Session Request
-                                     ▼
-┌─────────────────────────────────────────────────────────────────────────┐
-│                   2. OBLIVIOUS PROXY & API TIER                         │
-│   src/backend/server.js (Node.js)  │  api/rmit-vault.ts (Serverless)    │
-│   - Host holds 0 Master Keys       │  - Realtime Quorum Policy Engine   │
-│   - Pure Encrypted Binary Storage  │  - Upstash Redis Cloud Database    │
-│   - Vercel Blob High-Speed Media CDN for Audio/Video Streaming          │
-└────────────────────────────────────┬────────────────────────────────────┘
-                                     │ Identity & Policy Attestation
-                                     ▼
-┌─────────────────────────────────────────────────────────────────────────┐
-│                  3. TIDE FABRIC QUORUM (CONSENSUS)                      │
-│   src/sdk/tidecloak/emergent_authority.js & crypto_engine.js            │
-│   - Decentralized Consensus Nodes (Zero Single Point of Compromise)     │
-│   - Ephemeral JIT Key Emergence (Synthesized only in caller's RAM)      │
-│   - Instant Revocation & Single-Play Self-Destruction in 0.069ms        │
-└─────────────────────────────────────────────────────────────────────────┘
-```
+Pre-release music and video leaks cost artists and record labels millions of dollars annually, destroying promotional rollouts and creative momentum. Traditional cloud storage platforms (Dropbox, Google Drive, Box) rely on delegated trust: administrators and cloud providers retain access to decryption keys. 
 
-### Các Module Cốt Lõi Trong Kho Lưu Trữ
+**UNRELEASED** introduces a decentralized, zero-custody creative studio where **no central master key ever exists**. Decryption keys are never stored on disk or server databases — they emerge dynamically in the reviewer's volatile RAM only during authorized playback, synthesized via Tide Fabric Quorum consensus. The moment an artist revokes access, playback terminates instantly within 0.069ms.
 
-* `prototype/`: Giao diện ứng dụng hoàn chỉnh chia thành 3 cổng (`/rmit`, `/rmit/1`, `/rmit/2`, `/rmit/3`).
-* `api/rmit-vault.ts`: API điều phối phân quyền và cơ sở dữ liệu thời gian thực kết nối Upstash Redis.
-* `api/upload-media.ts`: API nạp tệp media lên máy chủ CDN Vercel Blob tốc độ cao.
-* `src/sdk/tidecloak/emergent_authority.js`: Thuật toán phân quyền Quorum và sinh khóa Just-In-Time.
-* `src/sdk/tidecloak/crypto_engine.js`: Động cơ mật mã học mã hóa AES-256-GCM.
-* `src/backend/server.js`: Máy chủ Oblivious Proxy mẫu chạy trên cổng 4000.
-* `src/security/`: Bộ kịch bản kiểm thử bảo mật đối kháng và kiểm thử tích hợp đầu-cuối (Pass 100%).
+### 2. Trust constraint insight
 
----
+Today, the fear of leaks paralyzes creative collaboration:
+- Major artists refuse to send lossless 24-bit FLAC/WAV masters to mixing/mastering engineers remotely.
+- Reviewers and radio curators face severe legal liability if a leaked demo is traced back to their inbox.
+- Producers are forced to travel physically to studios just to audition a 30-second snippet.
 
-## 📊 THỬ THÁCH 1: PHÂN LOẠI CÂU LỆNH TẤN CÔNG ĐỐI KHÁNG (Kaggle)
+When the trust constraint is removed through cryptographic zero-custody, artists can freely collaborate with global sound designers and label executives instantly, knowing that even a rogue AWS administrator or compromised S3 bucket cannot leak their uncompressed recordings.
 
-Song song với Thử thách 2, đội ngũ Foodseekers tham gia bảng đấu Kaggle chính thức của RMIT:
+### 3. Value & impact
 
-* **Bài toán:** Phân loại 3 nhãn an toàn AI đa ngôn ngữ (`BENIGN`, `JAILBREAK`, `PROMPT_INJECTION`) trên 4 ngôn ngữ (Anh, Pháp, Ý, Bồ Đào Nha).
-* **Chỉ số đo lường:** Macro-averaged F1 Score.
-* **Chiến lược:** Xây dựng Pipeline Ensemble đa tầng kết hợp trích xuất đặc trưng N-gram văn bản, ký tự, one-hot ngôn ngữ, regex an ninh cùng các mô hình Transformer tối ưu (XLM-RoBERTa, DeBERTa-v3).
-* **Kết quả đạt được:**
-  * Baseline ban đầu: `0.9028`
-  * Tối ưu hóa lượt 2: `0.9175`
-  * Bứt phá lượt 3: `0.9508` (Top Leaderboard).
+- **For Artists & Record Labels:** Retain 100% sovereign authority over intellectual property. Enforce fine-grained policies such as **Single-Play Self-Destruction** (access automatically revokes upon playback completion) and **Preview Duration Limits** (stream automatically halts at 10s, 15s, or 30s).
+- **For Audio Reviewers & Critics:** Stream pristine lossless audio in-memory without storing unreleased files on local drives, eliminating legal exposure.
+- **Leak Defense Ecosystem:** Built-in acoustic watermarking (periodic audio watermark and AI voice disclaimer) and an active **Tamper Watchdog** that immediately revokes decryption rights if DevTools inspection or screen recording software is detected.
+
+### 4. Why TideCloak matters
+
+Conventional authentication systems (OAuth2, JWT, Keycloak) authenticate users but leave data encryption keys static on backend servers. If a server is compromised, all data is vulnerable.
+
+**TideCloak changes the paradigm:**
+- **Emergent Authority:** Decryption keys are split into cryptographic shares across decentralized Quorum nodes. Keys only synthesize *Just-In-Time* (JIT) inside the verified client runtime.
+- **Oblivious Proxy Architecture:** The storage backend (S3/Vercel Blob) acts as an oblivious host — it only stores opaque `.enc` binary blobs without holding any decryption capability.
+- **Sub-millisecond Revocation:** Access revocation propagates across the Tide Quorum in under 1ms, rendering any cached tokens or network packets permanently un-decryptable.
+
+### 5. Prototype & storytelling
+
+Our live prototype demonstrates a complete end-to-end creative workflow across 3 dedicated portals:
+
+1. **Artist Sovereign Vault (`/rmit/1`):** The artist uploads audio/video tracks, configures a 15-second teaser limit, enables periodic acoustic watermarking, and grants access to specific reviewer DIDs.
+2. **Reviewer Listening Room (`/rmit/2`):** The reviewer logs in via SONORA, browses the artist's discography, requests access with one click, streams the master in-memory upon artist approval, and leaves mixing feedback. If DevTools or screen capture is triggered, access is revoked automatically.
+3. **S3 Oblivious Proxy Inspector (`/rmit/3`):** Judges can trigger a **Root Admin Dump Simulation**, demonstrating that even with full root privilege on the storage server, 0 master keys exist and 0 bytes of plaintext audio can be extracted.
 
 ---
 
-## 👥 Đội ngũ Thành viên & Phân công
+## Setup
 
-| STT | Thành viên | GitHub | Nhánh làm việc | Vai trò chính |
-| :---: | :--- | :--- | :--- | :--- |
-| **1** | **Nguyễn Thành Thiện Nhân** | `bersious` | `dev-backend` | **Team Lead & AI Integration:** Quản lý dự án, kiến trúc hệ thống, tích hợp mô hình AI, kết nối Vercel & nộp bài Kaggle. |
-| **2** | **Nguyễn Văn Nhân** | `NguyenNhan1107` | `dev-core` | **Core Engineer:** Xây dựng logic code chính, GPU runner, tối ưu pipeline Kaggle. |
-| **3** | **Trần Nguyễn Anh Thư** | `tuna184` | `dev-data` | **Data Analyst:** Tiền xử lý dữ liệu ngôn ngữ, đánh giá ma trận nhầm lẫn, định dạng tệp nộp bài. |
-| **4** | **Trần Minh Ngọc** | `tranminhngoc171-bot` | `dev-system` | **System Architecture & Security:** Thiết kế luồng bảo mật đối kháng, kiểm thử kịch bản exploit, hoàn thiện tài liệu. |
-
----
-
-## 💻 Hướng Dẫn Cài Đặt Cục Bộ (Local Setup)
-
-### 1. Khởi chạy ứng dụng mẫu (Prototype):
-Chỉ cần mở trực tiếp tệp `prototype/index.html` (hoặc `prototype/1/index.html`, `prototype/2/index.html`, `prototype/3/index.html`) bằng bất kỳ trình duyệt web hiện đại nào (Chrome, Edge, Firefox, Safari).
-
-### 2. Khởi chạy máy chủ Oblivious Proxy:
 ```bash
+# Clone the repository
+git clone https://github.com/bersious/Foodseekers.git
 cd Foodseekers
+
+# 1. Run the Prototype locally
+# Simply open prototype/index.html (or prototype/1, prototype/2, prototype/3) in any modern web browser
+# Or serve via Node / Vite:
 npm install
-node src/backend/server.js
-# Máy chủ lắng nghe tại http://localhost:4000
-```
+npm run dev
 
-### 3. Chạy bộ kiểm thử an ninh tự động:
-```bash
-# Kiểm thử mô phỏng tấn công root admin
-node src/security/exploit_simulation.js
+# 2. Run Oblivious Proxy Backend Server
+npm run server
+# Listening on http://localhost:4000
 
-# Kiểm thử tích hợp phân quyền đầu-cuối
-node src/security/e2e_integration_test.js
+# 3. Run Security & Exploit Simulation Test Suites
+npm test
+# Passes 100%: Root exploit mitigation & E2E Quorum consensus tests
 ```
 
 ---
 
-**Team Foodseekers — Đại học Công nghệ Thông tin (UIT) — RMIT Hackathon 2026** 🚀
+## 👥 Team Foodseekers — RMIT Hackathon 2026
+
+- **Nguyễn Thành Thiện Nhân** (`bersious`) — *Team Lead & System Architecture*
+- **Nguyễn Văn Nhân** (`NguyenNhan1107`) — *Core Backend & Pipeline Engineer*
+- **Trần Nguyễn Anh Thư** (`tuna184`) — *Data Analyst & QA*
+- **Trần Minh Ngọc** (`tranminhngoc171-bot`) — *Security & Cryptographic Attestation*
+
+---
+
+## 📊 Challenge 1: Multilingual Adversarial Prompt-Attack Classification (Kaggle)
+
+Our team also achieved **Macro-F1 0.9508** on the RMIT Kaggle Challenge 1 leaderboard using an ensemble of multilingual Transformers (XLM-RoBERTa & DeBERTa-v3) with adversarial safety regularization. See `notebooks/` for details.
