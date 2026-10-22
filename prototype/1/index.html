@@ -722,6 +722,19 @@ function renderArtistTracks(){
         `}
       </div>
 
+            <!-- Cài đặt chống thu âm ngoài loa (Audio Watermark) -->
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;background:rgba(255,255,255,0.03);padding:8px 14px;border-radius:10px;border:1px solid var(--line);flex-wrap:wrap">
+        <span style="font-size:12px;color:var(--accent);font-weight:700">Chống thu âm ngoài loa:</span>
+        <select class="form-input" style="width:auto;padding:5px 10px;font-size:12px;margin:0" onchange="setWatermarkMode('${t.id}', this.value)">
+          <option value="none" ${(!t.watermarkMode || t.watermarkMode==='none')?'selected':''}>Không chèn watermark</option>
+          <option value="duck" ${t.watermarkMode==='duck'?'selected':''}>Chèn tiếng vịt kêu định kỳ</option>
+          <option value="voice" ${t.watermarkMode==='voice'?'selected':''}>Giọng nói AI đọc cảnh báo bản quyền</option>
+        </select>
+        <span class="mono" style="font-size:11px;color:var(--dim)">
+          ${t.watermarkMode==='duck' ? '· Chèn tiếng quack định kỳ để làm hỏng bản thu lậu' : (t.watermarkMode==='voice' ? '· Giọng AI đọc tên nghệ sĩ định kỳ' : '· Âm thanh nguyên bản')}
+        </span>
+      </div>
+
       <!-- Cài đặt giới hạn thời gian nghe thử của Nghệ sĩ -->
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;background:rgba(255,255,255,0.03);padding:8px 14px;border-radius:10px;border:1px solid var(--line);flex-wrap:wrap">
         <span style="font-size:12px;color:var(--accent);font-weight:700">Giới hạn thời gian nghe thử:</span>
@@ -753,13 +766,15 @@ function renderArtistTracks(){
     box.appendChild(card);
   });
 
-  // Tự động nạp blob hoặc stream vào các trình phát của từng bài hát
+  // Tự động nạp streamUrl hoặc blob vào các trình phát của từng bài hát
   myTracks.forEach(async t => {
     const el = document.getElementById(`player-${t.id}`);
     if(!el) return;
-    const blob = await getMediaBlob(t.id);
-    if(blob){
-      el.src = URL.createObjectURL(blob);
+    if(t.streamUrl){
+      el.src = t.streamUrl;
+    } else {
+      const blob = await getMediaBlob(t.id);
+      if(blob) el.src = URL.createObjectURL(blob);
     }
   });
 
@@ -802,13 +817,15 @@ function renderRequests(){
     box.appendChild(card);
   });
 
-  // Tự động nạp blob hoặc stream vào các trình phát của từng bài hát
+  // Tự động nạp streamUrl hoặc blob vào các trình phát của từng bài hát
   myTracks.forEach(async t => {
     const el = document.getElementById(`player-${t.id}`);
     if(!el) return;
-    const blob = await getMediaBlob(t.id);
-    if(blob){
-      el.src = URL.createObjectURL(blob);
+    if(t.streamUrl){
+      el.src = t.streamUrl;
+    } else {
+      const blob = await getMediaBlob(t.id);
+      if(blob) el.src = URL.createObjectURL(blob);
     }
   });
 
@@ -843,6 +860,17 @@ function revokeUser(trackId, username){
   }
 }
 
+
+
+function setWatermarkMode(trackId, mode){
+  const tracks = getStoredTracks();
+  const t = tracks.find(x => x.id === trackId);
+  if(t){
+    t.watermarkMode = mode || 'none';
+    saveTracks(tracks);
+    pushCloudUpdate('SET_WATERMARK_MODE', {trackId: trackId, mode: mode});
+  }
+}
 
 function setTrackLimit(trackId, limitSeconds){
   const tracks = getStoredTracks();
@@ -926,20 +954,22 @@ async function handleFileUpload(e){
   tracks.unshift(newTrack);
   saveTracks(tracks); // saveTracks đã gửi UPDATE_TRACKS lên cloud, không gọi thêm ADD_TRACK để tránh race condition!
 
-  // Đọc file sang Base64 qua FileReader an toàn (không bị lỗi call stack limit)
-  if(file.size <= 2000000){ // Chỉ sync cloud blob nếu file dưới 2MB
-    const reader = new FileReader();
-    reader.onload = async function(){
-      try {
-        const base64 = reader.result.split(',')[1];
-        await fetch(API_VAULT_URL, {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({action: 'UPLOAD_BLOB', trackId: id, data: base64})
-        });
-      } catch(e){}
-    };
-    reader.readAsDataURL(file);
+  // Tải file trực tiếp lên Vercel Blob để mọi laptop đều phát được âm thanh/video thật
+  try {
+    const uploadRes = await fetch(`/api/upload-media?filename=${encodeURIComponent(file.name)}`, {
+      method: 'POST',
+      headers: {'Content-Type': file.type || 'application/octet-stream'},
+      body: file
+    });
+    if(uploadRes.ok){
+      const uploadJson = await uploadRes.json();
+      if(uploadJson.ok && uploadJson.url){
+        newTrack.streamUrl = uploadJson.url;
+        saveTracks(tracks);
+      }
+    }
+  } catch(uploadErr){
+    console.warn('Vercel Blob upload warning:', uploadErr);
   }
 
   stat.textContent = `> [THÀNH CÔNG] Đã tải lên và niêm phong tác phẩm "${file.name}" vào két sắt của @${activeArtistUser}!`;
