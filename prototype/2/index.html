@@ -37,7 +37,7 @@ body::before{
 }
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;font-weight:700;letter-spacing:.05em}
 .brand-dot{width:11px;height:11px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent)}
-.brand small{display:block;font-size:11px;color:var(--muted);font-weight:400;letter-spacing:.02em}
+.brand small{display:block;font-size:11px;color:var(--muted);font-weight:400}
 .topbar-right{display:flex;align-items:center;gap:12px}
 .pill-tide{
   font-size:11px;font-weight:600;color:var(--accent);background:var(--surface-2);
@@ -53,12 +53,11 @@ body::before{
 .btn-logout{background:transparent;border:none;color:var(--muted);cursor:pointer;font-family:inherit;font-size:12px}
 .btn-logout:hover{color:var(--danger)}
 
-/* Container */
 .container{max-width:1200px;margin:28px auto 70px;padding:0 24px}
 
 /* Music Hero Banner */
 .music-hero{
-  position:relative;overflow:hidden;margin-bottom:24px;padding:28px 32px;
+  position:relative;overflow:hidden;margin-bottom:24px;padding:26px 30px;
   border:1px solid rgba(184,243,107,.18);border-radius:20px;
   background:linear-gradient(110deg,rgba(184,243,107,.15),rgba(32,40,33,.85) 50%,rgba(22,28,23,.96));
 }
@@ -67,8 +66,32 @@ body::before{
   color:rgba(255,255,255,.05);font-size:180px;line-height:1;pointer-events:none;
 }
 .music-kicker{color:var(--accent);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
-.music-hero h1{margin:6px 0;font-size:clamp(24px,4vw,36px);letter-spacing:-.03em;font-weight:700}
-.music-hero p{max-width:620px;color:#c6cdc2;font-size:13px;line-height:1.6}
+.music-hero h1{margin:6px 0;font-size:clamp(24px,4vw,34px);letter-spacing:-.03em;font-weight:700}
+.music-hero p{max-width:640px;color:#c6cdc2;font-size:13px;line-height:1.6}
+
+/* Clean Artist Selector Box */
+.artist-selector-box{
+  background:var(--surface);border:1px solid var(--line);border-radius:18px;
+  padding:20px 24px;margin-bottom:24px;display:flex;flex-direction:column;gap:14px;
+}
+.artist-chips-wrap{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px}
+.artist-chip{
+  background:var(--surface-2);border:1px solid var(--line);border-radius:12px;
+  padding:10px 16px;cursor:pointer;transition:.2s;display:flex;align-items:center;gap:10px;
+  white-space:nowrap;user-select:none;
+}
+.artist-chip:hover{border-color:var(--line-strong);transform:translateY(-1px)}
+.artist-chip.active{
+  background:linear-gradient(135deg,rgba(184,243,107,.18),rgba(184,243,107,.05));
+  border-color:var(--accent);box-shadow:0 0 16px rgba(184,243,107,.15);
+}
+.chip-avatar{
+  width:32px;height:32px;border-radius:50%;background:var(--accent);color:#0a0b0e;
+  font-weight:700;display:grid;place-items:center;font-size:14px;
+}
+.chip-meta{text-align:left}
+.chip-name{font-size:13px;font-weight:700;color:var(--fg)}
+.chip-genre{font-size:11px;color:var(--muted)}
 
 /* Cards & Elements */
 .card{
@@ -84,7 +107,6 @@ body::before{
 .btn-accent{background:var(--accent);color:#10150d}
 .btn-accent:hover{filter:brightness(1.1);transform:translateY(-1px);box-shadow:0 4px 14px rgba(184,243,107,.25)}
 .btn-warn{background:var(--warn-dim);color:var(--warn);border-color:rgba(255,184,77,.3)}
-.btn-warn:hover{background:rgba(255,184,77,.22)}
 .btn-ghost{background:transparent;border-color:var(--line-strong);color:var(--fg)}
 .btn-ghost:hover{background:var(--surface-2)}
 .btn-sm{padding:6px 14px;font-size:12px}
@@ -110,15 +132,8 @@ body::before{
 }
 .form-input:focus{border-color:var(--accent)}
 
-/* Artist Connect Bar */
-.artist-bar{
-  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
-  background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin-bottom:22px;
-}
-.artist-inputs{display:flex;gap:10px;align-items:center;flex:1;min-width:280px}
-
-/* Grid & Cards */
-.album-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-bottom:24px}
+/* Album Grid */
+.album-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px;margin-bottom:24px}
 .album-card{
   background:var(--surface);border:1px solid var(--line);border-radius:14px;
   padding:16px;display:flex;flex-direction:column;justify-content:space-between;
@@ -280,30 +295,34 @@ video{width:100%;max-height:460px;border-radius:14px;border:1px solid var(--line
       <p>
         Xin chào <strong id="logged-user-title" style="color:var(--accent)">minh_mastering</strong>.
         Tất cả tác phẩm được bảo vệ bằng mã hóa client-side không có chìa khóa chủ.
-        Bài hát nào chưa được cấp quyền, bạn có thể nhấn <strong>"⚡ Xin Quyền Nghe Thử"</strong> để gửi yêu cầu tới Nghệ Sĩ duyệt ở Trang 1.
+        Bài hát nào chưa được cấp quyền, bạn có thể nhấn <strong>"⚡ Xin Quyền Nghe"</strong> để gửi yêu cầu tới Nghệ Sĩ duyệt ở Trang 1.
       </p>
     </section>
 
-    <!-- Thanh Kết Nối Nghệ Sĩ -->
-    <div class="artist-bar">
-      <div>
-        <span style="font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px">
-          <span>🎨</span> Kết Nối Tới Két Sắt Của Nghệ Sĩ:
-        </span>
-        <span style="font-size:12px;color:var(--muted)">Chọn nghệ sĩ bạn muốn xem danh mục và nghe thử tác phẩm</span>
+    <!-- THANH CHỌN NGHỆ SĨ TRỰC QUAN (CHỈ CHỌN, KHÔNG BẮT GÕ) -->
+    <div class="artist-selector-box">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+        <div>
+          <span style="font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px">
+            <span>🎨</span> Chọn Két Sắt Nghệ Sĩ Bạn Muốn Nghe Thử:
+          </span>
+          <span style="font-size:12px;color:var(--muted)">Nhấp chọn nghệ sĩ bên dưới để xem toàn bộ danh mục bài hát</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <label style="font-size:12px;color:var(--muted)">Danh mục:</label>
+          <select id="quick-artist-select" class="form-input" style="width:220px;padding:6px 12px;font-size:13px" onchange="switchArtist(this.value)">
+          </select>
+        </div>
       </div>
-      <div class="artist-inputs">
-        <select id="quick-artist-select" class="form-input" style="flex:1" onchange="switchArtist(this.value)">
-          <option value="alice_artist">alice_artist (Nghệ sĩ Alice Nguyễn)</option>
-        </select>
-        <input type="text" id="custom-artist-input" class="form-input" style="width:180px" placeholder="Tên nghệ sĩ khác...">
-        <button class="btn btn-accent btn-sm" onclick="applyCustomArtist()">Kết Nối</button>
+
+      <!-- Dãy Chip Nghệ Sĩ Bấm Chọn Nhanh -->
+      <div class="artist-chips-wrap" id="artist-chips-container">
       </div>
     </div>
 
     <!-- DANH SÁCH BÀI HÁT (ALBUM GRID) -->
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-      <h2 style="font-size:18px;font-weight:700">Tác Phẩm Trong Két Sắt Của <span id="current-artist-label" style="color:var(--accent)">alice_artist</span></h2>
+      <h2 style="font-size:18px;font-weight:700">Tác Phẩm Của Nghệ Sĩ: <span id="current-artist-label" style="color:var(--accent)">Alice Nguyễn</span></h2>
       <span class="mono" style="font-size:12px;color:var(--muted)" id="tracks-count-label">0 bài hát</span>
     </div>
 
@@ -316,7 +335,7 @@ video{width:100%;max-height:460px;border-radius:14px;border:1px solid var(--line
         <div style="flex:1;min-width:0">
           <div style="font-size:18px;font-weight:700" id="np-title">Chưa chọn tác phẩm nào</div>
           <div style="font-size:12px;color:var(--muted);margin-top:3px" class="mono" id="np-status">
-            Chọn một bài hát trong danh sách bên trên để bắt đầu
+            Chọn một bài hát trong danh mục phía trên
           </div>
         </div>
         <div id="np-badge-wrap"></div>
@@ -381,7 +400,6 @@ video{width:100%;max-height:460px;border-radius:14px;border:1px solid var(--line
 </footer>
 
 <script>
-// ==================== GLOBAL CLOUD DATABASE SYNC ====================
 const API_VAULT_URL = '/api/rmit-vault';
 let isSyncingWithCloud = false;
 let cloudStateCache = null;
@@ -397,14 +415,13 @@ async function fetchCloudState() {
       localStorage.setItem('tide_tracks_v2', JSON.stringify(cloudStateCache.tracks || []));
       localStorage.setItem('tide_users', JSON.stringify(cloudStateCache.users || []));
       localStorage.setItem('tide_requests_v2', JSON.stringify(cloudStateCache.requests || []));
+      localStorage.setItem('tide_artists', JSON.stringify(cloudStateCache.artists || []));
 
-      // Cập nhật lại giao diện người nghe
+      renderArtistChips();
       renderAlbumGrid();
       syncActiveTrackView();
     }
-  } catch (e) {
-    // Offline fallback
-  }
+  } catch (e) {}
 }
 
 async function pushCloudAction(action, payload = {}) {
@@ -435,18 +452,15 @@ async function pushCloudAction(action, payload = {}) {
 setInterval(fetchCloudState, 2000);
 fetchCloudState();
 
-// ==================== LOCAL CACHE HELPERS ====================
 const DB_NAME='tide_vault_db', STORE_NAME='media_blobs';
 function openDB(){return new Promise((res,rej)=>{const r=indexedDB.open(DB_NAME,1);r.onupgradeneeded=e=>{if(!e.target.result.objectStoreNames.contains(STORE_NAME))e.target.result.createObjectStore(STORE_NAME)};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});}
 async function getMediaBlob(id){
-  // 1. Kiểm tra IndexedDB cục bộ
   try {
     const db=await openDB();
     const local = await new Promise((res,rej)=>{const tx=db.transaction(STORE_NAME,'readonly');const req=tx.objectStore(STORE_NAME).get(id);req.onsuccess=()=>res(req.result);req.onerror=()=>rej(tx.error)});
     if (local) return local;
   } catch(e){}
 
-  // 2. Nếu máy khác chưa có blob, thử tải từ cloud API (với file nhỏ)
   try {
     const res = await fetch(`${API_VAULT_URL}?blob=${id}`);
     if (res.ok) {
@@ -466,6 +480,14 @@ async function getMediaBlob(id){
   return null;
 }
 
+function getStoredArtists(){
+  const d = localStorage.getItem('tide_artists');
+  if(d){try{return JSON.parse(d)}catch(e){}}
+  return [
+    { username: 'alice_artist', name: 'Alice Nguyễn', genre: 'Indie Pop / Electronic', bio: 'Nghệ sĩ độc lập, album Midnight Cipher', artSeed: 0 },
+    { username: 'endy_producer', name: 'Endy (Thiện Nhân)', genre: 'Lo-Fi / Cinematic AI', bio: 'Nhà sản xuất âm nhạc tại UIT Studio', artSeed: 1 }
+  ];
+}
 function getStoredTracks(){
   const d=localStorage.getItem('tide_tracks_v2');
   if(d){try{return JSON.parse(d)}catch(e){}}
@@ -482,18 +504,15 @@ function getStoredUsers(){
   return [];
 }
 
-// ==================== STATE ====================
 let selectedArtist = 'alice_artist';
 let activeTrackId = null;
 let isPlaying = false, synthInterval = null, timerInterval = null, ctx = null, t = 0, noteIdx = 0;
 const notes = [261.63, 329.63, 392, 523.25, 440, 392, 329.63, 293.66];
 
-// Visualizer bars
 const viz=document.getElementById('viz');
 for(let i=0;i<56;i++){const b=document.createElement('div');b.className='bar';viz.appendChild(b)}
 const bars=[...document.querySelectorAll('.bar')];
 
-// ==================== AUTH LOGIC ====================
 function switchAuthTab(tab){
   document.getElementById('tab-login').classList.toggle('active',tab==='login');
   document.getElementById('tab-register').classList.toggle('active',tab==='register');
@@ -527,7 +546,7 @@ function registerReviewer(){
   localStorage.setItem('tide_logged_reviewer',u);
 
   pushCloudAction('REGISTER_USER', {user:newUser});
-  alert(`Đã khởi tạo danh tính thành công: ${newUser.did}! Nghệ sĩ ở Trang 1 có thể thấy và duyệt quyền cho bạn.`);
+  alert(`Đã khởi tạo danh tính thành công: ${newUser.did}!`);
   checkAuth();
 }
 
@@ -544,7 +563,6 @@ function checkAuth(){
   const userInfo=document.getElementById('reviewer-user-info');
   const nameDisp=document.getElementById('reviewer-name-display');
 
-  // Cập nhật dropdown
   const users=getStoredUsers();
   const quickSelect=document.getElementById('quick-user-select');
   if(quickSelect && users.length){
@@ -557,6 +575,7 @@ function checkAuth(){
     userInfo.classList.remove('hidden');
     nameDisp.textContent=u;
     document.getElementById('logged-user-title').textContent=u;
+    renderArtistChips();
     renderAlbumGrid();
     syncActiveTrackView();
   }else{
@@ -567,26 +586,58 @@ function checkAuth(){
   }
 }
 
-// ==================== ARTIST SELECTION ====================
+// ==================== CLEAN ARTIST SELECTION (CHỌN CHỨ KHÔNG GÕ) ====================
+function renderArtistChips(){
+  const artists = getStoredArtists();
+  const tracks = getStoredTracks();
+  const container = document.getElementById('artist-chips-container');
+  const select = document.getElementById('quick-artist-select');
+  if(!container) return;
+
+  container.innerHTML = '';
+
+  artists.forEach(a => {
+    const songCount = tracks.filter(t => (t.artistUsername||'alice_artist').toLowerCase() === a.username.toLowerCase()).length;
+    const isCur = a.username.toLowerCase() === selectedArtist.toLowerCase();
+
+    const chip = document.createElement('div');
+    chip.className = `artist-chip ${isCur ? 'active' : ''}`;
+    chip.onclick = () => switchArtist(a.username);
+
+    chip.innerHTML = `
+      <div class="chip-avatar">${(a.name||'A').charAt(0).toUpperCase()}</div>
+      <div class="chip-meta">
+        <div class="chip-name">${a.name}</div>
+        <div class="chip-genre mono">@${a.username} · ${songCount} bài</div>
+      </div>
+    `;
+    container.appendChild(chip);
+  });
+
+  if(select){
+    select.innerHTML = artists.map(a => {
+      const count = tracks.filter(t => (t.artistUsername||'alice_artist').toLowerCase() === a.username.toLowerCase()).length;
+      return `<option value="${a.username}" ${a.username===selectedArtist?'selected':''}>${a.name} (@${a.username}) — ${count} bài</option>`;
+    }).join('');
+  }
+}
+
 function switchArtist(artistName){
   selectedArtist = artistName.trim().toLowerCase();
-  document.getElementById('current-artist-label').textContent = selectedArtist;
-  const custom = document.getElementById('custom-artist-input');
-  if(custom) custom.value = selectedArtist;
-  appendLog(`[KẾT NỐI] Đang truy vấn Két Sắt của Nghệ Sĩ: ${selectedArtist}`, 'var(--accent)');
+  const artists = getStoredArtists();
+  const current = artists.find(a => a.username === selectedArtist);
+  const displayName = current ? current.name : selectedArtist;
+
+  document.getElementById('current-artist-label').textContent = displayName;
+  appendLog(`[KẾT NỐI] Đã chọn Két Sắt Nghệ Sĩ: ${displayName} (@${selectedArtist})`, 'var(--accent)');
+
   activeTrackId = null;
   stopAudio();
+  renderArtistChips();
   renderAlbumGrid();
   syncActiveTrackView();
 }
 
-function applyCustomArtist(){
-  const val = document.getElementById('custom-artist-input').value.trim();
-  if(!val){alert('Vui lòng nhập username của nghệ sĩ!');return;}
-  switchArtist(val);
-}
-
-// ==================== ALBUM GRID & CARD RENDERING ====================
 function artGradient(seed){
   const gradients = [
     'linear-gradient(145deg,#37443a,#1b211b 65%,#293625)',
@@ -608,20 +659,11 @@ function renderAlbumGrid(){
   if(!container) return;
   container.innerHTML = '';
 
-  // Update artist selector options
-  const uniqueArtists = Array.from(new Set(tracks.map(x=>x.artistUsername || 'alice_artist')));
-  if(!uniqueArtists.includes('alice_artist')) uniqueArtists.unshift('alice_artist');
-  const select = document.getElementById('quick-artist-select');
-  if(select){
-    select.innerHTML = uniqueArtists.map(a=>`<option value="${a}" ${a===selectedArtist?'selected':''}>${a} (${a==='alice_artist'?'Nghệ sĩ Alice Nguyễn':a})</option>`).join('');
-  }
-
-  // Filter tracks by artist
   const artistTracks = tracks.filter(x => (x.artistUsername||'alice_artist').toLowerCase() === selectedArtist.toLowerCase());
   document.getElementById('tracks-count-label').textContent = `${artistTracks.length} bài hát`;
 
   if(!artistTracks.length){
-    container.innerHTML = `<div style="grid-column:1/-1;padding:24px;color:var(--muted);text-align:center" class="mono">Chưa có tác phẩm nào trong két sắt của nghệ sĩ "${selectedArtist}".</div>`;
+    container.innerHTML = `<div style="grid-column:1/-1;padding:24px;color:var(--muted);text-align:center" class="mono">Két sắt của nghệ sĩ "${selectedArtist}" chưa có bài hát nào được tải lên.</div>`;
     return;
   }
 
@@ -637,7 +679,6 @@ function renderAlbumGrid(){
     const card = document.createElement('div');
     card.className = `album-card ${t.id === activeTrackId ? 'active-card' : ''}`;
     card.onclick = (e) => {
-      // Avoid retriggering if button clicked
       if(e.target.tagName==='BUTTON') return;
       selectTrack(t.id);
     };
@@ -650,7 +691,7 @@ function renderAlbumGrid(){
       actionBtn = `<button class="btn btn-accent btn-sm" onclick="playTrackDirect('${t.id}')">▶ Phát Ngay</button>`;
     } else if(pendingReq){
       statusBadge = '<span class="badge badge-warn">⏳ ĐANG CHỜ DUYỆT</span>';
-      actionBtn = `<button class="btn btn-warn btn-sm" style="cursor:default" onclick="event.stopPropagation()">⏳ Chờ Nghệ Sĩ Duyệt</button>`;
+      actionBtn = `<button class="btn btn-warn btn-sm" style="cursor:default" onclick="event.stopPropagation()">⏳ Đang Chờ Duyệt</button>`;
     } else {
       statusBadge = '<span class="badge badge-danger">🔒 BỊ KHÓA</span>';
       actionBtn = `<button class="btn btn-accent btn-sm" onclick="requestAccessForTrack('${t.id}')">⚡ Xin Quyền Nghe</button>`;
@@ -699,10 +740,8 @@ function requestAccessForTrack(trackId){
 
   appendLog(`[XIN QUYỀN] Đang gửi yêu cầu cấp quyền cho "${trackName}" tới Nghệ Sĩ...`, 'var(--warn)');
 
-  // Gửi lên cloud API
   pushCloudAction('REQUEST_ACCESS', {trackId: trackId, username: currentUser});
 
-  // Phản hồi giao diện lập tức
   const requests = getStoredRequests();
   if(!requests.some(r=>r.trackId===trackId && r.username===currentUser && r.status==='PENDING')){
     requests.push({
@@ -760,7 +799,6 @@ async function syncActiveTrackView(){
   const isVideo = track.type.startsWith('video');
 
   if(isAllowed){
-    // ĐƯỢC PHÉP GIẢI MÃ
     npStatus.textContent = '● Quyền hạn tự sinh hợp lệ (Tide Emergent Authority) · RAM Playback';
     npStatus.style.color = 'var(--accent)';
     npBadge.innerHTML = '<span class="badge badge-ok">✓ ĐÃ ĐƯỢC DUYỆT</span>';
@@ -787,7 +825,6 @@ async function syncActiveTrackView(){
       }
     }
   } else {
-    // CHƯA ĐƯỢC CẤP PHÉP HOẶC ĐANG CHỜ
     stopAudio();
     videoCont.classList.add('hidden');
     audioCont.classList.add('hidden');
@@ -891,7 +928,6 @@ function togglePlay(){
   }
 }
 
-// ==================== LOGGING HELPER ====================
 function appendLog(msg, color='var(--muted)'){
   const logBox = document.getElementById('tide-execution-log');
   if(!logBox) return;
@@ -903,7 +939,6 @@ function appendLog(msg, color='var(--muted)'){
   logBox.scrollTop = logBox.scrollHeight;
 }
 
-// Init
 checkAuth();
 </script>
 </body>
