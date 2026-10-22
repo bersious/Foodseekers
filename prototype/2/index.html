@@ -440,15 +440,21 @@ async function fetchCloudState() {
     const json = await res.json();
     if (json.ok && json.data) {
       cloudStateCache = json.data;
-      localStorage.setItem('tide_tracks_v2', JSON.stringify(cloudStateCache.tracks || []));
+      const prevTracksStr = localStorage.getItem('tide_tracks_v2');
+      const prevRequestsStr = localStorage.getItem('tide_requests_v2');
+      const newTracksStr = JSON.stringify(cloudStateCache.tracks || []);
+      const newRequestsStr = JSON.stringify(cloudStateCache.requests || []);
+
+      localStorage.setItem('tide_tracks_v2', newTracksStr);
       localStorage.setItem('tide_users', JSON.stringify(cloudStateCache.users || []));
-      localStorage.setItem('tide_requests_v2', JSON.stringify(cloudStateCache.requests || []));
+      localStorage.setItem('tide_requests_v2', newRequestsStr);
       localStorage.setItem('tide_artists', JSON.stringify(cloudStateCache.artists || []));
 
-      
-      renderArtistChips();
-      renderAlbumGrid();
-      syncActiveTrackView();
+      // CHỈ CẬP NHẬT GIAO DIỆN KHI THỰC SỰ CÓ THAY ĐỔI VỀ QUYỀN TRUY CẬP HOẶC BÀI HÁT MỚI!
+      if (prevTracksStr !== newTracksStr || prevRequestsStr !== newRequestsStr) {
+        renderAlbumGrid();
+        syncActiveTrackView();
+      }
     }
   } catch (e) {}
 }

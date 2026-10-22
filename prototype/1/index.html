@@ -351,21 +351,18 @@ async function fetchCloudState() {
     const json = await res.json();
     if (json.ok && json.data) {
       const cloud = json.data;
+
+      // 1. Chỉ cập nhật ngầm vào localStorage
       localStorage.setItem('tide_tracks_v2', JSON.stringify(cloud.tracks || []));
       localStorage.setItem('tide_users', JSON.stringify(cloud.users || []));
       localStorage.setItem('tide_requests_v2', JSON.stringify(cloud.requests || []));
       localStorage.setItem('tide_artists', JSON.stringify(cloud.artists || []));
 
-      const autoEl = document.getElementById('auto-toggle');
-      if (autoEl) {
-        autoEl.classList.toggle('on', !!cloud.settings?.autoApprove);
-        autoEl.setAttribute('aria-checked', !!cloud.settings?.autoApprove);
-      }
-
-      
-      renderArtistSwitcher();
-      renderArtistTracks();
+      // 2. Chỉ cập nhật đơn xin quyền (nhẹ nhàng, không làm gián đoạn màn hình chính)
       renderRequests();
+
+      // 3. TUYỆT ĐỐI KHÔNG GỌI renderArtistTracks() HOẶC renderArtistSwitcher() TRONG POLLING!
+      // Việc này giúp DOM đứng yên 100%, người dùng tha hồ chọn dropdown, chỉnh âm lượng mà không bao giờ bị giật hay undo!
     }
   } catch (err) {}
 }
