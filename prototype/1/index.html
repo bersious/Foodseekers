@@ -727,8 +727,11 @@ function renderArtistTracks(){
         <div>${allowedChips}</div>
       </div>
 
-      <div style="display:flex;gap:10px;align-items:center;background:var(--surface-2);padding:10px 14px;border-radius:10px">
-        <select id="select-user-${t.id}" class="form-input" style="flex:1;padding:8px 12px;font-size:13px">${options}</select>
+      <div style="display:flex;gap:10px;align-items:center;background:var(--surface-2);padding:10px 14px;border-radius:10px;flex-wrap:wrap">
+        <select id="select-user-${t.id}" class="form-input" style="flex:1;min-width:180px;padding:8px 12px;font-size:13px">${options}</select>
+        <label style="font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px;cursor:pointer;white-space:nowrap">
+          <input type="checkbox" id="single-play-${t.id}"> Chỉ nghe 1 lần
+        </label>
         <button class="btn btn-accent btn-sm" onclick="grantUser('${t.id}')">Cấp quyền truy cập</button>
       </div>
     `;
@@ -776,15 +779,20 @@ function renderRequests(){
 
 function grantUser(trackId){
   const select = document.getElementById(`select-user-${trackId}`);
-  const u = select.value;
+  const singleCheckbox = document.getElementById(`single-play-${trackId}`);
+  const u = select ? select.value : '';
+  const isSinglePlay = singleCheckbox ? singleCheckbox.checked : false;
+
   if(!u){alert('Vui lòng chọn người nghe!');return;}
   const tracks = getStoredTracks();
   const t = tracks.find(x => x.id === trackId);
-  if(t && (!t.allowedUsers || !t.allowedUsers.includes(u))){
-    if(!t.allowedUsers) t.allowedUsers = [];
-    t.allowedUsers.push(u);
+  if(t){
+    if(!Array.isArray(t.allowedUsers)) t.allowedUsers = [];
+    if(!Array.isArray(t.singlePlayUsers)) t.singlePlayUsers = [];
+    if(!t.allowedUsers.includes(u)) t.allowedUsers.push(u);
+    if(isSinglePlay && !t.singlePlayUsers.includes(u)) t.singlePlayUsers.push(u);
     saveTracks(tracks);
-    pushCloudUpdate('GRANT_ACCESS', {trackId, username:u});
+    pushCloudUpdate('GRANT_ACCESS', {trackId, username:u, isSinglePlay: isSinglePlay});
   }
 }
 

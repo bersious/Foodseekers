@@ -852,7 +852,8 @@ async function syncActiveTrackView(){
   if(isAllowed){
     npStatus.textContent = '● Quyền hạn tự sinh hợp lệ (Tide Emergent Authority) · RAM Playback';
     npStatus.style.color = 'var(--accent)';
-    npBadge.innerHTML = '<span class="badge badge-ok">Đã được duyệt</span>';
+    const isSingle = Array.isArray(track.singlePlayUsers) && track.singlePlayUsers.includes(currentUser);
+    npBadge.innerHTML = `<span class="badge badge-ok">Đã được duyệt</span>${isSingle?' <span class="badge badge-warn mono" style="margin-left:6px">Chỉ nghe 1 lần</span>':''}`;
     lockedPanel.classList.add('hidden');
 
     if(isVideo){
@@ -868,6 +869,9 @@ async function syncActiveTrackView(){
             vid.pause();
             handlePreviewLimitExpired(track);
           }
+        };
+        vid.onended = function(){
+          onMediaPlaybackFinished(track);
         };
         vid.play().catch(e=>console.log('Video autoplay:', e));
       }
@@ -916,6 +920,33 @@ async function syncActiveTrackView(){
 }
 
 // ==================== AUDIO SYNTH & PLAYER ENGINE ====================
+
+function generateDemoVideoFeed(trackName){
+  const canvas = document.createElement('canvas');
+  canvas.width = 640; canvas.height = 360;
+  const ctx = canvas.getContext('2d');
+  let angle = 0;
+  function draw(){
+    ctx.fillStyle = '#0a0d0a'; ctx.fillRect(0,0,640,360);
+    // Draw animated sound waves & title
+    ctx.strokeStyle = '#b8f36b'; ctx.lineWidth = 2;
+    ctx.beginPath();
+    for(let x=0; x<640; x+=8){
+      const y = 180 + Math.sin(x*0.03 + angle)*40;
+      if(x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    ctx.fillStyle = '#ffffff'; ctx.font = 'bold 20px sans-serif';
+    ctx.fillText(trackName, 40, 60);
+    ctx.fillStyle = '#b8f36b'; ctx.font = '13px monospace';
+    ctx.fillText('Tide In-Memory Decrypted Video Stream', 40, 90);
+    angle += 0.08;
+    requestAnimationFrame(draw);
+  }
+  draw();
+  return canvas.captureStream(30);
+}
+
 function tone(f){
   try{
     if(!ctx) ctx=new(window.AudioContext||window.webkitAudioContext)();
@@ -928,6 +959,38 @@ function tone(f){
   }catch(e){}
 }
 
+
+
+function onMediaPlaybackFinished(track){
+  const currentUser = localStorage.getItem('tide_logged_reviewer');
+  const isSinglePlay = Array.isArray(track.singlePlayUsers) && track.singlePlayUsers.includes(currentUser);
+
+  if(isSinglePlay){
+    stopAudio();
+    appendLog(`[TỰ HỦY] Tác phẩm "${track.name}" đã phát xong 1 lần. Quyền truy cập tự động hủy theo chính sách Emergent Single-Play.`, 'var(--warn)');
+    
+    // Gửi lệnh tự hủy lên cloud
+    pushCloudAction('RECORD_PLAYBACK_FINISHED', {trackId: track.id, username: currentUser});
+
+    // Cập nhật local
+    if(Array.isArray(track.allowedUsers)){
+      track.allowedUsers = track.allowedUsers.filter(u => u !== currentUser);
+    }
+    if(Array.isArray(track.singlePlayUsers)){
+      track.singlePlayUsers = track.singlePlayUsers.filter(u => u !== currentUser);
+    }
+    const tracks = getStoredTracks();
+    const t = tracks.find(x => x.id === track.id);
+    if(t && Array.isArray(t.allowedUsers)){
+      t.allowedUsers = t.allowedUsers.filter(u => u !== currentUser);
+    }
+    localStorage.setItem('tide_tracks_v2', JSON.stringify(tracks));
+
+    alert(`Bạn đã nghe xong tác phẩm "${track.name}". Quyền truy cập đã tự động hủy theo chính sách Nghe Một Lần của Nghệ Sĩ.`);
+    renderAlbumGrid();
+    syncActiveTrackView();
+  }
+}
 
 function handlePreviewLimitExpired(track){
   stopAudio();
