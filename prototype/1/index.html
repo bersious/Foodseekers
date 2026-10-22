@@ -177,23 +177,20 @@ body::before{
       <button id="tab-artist-register" class="auth-tab" onclick="switchArtistAuthTab('register')">Tạo Profile Mới</button>
     </div>
 
-    <!-- Tab Đăng nhập -->
+    <!-- Form Đăng nhập Nghệ Sĩ -->
     <div id="artist-form-login">
       <div class="auth-title">Đăng Nhập Nghệ Sĩ</div>
-      <div class="auth-sub">Chọn hồ sơ nghệ sĩ hoặc nhập username của bạn (Mật khẩu: 123)</div>
+      <div class="auth-sub">Nhập tên đăng nhập và mật khẩu để mở két sắt tác phẩm</div>
 
       <div class="form-group">
-        <label class="form-label">Chọn Nghệ Sĩ Hoặc Nhập Username</label>
-        <select id="quick-artist-login-select" class="form-input" style="margin-bottom:8px" onchange="document.getElementById('artist-login-user').value=this.value">
-        </select>
-        <input type="text" id="artist-login-user" class="form-input" value="alice_artist" placeholder="alice_artist">
+        <label class="form-label">Tên Đăng Nhập (Username)</label>
+        <input type="text" id="artist-login-user" class="form-input" placeholder="Ví dụ: alice_artist, endy_producer...">
       </div>
       <div class="form-group">
-        <label class="form-label">Mật Khẩu Xác Thực</label>
-        <input type="password" id="artist-login-pass" class="form-input" placeholder="Nhập mật khẩu (123)">
-        <div style="font-size:11px;color:var(--dim);margin-top:4px" class="mono">Gợi ý: Mật khẩu xác thực cho tất cả nghệ sĩ là <strong>123</strong></div>
+        <label class="form-label">Mật Khẩu</label>
+        <input type="password" id="artist-login-pass" class="form-input" placeholder="••••••••">
       </div>
-      <button class="btn btn-accent" style="width:100%;justify-content:center" onclick="loginArtist()">Đăng Nhập Vào Két Sắt</button>
+      <button class="btn btn-accent" style="width:100%;justify-content:center" onclick="loginArtist()">Đăng Nhập</button>
     </div>
 
     <!-- Tab Tạo Profile Mới -->
@@ -715,6 +712,21 @@ function renderArtistTracks(){
         <button class="btn btn-ghost btn-sm" onclick="deleteTrack('${t.id}')" style="color:var(--danger)">Xóa Tác Phẩm</button>
       </div>
 
+      <!-- Cài đặt giới hạn thời gian nghe thử của Nghệ sĩ -->
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;background:rgba(255,255,255,0.03);padding:8px 14px;border-radius:10px;border:1px solid var(--line);flex-wrap:wrap">
+        <span style="font-size:12px;color:var(--accent);font-weight:700">⏱️ Giới Hạn Thời Gian Xem / Nghe Thử:</span>
+        <select class="form-input" style="width:auto;padding:5px 10px;font-size:12px;margin:0" onchange="setTrackLimit('${t.id}', this.value)">
+          <option value="0" ${(!t.previewLimitSeconds || t.previewLimitSeconds==0)?'selected':''}>🎵 Toàn bộ bài hát (Full 100%)</option>
+          <option value="10" ${t.previewLimitSeconds==10?'selected':''}>⏱️ 10 giây đầu (Teaser ngắn)</option>
+          <option value="15" ${t.previewLimitSeconds==15?'selected':''}>⏱️ 15 giây đầu (Snippet)</option>
+          <option value="30" ${t.previewLimitSeconds==30?'selected':''}>⏱️ 30 giây đầu (Sample 30s)</option>
+          <option value="60" ${t.previewLimitSeconds==60?'selected':''}>⏱️ 60 giây đầu (1 phút Demo)</option>
+        </select>
+        <span class="mono" style="font-size:11px;color:${t.previewLimitSeconds>0?'var(--warn)':'var(--dim)'}">
+          ${t.previewLimitSeconds>0 ? `(Đang giới hạn người nghe chỉ được nghe ${t.previewLimitSeconds}s đầu)` : '(Người nghe được nghe toàn bộ bài)'}
+        </span>
+      </div>
+
       <div style="margin-bottom:14px">
         <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:6px">DANH TÍNH ĐANG ĐƯỢC PHÉP GIẢI MÃ:</div>
         <div>${allowedChips}</div>
@@ -788,6 +800,17 @@ function revokeUser(trackId, username){
     t.allowedUsers = t.allowedUsers.filter(x => x !== username);
     saveTracks(tracks);
     pushCloudUpdate('REVOKE_ACCESS', {trackId, username});
+  }
+}
+
+
+function setTrackLimit(trackId, limitSeconds){
+  const tracks = getStoredTracks();
+  const t = tracks.find(x => x.id === trackId);
+  if(t){
+    t.previewLimitSeconds = Number(limitSeconds) || 0;
+    saveTracks(tracks);
+    pushCloudUpdate('SET_PREVIEW_LIMIT', {trackId: trackId, limitSeconds: Number(limitSeconds) || 0});
   }
 }
 

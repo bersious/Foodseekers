@@ -244,25 +244,20 @@ video{width:100%;max-height:460px;border-radius:14px;border:1px solid var(--line
     </div>
 
     <!-- Login -->
+        <!-- Form Đăng nhập Người Nghe -->
     <div id="form-login">
       <div class="auth-title">Đăng Nhập Người Nghe</div>
-      <div class="auth-sub">Chọn danh tính BYOiD đã có hoặc nhập tên người nghe của bạn</div>
+      <div class="auth-sub">Nhập tên đăng nhập và mật khẩu để vào phòng nghe thử</div>
 
       <div class="form-group">
-        <label class="form-label">Chọn Danh Tính Có Sẵn</label>
-        <select id="quick-user-select" class="form-input" style="margin-bottom:8px" onchange="document.getElementById('reviewer-login-user').value=this.value">
-          <option value="minh_mastering">minh_mastering — Minh (Kỹ Sư Hòa Âm)</option>
-          <option value="thu_producer">thu_producer — Thu (Giám Đốc Sản Xuất)</option>
-          <option value="lan_soundcheck">lan_soundcheck — Lan (Kiểm Âm)</option>
-        </select>
-        <input type="text" id="reviewer-login-user" class="form-input" value="minh_mastering" placeholder="Tên đăng nhập">
+        <label class="form-label">Tên Đăng Nhập (Username)</label>
+        <input type="text" id="reviewer-login-user" class="form-input" placeholder="Ví dụ: minh_mastering, thu_producer, nhânn...">
       </div>
       <div class="form-group">
-        <label class="form-label">Mật Khẩu Xác Thực</label>
-        <input type="password" id="reviewer-login-pass" class="form-input" placeholder="Nhập mật khẩu (123)">
-        <div style="font-size:11px;color:var(--dim);margin-top:4px" class="mono">Gợi ý: Mật khẩu xác thực cho tất cả tài khoản là <strong>123</strong></div>
+        <label class="form-label">Mật Khẩu</label>
+        <input type="password" id="reviewer-login-pass" class="form-input" placeholder="••••••••">
       </div>
-      <button class="btn btn-accent" style="width:100%;justify-content:center" onclick="loginReviewer()">Đăng Nhập Vào Phiên Nghe</button>
+      <button class="btn btn-accent" style="width:100%;justify-content:center" onclick="loginReviewer()">Đăng Nhập</button>
     </div>
 
     <!-- Register -->
@@ -374,6 +369,20 @@ video{width:100%;max-height:460px;border-radius:14px;border:1px solid var(--line
             ⚡ Gửi Yêu Cầu Xin Quyền Nghe Thử Tới Nghệ Sĩ
           </button>
         </div>
+      </div>
+
+      
+      <!-- THÔNG BÁO HẾT THỜI GIAN NGHE THỬ GIỚI HẠN -->
+      <div id="preview-limit-alert" class="hidden" style="background:var(--warn-dim);border:1px solid rgba(255,184,77,.35);border-radius:12px;padding:16px;margin-top:16px;text-align:center">
+        <div style="font-size:14px;font-weight:700;color:var(--warn);margin-bottom:4px" id="limit-alert-title">
+          ⏱️ ĐÃ HẾT THỜI LƯỢNG NGHE THỬ
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:12px" id="limit-alert-desc">
+          Nghệ sĩ giới hạn bản xem thử này. Khóa giải mã phiên đã tạm ngắt theo chính sách TideCloak.
+        </div>
+        <button class="btn btn-accent btn-sm" onclick="requestAccessCurrentTrack()">
+          🔑 Gửi Yêu Cầu Xin Cấp Quyền Nghe Full Toàn Bộ Bài
+        </button>
       </div>
 
       <audio id="native-audio" style="display:none"></audio>
@@ -762,7 +771,7 @@ function renderAlbumGrid(){
         <div class="album-art" style="background:${artBg}">${artIcon}</div>
         <div class="card-meta">
           <div class="card-title">${t.name}</div>
-          <div class="card-sub mono">${t.size} · ${isVideo?'Video Master':'Audio Master'}</div>
+          <div class="card-sub mono">${t.size} · ${isVideo?'Video Master':'Audio Master'}${t.previewLimitSeconds>0?` · <span style="color:var(--warn)">⏱️ ${t.previewLimitSeconds}s đầu</span>`:""}</div>
         </div>
       </div>
       <div class="card-bottom">
@@ -869,6 +878,12 @@ async function syncActiveTrackView(){
       const vid = document.getElementById('html5-video');
       if(blob){
         vid.src = URL.createObjectURL(blob);
+        vid.ontimeupdate = function(){
+          if(track.previewLimitSeconds > 0 && vid.currentTime >= track.previewLimitSeconds){
+            vid.pause();
+            handlePreviewLimitExpired(track);
+          }
+        };
         vid.play().catch(e=>console.log('Video autoplay:', e));
       }
     } else {
@@ -928,6 +943,20 @@ function tone(f){
   }catch(e){}
 }
 
+
+function handlePreviewLimitExpired(track){
+  stopAudio();
+  const alertBox = document.getElementById('preview-limit-alert');
+  const title = document.getElementById('limit-alert-title');
+  const desc = document.getElementById('limit-alert-desc');
+  if(alertBox){
+    alertBox.classList.remove('hidden');
+    title.textContent = `⏱️ ĐÃ HẾT ${track.previewLimitSeconds} GIÂY NGHE THỬ GIỚI HẠN`;
+    desc.textContent = `Nghệ sĩ ${track.artistUsername} thiết lập chính sách chỉ cho phép nghe thử ${track.previewLimitSeconds} giây đầu. Chìa khóa phiên TideCloak JIT đã tự động hủy.`;
+  }
+  appendLog(`[HẾT HẠN PREVIEW] Chạm mốc giới hạn ${track.previewLimitSeconds}s. Luồng giải mã đã tự động ngắt theo chính sách Quorum.`, 'var(--warn)');
+}
+
 function stopAudio(){
   isPlaying=false;
   document.getElementById('play-btn').textContent='▶';
@@ -952,6 +981,7 @@ function togglePlay(){
   const na=document.getElementById('native-audio');
 
   if(isPlaying){
+    const pAlert = document.getElementById('preview-limit-alert'); if(pAlert) pAlert.classList.add('hidden');
     playBtn.textContent='⏸';
     disc.classList.add('spin');
     appendLog(`[PLAYBACK] Bắt đầu luồng giải mã in-memory cho "${track.name}"`, 'var(--accent)');
@@ -963,6 +993,12 @@ function togglePlay(){
         document.getElementById('cur').textContent=Math.floor(cur/60)+':'+String(cur%60).padStart(2,'0');
         document.getElementById('dur').textContent=Math.floor(dur/60)+':'+String(dur%60).padStart(2,'0');
         document.getElementById('fill').style.width=((cur/dur)*100)+'%';
+
+        // Kiểm tra giới hạn thời lượng nghe thử
+        if(track.previewLimitSeconds > 0 && na.currentTime >= track.previewLimitSeconds){
+          na.pause();
+          handlePreviewLimitExpired(track);
+        }
       };
       synthInterval=setInterval(()=>{
         bars.forEach(b=>b.style.height=(15+Math.random()*80)+'%');
@@ -979,6 +1015,9 @@ function togglePlay(){
         t++;
         document.getElementById('cur').textContent=Math.floor(t/60)+':'+String(t%60).padStart(2,'0');
         document.getElementById('fill').style.width=Math.min(t/222*100,100)+'%';
+        if(track.previewLimitSeconds > 0 && t >= track.previewLimitSeconds){
+          handlePreviewLimitExpired(track);
+        }
       },1000);
     }
   }else{
