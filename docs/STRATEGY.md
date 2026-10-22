@@ -1,55 +1,41 @@
-# 🎯 CHIẾN LƯỢC TÁC CHIẾN — TEAM FOODSEEKERS
-# Phân tích từ dữ liệu RMIT Hackathon 2024 - 2025 & Định hướng 2026
+# 🎯 CHIẾN LƯỢC TÁC CHIẾN CHÍNH THỨC — RMIT HACKATHON 2026
+# Đề bài: Multilingual Prompt-Attack Classification (Kaggle)
 
 ---
 
-## 1. BẢN CHẤT CUỘC THI & TRỌNG TÂM ĐIỂM SỐ
-Qua phân tích đề thi thực tế năm 2025 trên Kaggle (tổ chức bởi SkywardAI Labs):
-* **70% tổng điểm** nằm ở bài toán **Phân loại nhị phân phát hiện Jailbreak (Challenge 1 & 2)**.
-* **Thang đo:** Đánh giá bằng **ROC AUC** trên tập dữ liệu (5.000 prompt: 4.000 train, 1.000 test).
-* **Ràng buộc sống còn:** Toàn bộ cuộc thi **CHỈ CÓ 10 LƯỢT NỘP KAGGLE**. Mỗi lượt nộp phải có mục đích đo đạc rõ ràng, tuyệt đối không nộp hú họa.
-* **Trục mới năm 2026 (Low-Resource Languages):** Đề thi kết hợp ngôn ngữ ít tài nguyên vào an toàn AI. Các câu lệnh tấn công có thể được dịch sang tiếng Việt, tiếng Mã Lai, hoặc trộn ngôn ngữ để vượt bộ lọc an toàn. Mô hình chỉ học tiếng Anh sẽ thất bại.
+## 1. THÔNG SỐ VÀNG CỦA ĐỀ THI
+* **Nhiệm vụ:** Phân loại 3 nhãn: `BENIGN` (62%), `JAILBREAK` (31%), `PROMPT_INJECTION` (7%).
+* **Ngôn ngữ:** Tiếng Bồ Đào Nha (`pt`), Pháp (`fr`), Ý (`it`), Anh (`en`).
+* **Metric:** **Macro-averaged F1 Score**.
+  - ⚠️ `PROMPT_INJECTION` chỉ chiếm 7% nhưng mang giá trị 33.3% tổng điểm! Nếu dự đoán yếu lớp này thì điểm F1 sẽ bị kéo sụt nghiêm trọng.
+* **Số lượt nộp:** **CHỈ CÓ ĐÚNG 6 LƯỢT NỘP (6 ATTEMPTS)**.
+* **Tên Kaggle Notebook:** `UIT_SGS_Foodseekers_C1`.
+* **Hạn nộp:** 18:00 ngày 22/10/2026.
 
 ---
 
-## 2. QUY TRÌNH PHÁT TRIỂN THEO DÒNG DỮ LIỆU (PIPELINE)
-Không chia rẽ nhóm theo các ngách rời rạc. Cả 4 thành viên cùng vận hành một chuỗi dữ liệu thống nhất:
-
-```text
-[Dữ liệu thô train.csv]
-       │
-       ▼
- 1. TIỀN XỬ LÝ & ĐẶC TRƯNG (src/features/)
-    ├── Chuẩn hóa tiếng Việt/đa ngữ, giải mã Base64, Leetspeak
-    └── Trích xuất độ dài, ký tự đặc biệt, regex từ khóa nguy hiểm
-       │
-       ▼
- 2. XÂY DỰNG MÔ HÌNH (src/models/)
-    ├── Baseline: TF-IDF + Logistic Regression / LightGBM (Chắc chắn có điểm)
-    └── Advanced: Fine-tune PhoBERT / DeBERTa-v3 / Multilingual-BERT
-       │
-       ▼
- 3. TÍCH HỢP ĐẦU CUỐI (src/pipeline/)
-    ├── Đánh giá nội bộ qua 5-Fold Stratified Cross-Validation (CV)
-    └── Xuất file dự đoán xác suất (0.0 đến 1.0)
-       │
-       ▼
- 4. BẢNG NỘP BÀI (submissions/)
-    └── Lưu file CSV, ghi nhật ký điểm CV so với điểm Leaderboard (LB)
-```
+## 2. PHÂN BỔ 6 LƯỢT NỘP KAGGLE (CỰC KỲ TIẾT KIỆM & HIỆU QUẢ)
+1. **Lượt 1 (09:45 - 10:30):** Nộp ngay mô hình Baseline TF-IDF + Logistic Regression (có `class_weight='balanced'`).
+   - *Mục tiêu:* Ăn trọn điểm Challenge 1 (chỉ cần 1 lượt nộp hợp lệ là nhận điểm hoàn thành), kiểm tra thông luồng format CSV (`id,label`).
+2. **Lượt 2 (11:30 - 12:00):** Nộp mô hình `protectai/deberta-v3-base-prompt-injection-v2`.
+   - *Mục tiêu:* Mô hình này vốn đã được pretrain về an toàn AI và prompt injection, sẽ nhận diện cực tốt nhãn `PROMPT_INJECTION` 7%.
+3. **Lượt 3 (13:30 - 14:15):** Nộp mô hình `FacebookAI/xlm-roberta-base`.
+   - *Mục tiêu:* Mô hình đa ngữ kinh điển, xử lý xuất sắc các ngôn ngữ Romance (pt, fr, it).
+4. **Lượt 4 (15:00 - 15:45):** Nộp mô hình `FacebookAI/xlm-roberta-large` (Huấn luyện trên Kaggle GPU P100/T4).
+   - *Mục tiêu:* Nâng trần độ chính xác của Encoder lớn nhất.
+5. **Lượt 5 (16:30 - 17:00):** Ensemble (Ghép xác suất giữa DeBERTa Safety + XLM-RoBERTa + Threshold Tuning nhãn hiếm).
+6. **Lượt 6 (17:15 - 17:45):** Bản chốt điểm cao nhất trước giờ đóng cổng 18:00.
 
 ---
 
-## 3. CHIẾN LƯỢC DÙNG 10 LƯỢT NỘP KAGGLE
-* **Lượt 1 (Mở khóa 20% điểm Warm-up):** Nộp ngay mô hình cơ sở TF-IDF + Logistic Regression để đảm bảo có điểm hợp lệ đầu tiên và đo độ lệch giữa điểm nội bộ (CV) và bảng xếp hạng (LB).
-* **Lượt 2 - 4 (Tối ưu tiền xử lý & Feature Engineering):** Thử nghiệm làm sạch văn bản đa ngữ, bổ sung đặc trưng regex và độ phức tạp câu.
-* **Lượt 5 - 7 (Mô hình Transformer tiền huấn luyện):** Fine-tune PhoBERT hoặc Multilingual BERT.
-* **Lượt 8 - 9 (Ensemble / Ghép mô hình):** Kết hợp xác suất từ mô hình Transformer và mô hình cây (LightGBM).
-* **Lượt 10 (Dự phòng khẩn cấp):** Bản chốt trước 17:00 ngày cuối.
-
----
-
-## 4. BỘ CÔNG CỤ & MODEL GỢI Ý
-* **Tiền xử lý tiếng Việt:** Sử dụng `underthesea` (tách từ), `unicodedata` loại bỏ dấu chuẩn, `langdetect` phân loại ngôn ngữ.
-* **Mô hình khuyến nghị:** `vinai/phobert-base`, `microsoft/mdeberta-v3-base`.
-* **Trợ lý lập trình tại chỗ:** Cài extension **Cline** trên VS Code, trỏ API Vilao (`https://api.vilao.ai/v1`), dùng model `gemini-3.8-flash` hoặc `Minimax-M3` để tiết kiệm và chính xác.
+## 3. DANH SÁCH 10 MÔ HÌNH HỢP LỆ (APPROVED BACKBONES)
+1. `distilbert/distilbert-base-multilingual-cased` (Baseline nhanh)
+2. `jhu-clsp/mmBERT-small`
+3. `jhu-clsp/mmBERT-base`
+4. `FacebookAI/xlm-roberta-base` (Khuyến nghị 1)
+5. `FacebookAI/xlm-roberta-large` (Khuyến nghị 2 - Mạnh nhất)
+6. `google/rembert`
+7. `protectai/deberta-v3-base-prompt-injection-v2` (Khuyến nghị 3 - Chuyên trị Prompt Injection)
+8. `patronus-studio/wolf-defender-prompt-injection`
+9. `ibm-granite/granite-3.3-2b-instruct`
+10. `mistralai/Mistral-7B-Instruct-v0.3`

@@ -1,43 +1,65 @@
-# 🤖 HERMES AGENT RULES & OPERATIONAL INSTRUCTIONS — TEAM FOODSEEKERS
+# 🤖 HERMES AGENT OPERATIONAL SPECIFICATION — TEAM FOODSEEKERS
 # RMIT Hackathon 2026: Security × Generative AI × Low-Resource Languages
-# Tệp chỉ dẫn tối cao cho Hermes Agent khi mở thư mục dự án
+# Nhiệm vụ chính thức: Multilingual Prompt-Attack Classification (Kaggle)
 
 ---
 
-## 🛑 CHẾ ĐỘ CHỜ ĐỀ THI (STANDBY MODE - DO NOT CODE YET!)
-- Hiện tại ban tổ chức **CHƯA CÔNG BỐ ĐỀ THI CHÍNH THỨC** (dự kiến phát đề lúc 9:30 sáng 22/10/2026).
-- Mọi Hermes Agent trên máy các thành viên **TUYỆT ĐỐI KHÔNG TỰ Ý SINH CODE MỚI, KHÔNG SỬA ĐỔI CẤU TRÚC THƯ MỤC, KHÔNG VIẾT MÔ HÌNH VẨN VƠ**.
-- Các file hiện có trong `data/`, `src/`, `submissions/` chỉ là code mẫu tham khảo từ đề năm ngoái (2025).
-- **Hermes chỉ được phép:** Hỗ trợ kiểm tra môi trường `.venv`, hỗ trợ cài đặt thư viện, giải thích tài liệu tham khảo nếu người dùng hỏi.
-- **KHI NÀO BẮT TAY VÀO LÀM?** Chỉ khi người dùng con người thông báo: *"Đã có đề chính thức"* kèm dữ liệu hoặc mô tả đề bài thật từ ban tổ chức.
+## 🎯 1. ĐỀ THI CHÍNH THỨC ĐÃ CÔNG BỐ (OFFICIAL CHALLENGE SPECS)
+- **Tên cuộc thi:** RMIT HACKATHON 2026 (Nền tảng: Kaggle & RMIT RACE Cloud).
+- **Bài toán:** **Phân loại 3 nhãn câu lệnh tấn công đa ngữ (Multilingual 3-Class Classification)**.
+  - Ngôn ngữ trong dữ liệu: **Tiếng Bồ Đào Nha (pt), Tiếng Pháp (fr), Tiếng Ý (it) và Tiếng Anh (en)**.
+  - 3 Nhãn phân loại:
+    1. `BENIGN` (62% tập train): Yêu cầu bình thường, an toàn của người dùng.
+    2. `JAILBREAK` (31% tập train): Nỗ lực thao túng để AI phá vỡ quy tắc an toàn.
+    3. `PROMPT_INJECTION` (7% tập train — Nhãn hiếm!): Nỗ lực chiếm quyền điều khiển chỉ dẫn hệ thống của mô hình.
+- **Thang đo đánh giá (Evaluation Metric):** **Macro-averaged F1 Score**.
+  - *Cực kỳ quan trọng:* Macro F1 tính trọng số trung bình ngang nhau (33.3%) cho cả 3 nhãn. Nhãn hiếm `PROMPT_INJECTION` chỉ chiếm 7% nhưng quyết định 1/3 điểm số toàn bài! Bắt buộc phải xử lý mất cân bằng lớp (class weights / focal loss / threshold tuning).
+  - Dự đoán toàn bộ `BENIGN` chỉ đạt ~0.26 điểm. Điểm tối đa là 1.0.
+- **Tập dữ liệu:**
+  - `train.csv`: 14.000 dòng (`id`, `text`, `language`, `label`).
+  - `test.csv`: 6.000 dòng (`id`, `text`, `language`).
+  - `sample_submission.csv`: 6.000 dòng (`id`, `label`).
+- **Quy cách file nộp bài (`submission.csv`):**
+  - Gồm đúng 2 cột: `id` và `label`.
+  - Cột `label` là chuỗi văn bản: `BENIGN`, `JAILBREAK` hoặc `PROMPT_INJECTION`.
+- **RÀNG BUỘC SỐNG CÒN:** **CHỈ CÓ ĐÚNG 6 LƯỢT NỘP KAGGLE (6 SUBMISSIONS ONLY)**.
+- **Quy tắc đặt tên Kaggle Notebook:**
+  - Bắt buộc theo định dạng: `<university>_<campus>_<team>_C1`
+  - Tên chuẩn của đội mình: `UIT_SGS_Foodseekers_C1`
+- **Thời gian kết thúc:** **ĐÚNG 18:00 HÔM NAY (22/10/2026)**.
 
 ---
 
-## 🧭 BƯỚC 0: XÁC NHẬN VAI TRÒ & KIỂM TRA MÔI TRƯỜNG (.VENV)
-Khi phiên làm việc bắt đầu, Hermes bắt buộc hỏi để xác nhận người dùng trên máy:
-> *"Xin chào! Tôi là trợ lý Hermes Agent của đội Foodseekers. Bạn là ai trong 4 thành viên?"*
-> 1. **Thiện Nhân** (Team Lead / AI Integration & Quản lý nộp Kaggle) -> `/src/models/`, `/notebooks/` (Nhánh: `dev-backend`)
-> 2. **Văn Nhân** (Core Engineer / Kaggle GPU Runtime & Pipeline) -> `/src/pipeline/`, `/notebooks/` (Nhánh: `dev-core`)
-> 3. **Anh Thư** (Data Analyst / Preprocessing & Features) -> `/src/features/`, `/data/` (Nhánh: `dev-data`)
-> 4. **Minh Ngọc** (System Architect / Adversarial Red Teaming & Docs) -> `/src/attacks/`, `/docs/` (Nhánh: `dev-system`)
-
-**Kiểm tra môi trường:** Hermes chủ động kiểm tra xem các thư viện trong `.venv` đã cài đủ chưa. Nếu thiếu, hỗ trợ người dùng chạy:
-```bash
-pip install -r requirements.txt
-```
+## 📦 2. DANH SÁCH MÔ HÌNH ĐƯỢC PHÉP SỬ DỤNG (APPROVED MODELS ONLY)
+Ban tổ chức quy định giải pháp BẮT BUỘC xây dựng trên 1 trong các mô hình nguồn mở sau (không dùng backbone ngoài):
+1. `distilbert/distilbert-base-multilingual-cased` (Encoder - Baseline nhanh nhất)
+2. `jhu-clsp/mmBERT-small` (Encoder - Nhẹ, đa ngữ)
+3. `jhu-clsp/mmBERT-base` (Encoder - Đa ngữ mạnh)
+4. `FacebookAI/xlm-roberta-base` (Encoder - Rất mạnh về tiếng pt/fr/it/en)
+5. `FacebookAI/xlm-roberta-large` (Encoder - Mô hình mạnh nhất, cần VRAM GPU lớn)
+6. `google/rembert` (Encoder - Đa ngữ, dùng batch size 8)
+7. `protectai/deberta-v3-base-prompt-injection-v2` (Được huấn luyện sẵn về an toàn AI & Prompt Injection - RẤT TIỀM NĂNG)
+8. `patronus-studio/wolf-defender-prompt-injection` (Được huấn luyện sẵn về phát hiện tấn công)
+9. `ibm-granite/granite-3.3-2b-instruct` (LLM nhỏ - Fine-tune / LoRA)
+10. `mistralai/Mistral-7B-Instruct-v0.3` (LLM lớn - Fine-tune / LoRA)
 
 ---
 
-## 🛡️ CÁC NGUYÊN TẮC BẢO VỆ HỆ THỐNG AN TOÀN TUYỆT ĐỐI (SAFETY GUARDRAILS)
-1. **TUYỆT ĐỐI KHÔNG COMMIT LÊN NHÁNH `main`:**
-   - Mọi công việc của thành viên chỉ được commit và push lên nhánh riêng của mình (`dev-backend`, `dev-core`, `dev-data`, `dev-system`).
-   - Duy nhất Team Lead (Thiện Nhân) mới có quyền gộp (merge) code vào nhánh `main` và bấm nộp bài Kaggle.
-2. **TUYỆT ĐỐI KHÔNG FORCE-PUSH HAY REBASE NHÁNH CỦA ĐỒNG ĐỘI:**
-   - Không được can thiệp hay ghi đè nhánh của người khác.
-3. **LINH HOẠT VÀ TỰ DO SÁNG TẠO TRONG `src/`:**
-   - Các thành viên được phép gọi hàm và phối hợp chéo giữa các thư mục trong `src/` khi tích hợp pipeline.
-   - Khi hoàn thành một module lớn hoặc tạo hàm mới, ghi 1 dòng ngắn gọn vào cuối `TEAM_CHAT.md` để đồng đội nắm được tiến độ.
-4. **THÍCH ỨNG THEO ĐỀ THẬT — KHÔNG RẬP KHUÔN:**
-   - Đề 2025 chỉ là ví dụ tham khảo. Sáng mai nếu ban tổ chức ra dạng đề khác, Hermes phải lập tức thích ứng 100% theo yêu cầu của đề mới, tuyệt đối không gò ép người dùng làm theo bài toán cũ.
-5. **BẢO MẬT KHÓA:**
-   - Tuyệt đối không lưu API key hay token vào trong code. Luôn dùng file `.env` (đã nằm trong `.gitignore`).
+## 👥 3. PHÂN VAI TÁC CHIẾN ĐỘI FOODSEEKERS
+Cả 4 máy chạy Hermes Agent phối hợp trên cùng một chuỗi dữ liệu (Pipeline):
+* **Thiện Nhân (`dev-backend`):** Team Lead — Xây dựng mô hình (Baseline, RoBERTa/DeBERTa), quản lý và bấm nộp bài Kaggle (duy nhất giữ quyền nộp để bảo toàn 6 lượt nộp).
+* **Văn Nhân (`dev-core`):** Core Engineer — Tạo notebook Kaggle `UIT_SGS_Foodseekers_C1`, bật GPU T4/P100, fine-tune mô hình Transformers và xuất file dự đoán.
+* **Anh Thư (`dev-data`):** Data Analyst — Phân tích dữ liệu 4 thứ tiếng (pt, fr, it, en), trích xuất đặc trưng câu lệnh tấn công, xử lý mất cân bằng lớp (7% `PROMPT_INJECTION`).
+* **Minh Ngọc (`dev-system`):** System Architect — Báo cáo kỹ thuật, tài liệu giải pháp, hỗ trợ kiểm thử đối kháng và ghi nhật ký lượt nộp.
+
+---
+
+## 🛡️ 4. NGUYÊN TẮC KỸ THUẬT & AN TOÀN HỆ THỐNG
+1. **Làm việc trên nhánh riêng:** Chỉ commit và push vào nhánh `dev-*` của mình. Duy nhất Team Lead mới gộp vào `main`.
+2. **Tuyệt đối không lưu API Key vào code:** Dùng biến môi trường hoặc file `.env`.
+3. **Phối hợp liên thư mục linh hoạt:** Được quyền gọi và sửa chéo code trong `src/`, hoàn thành module mới thì ghi 1 dòng ngắn gọn vào `TEAM_CHAT.md`.
+4. **Chiến thuật 6 lượt nộp:**
+   - **Lượt 1 (Warm-up):** Nộp Baseline ngay trong 30–45 phút đầu để ăn trọn điểm Challenge 1 và kiểm tra thông luồng.
+   - **Lượt 2 - 3:** Nộp mô hình `xlm-roberta-base` hoặc `deberta-v3-base-prompt-injection-v2`.
+   - **Lượt 4 - 5:** Nộp mô hình `xlm-roberta-large` hoặc Ensemble kết hợp xử lý cân bằng lớp.
+   - **Lượt 6:** Bản chốt an toàn trước 17:30.
