@@ -3,78 +3,84 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Két Sắt Nghệ Sĩ · UNRELEASED (Trang 1/3)</title>
+<title>Nghệ Sĩ · UNRELEASED Studio (TideCloak Sovereign Vault)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
+
 :root{
-  --bg:#08090d;--surface:rgba(255,255,255,.025);--surface-2:rgba(255,255,255,.05);
-  --line:rgba(255,255,255,.08);--line-strong:rgba(255,255,255,.15);
-  --fg:#f4f5f7;--muted:#8b8fa0;--dim:#5a5e6e;
-  --accent:#d4ff3f;--danger:#ff4d6d;--danger-dim:rgba(255,77,109,.12);
+  --bg:#07080c;--surface:rgba(255,255,255,.03);--surface-2:rgba(255,255,255,.06);
+  --line:rgba(255,255,255,.08);--line-strong:rgba(255,255,255,.16);
+  --fg:#f4f5f7;--muted:#8b8fa0;--dim:#555968;
+  --accent:#d4ff3f;--accent-dim:rgba(212,255,63,.12);
+  --danger:#ff4d6d;--danger-dim:rgba(255,77,109,.12);
   --ok:#3ee88f;--ok-dim:rgba(62,232,143,.12);--radius:16px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--fg);font-family:'Space Grotesk',sans-serif;line-height:1.5;min-height:100vh}
-body::before{content:'';position:fixed;inset:0;z-index:-2;background:radial-gradient(900px 500px at 75% -5%,rgba(212,255,63,.07),transparent 60%)}
+body::before{content:'';position:fixed;inset:0;z-index:-2;background:radial-gradient(900px 500px at 80% -5%,rgba(212,255,63,.07),transparent 60%)}
 .mono{font-family:'JetBrains Mono',monospace}
 
-.topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:16px 32px;backdrop-filter:blur(18px);background:rgba(8,9,13,.75);border-bottom:1px solid var(--line)}
+/* Topbar sạch sẽ - KHÔNG CÒN 3 NÚT CHUYỂN CHẾ ĐỘ */
+.topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:16px 32px;backdrop-filter:blur(20px);background:rgba(7,8,12,.8);border-bottom:1px solid var(--line)}
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;font-weight:700}
 .brand-dot{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent)}
 .brand small{display:block;font-size:11px;color:var(--muted);font-weight:400}
-
-.nav-links{display:flex;gap:6px;background:var(--surface);border:1px solid var(--line);padding:4px;border-radius:12px}
-.nav-link{font-size:13px;font-weight:500;color:var(--muted);text-decoration:none;padding:8px 14px;border-radius:8px;transition:.18s;display:flex;align-items:center;gap:6px}
-.nav-link:hover{color:var(--fg)}
-.nav-link.active{background:var(--fg);color:#0a0b0e;font-weight:600}
+.topbar-right{display:flex;align-items:center;gap:14px}
 .pill-tide{font-size:11px;font-weight:600;color:#0a0b0e;background:var(--accent);padding:6px 12px;border-radius:999px}
+.user-badge{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);padding:6px 12px;border-radius:10px;font-size:12px}
+.user-dot{width:7px;height:7px;border-radius:50%;background:var(--ok)}
 
-.container{max-width:1080px;margin:40px auto 80px;padding:0 24px}
-.page-header{margin-bottom:28px;display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
-.page-title h1{font-size:28px;letter-spacing:-.03em;font-weight:700}
-.page-title p{color:var(--muted);font-size:14px;margin-top:4px}
+/* Container */
+.container{max-width:1080px;margin:36px auto 80px;padding:0 24px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:28px;margin-bottom:24px;backdrop-filter:blur(14px)}
 
-.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:26px;margin-bottom:24px;backdrop-filter:blur(12px)}
-.upload-zone{
-  border:2px dashed var(--line-strong);border-radius:14px;padding:36px 20px;text-align:center;
-  cursor:pointer;transition:.2s;background:rgba(255,255,255,.01);
+/* Form controls */
+.form-group{margin-bottom:16px}
+.form-label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em}
+.form-input{
+  width:100%;padding:11px 14px;background:var(--bg);border:1px solid var(--line);border-radius:10px;
+  color:var(--fg);font-family:inherit;font-size:14px;outline:none;transition:.18s;
 }
-.upload-zone:hover{border-color:var(--accent);background:rgba(212,255,63,.02)}
-.upload-icon{font-size:36px;margin-bottom:12px}
-.upload-title{font-size:16px;font-weight:600;margin-bottom:4px}
-.upload-sub{font-size:12px;color:var(--muted)}
+.form-input:focus{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-dim)}
 
 .btn{
   font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;
-  padding:9px 16px;border-radius:10px;border:1px solid transparent;transition:.18s;
+  padding:10px 18px;border-radius:10px;border:1px solid transparent;transition:.18s;
   display:inline-flex;align-items:center;gap:8px;text-decoration:none;
 }
 .btn-accent{background:var(--accent);color:#0a0b0e}
-.btn-accent:hover{filter:brightness(1.1)}
+.btn-accent:hover{filter:brightness(1.1);transform:translateY(-1px)}
 .btn-danger{background:var(--danger-dim);color:var(--danger);border-color:rgba(255,77,109,.3)}
 .btn-danger:hover{background:rgba(255,77,109,.2)}
 .btn-ok{background:var(--ok-dim);color:var(--ok);border-color:rgba(62,232,143,.3)}
 .btn-ok:hover{background:rgba(62,232,143,.2)}
+.btn-ghost{background:transparent;border-color:var(--line-strong);color:var(--fg)}
+.btn-ghost:hover{background:var(--surface-2)}
+.btn-sm{padding:6px 12px;font-size:12px}
 
-.track-row{
-  display:flex;align-items:center;justify-content:space-between;gap:16px;
-  padding:16px 18px;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;background:var(--bg);
-}
-.track-left{display:flex;align-items:center;gap:14px;min-width:0}
-.track-type{font-size:20px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:var(--surface-2);border-radius:8px}
-.track-name{font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.track-meta{font-size:11px;color:var(--dim);margin-top:2px}
+.auth-box{max-width:440px;margin:60px auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:36px;backdrop-filter:blur(16px)}
+.auth-title{font-size:24px;font-weight:700;margin-bottom:8px}
+.auth-sub{font-size:13px;color:var(--muted);margin-bottom:24px}
+.auth-tabs{display:flex;gap:6px;margin-bottom:20px;background:var(--bg);padding:4px;border-radius:10px;border:1px solid var(--line)}
+.auth-tab{flex:1;text-align:center;padding:8px;font-size:12px;font-weight:600;color:var(--muted);background:transparent;border:none;border-radius:8px;cursor:pointer}
+.auth-tab.active{background:var(--surface-2);color:var(--fg)}
 
 .badge{font-size:11px;font-weight:600;padding:5px 10px;border-radius:999px;white-space:nowrap}
 .badge-ok{color:var(--ok);background:var(--ok-dim);border:1px solid rgba(62,232,143,.25)}
 .badge-danger{color:var(--danger);background:var(--danger-dim);border:1px solid rgba(255,77,109,.25)}
 
-.sync-bar{display:flex;align-items:center;justify-content:space-between;background:var(--surface-2);border:1px solid var(--line);padding:12px 18px;border-radius:12px;font-size:12px;color:var(--muted);margin-top:16px}
-.live-dot{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok);display:inline-block;margin-right:6px}
-
+.hidden{display:none!important}
 .footer{max-width:1080px;margin:0 auto;padding:24px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;color:var(--dim);font-size:12px}
+
+.upload-zone{border:2px dashed var(--line-strong);border-radius:14px;padding:32px 20px;text-align:center;cursor:pointer;transition:.2s;background:rgba(255,255,255,.01)}
+.upload-zone:hover{border-color:var(--accent);background:rgba(212,255,63,.02)}
+.track-card{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:14px}
+.track-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;gap:12px}
+.track-title{font-size:16px;font-weight:700}
+.track-info{font-size:12px;color:var(--muted);margin-top:2px}
+.user-chip{display:inline-flex;align-items:center;gap:6px;background:var(--surface-2);border:1px solid var(--line);padding:5px 10px;border-radius:8px;font-size:12px;margin:4px}
 </style>
 </head>
 <body>
@@ -82,136 +88,233 @@ body::before{content:'';position:fixed;inset:0;z-index:-2;background:radial-grad
 <header class="topbar">
   <a href="/rmit" class="brand">
     <span class="brand-dot"></span>
-    <div>UNRELEASED<small>Zero-Trust Media Vault</small></div>
+    <div>UNRELEASED<small>Nghệ Sĩ / Chủ Sở Hữu Tác Phẩm</small></div>
   </a>
-  <nav class="nav-links">
-    <a href="/rmit/1" class="nav-link active">🎧 1. Nghệ Sĩ</a>
-    <a href="/rmit/2" class="nav-link">🎙 2. Người Nghe Thử</a>
-    <a href="/rmit/3" class="nav-link">⚠️ 3. Quản Trị Máy Chủ</a>
-  </nav>
-  <span class="pill-tide">Powered by TideCloak</span>
+  <div class="topbar-right">
+    <div id="artist-user-info" class="user-badge hidden">
+      <span class="user-dot"></span>
+      <span id="artist-name-display" class="mono">alice_artist</span>
+      <button class="btn btn-ghost btn-sm" onclick="logoutArtist()" style="margin-left:6px;padding:2px 8px">Thoát</button>
+    </div>
+    <span class="pill-tide">TideCloak Quorum</span>
+  </div>
 </header>
 
 <main class="container">
-  <div class="page-header">
-    <div class="page-title">
-      <h1>Két Sắt Nghệ Sĩ (Alice Nguyễn)</h1>
-      <p>Tải lên bản thu nháp âm thanh hoặc video · Thiết lập chính sách bảo mật không chìa khóa chủ</p>
+
+  <!-- MÀN HÌNH ĐĂNG NHẬP NGHỆ SĨ -->
+  <div id="artist-auth-view" class="auth-box">
+    <div class="auth-title">Đăng Nhập Nghệ Sĩ</div>
+    <div class="auth-sub">Xác thực danh tính chủ sở hữu bằng cơ chế Tide BYOiD (Emergent Authority)</div>
+
+    <div class="form-group">
+      <label class="form-label">Tài Khoản Nghệ Sĩ</label>
+      <input type="text" id="artist-login-user" class="form-input" value="alice_artist" placeholder="alice_artist">
     </div>
-    <a href="/rmit/2" class="btn btn-accent">Mở Trang Người Nghe Thử (Tab 2) ➔</a>
-  </div>
-
-  <!-- Upload Card -->
-  <div class="card">
-    <div class="upload-zone" onclick="document.getElementById('file-input').click()">
-      <div class="upload-icon">⚡</div>
-      <div class="upload-title">Tải lên Bản Thu Âm Nhạc hoặc Video Mới</div>
-      <div class="upload-sub">Hỗ trợ MP3, WAV, FLAC, MP4, WEBM (Mã hóa đầu cuối AES-256-GCM tức thì trên trình duyệt)</div>
-      <input type="file" id="file-input" style="display:none" accept="audio/*,video/*" onchange="handleFileUpload(event)">
+    <div class="form-group">
+      <label class="form-label">Mật Khẩu (Mặc định: 123)</label>
+      <input type="password" id="artist-login-pass" class="form-input" value="123" placeholder="123">
     </div>
-    <div id="upload-status" style="margin-top:12px;font-size:12px;color:var(--accent);display:none" class="mono"></div>
-  </div>
+    <button class="btn btn-accent" style="width:100%;justify-content:center" onclick="loginArtist()">Đăng Nhập Vào Két Sắt</button>
 
-  <!-- Tracks Vault -->
-  <div class="card">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
-      <h2 style="font-size:18px;font-weight:700">Danh Sách Tác Phẩm Đã Niêm Phong Mật Mã</h2>
-      <button class="btn btn-ghost" onclick="resetDefaults()" style="font-size:11px;padding:6px 12px">Khôi phục danh sách mẫu</button>
-    </div>
-
-    <div id="tracks-list"></div>
-
-    <div class="sync-bar">
-      <div><span class="live-dot"></span><span id="sync-msg">Mạng lưới Tide Quorum: Sẵn sàng đồng bộ thời gian thực sang Trang 2 và Trang 3</span></div>
-      <span class="mono" style="color:var(--dim)">BroadcastChannel: active</span>
+    <div style="margin-top:18px;font-size:12px;color:var(--dim);text-align:center">
+      Tài khoản mẫu: <code class="mono" style="color:var(--fg)">alice_artist</code> | Mật khẩu: <code class="mono" style="color:var(--accent)">123</code>
     </div>
   </div>
+
+  <!-- GIAO DIỆN NGHỆ SĨ SAU KHI ĐĂNG NHẬP -->
+  <div id="artist-main-view" class="hidden">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:28px">
+      <div>
+        <h1 style="font-size:28px;font-weight:700">Két Sắt Tác Phẩm Master</h1>
+        <p style="color:var(--muted);font-size:14px">Mã hóa đầu cuối client-side · Ủy quyền chính sách Quorum cho từng danh tính người nghe</p>
+      </div>
+      <div style="font-size:12px;color:var(--dim)" class="mono">Tide Fabric: ONLINE</div>
+    </div>
+
+    <!-- Upload zone -->
+    <div class="card">
+      <div class="upload-zone" onclick="document.getElementById('file-input').click()">
+        <div style="font-size:36px;margin-bottom:8px">⚡</div>
+        <div style="font-size:16px;font-weight:700">Tải Lên Bản Thu Âm Nhạc hoặc Video Mới</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px">Hỗ trợ MP3, WAV, FLAC, MP4, WEBM (Tự sinh vector mã hóa AES-256-GCM không chìa khóa chủ)</div>
+        <input type="file" id="file-input" style="display:none" accept="audio/*,video/*" onchange="handleFileUpload(event)">
+      </div>
+      <div id="upload-status" style="margin-top:12px;font-size:12px;color:var(--accent);display:none" class="mono"></div>
+    </div>
+
+    <!-- Tracks List -->
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+        <h2 style="font-size:18px;font-weight:700">Tác Phẩm Đã Niêm Phong & Quản Lý Quyền Truy Cập</h2>
+        <span class="mono" style="font-size:11px;color:var(--dim)">Zero Master Key on Host</span>
+      </div>
+
+      <div id="artist-tracks-container"></div>
+    </div>
+  </div>
+
 </main>
 
 <footer class="footer">
-  <span>Trang 1 / 3 · Két Sắt Nghệ Sĩ · Team Foodseekers</span>
-  <span class="mono">RMIT Hackathon 2026</span>
+  <span>UNRELEASED · Cổng Nghệ Sĩ · Powered by TideCloak</span>
+  <span class="mono">Mật khẩu hệ thống: 123</span>
 </footer>
 
 <script>
-const DB_NAME = 'tide_vault_db', STORE_NAME = 'media_blobs';
-function openDB(){
-  return new Promise((res,rej)=>{
-    const req=indexedDB.open(DB_NAME,1);
-    req.onupgradeneeded=e=>{if(!e.target.result.objectStoreNames.contains(STORE_NAME))e.target.result.createObjectStore(STORE_NAME)};
-    req.onsuccess=()=>res(req.result);req.onerror=()=>rej(req.error);
-  });
-}
-async function saveMediaBlob(id,blob){
-  const db=await openDB();
-  return new Promise((res,rej)=>{const tx=db.transaction(STORE_NAME,'readwrite');tx.objectStore(STORE_NAME).put(blob,id);tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error)});
-}
+const DB_NAME='tide_vault_db', STORE_NAME='media_blobs';
+function openDB(){return new Promise((res,rej)=>{const r=indexedDB.open(DB_NAME,1);r.onupgradeneeded=e=>{if(!e.target.result.objectStoreNames.contains(STORE_NAME))e.target.result.createObjectStore(STORE_NAME)};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});}
+async function saveMediaBlob(id,blob){const db=await openDB();return new Promise((res,rej)=>{const tx=db.transaction(STORE_NAME,'readwrite');tx.objectStore(STORE_NAME).put(blob,id);tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error)});}
 
-function getStoredTracks(){
-  const d=localStorage.getItem('tide_tracks');
+function getStoredUsers(){
+  const d=localStorage.getItem('tide_users');
   if(d){try{return JSON.parse(d)}catch(e){}}
   const def=[
-    {id:'track_01',name:'Lead_Single_Master_v4.flac',type:'audio/flac',size:'42.8 MB',hash:'b79a4e912f...',shared:true},
-    {id:'track_02',name:'Vocal_Stems_Studio_Dry.wav',type:'audio/wav',size:'68.1 MB',hash:'82f10ac349...',shared:false},
-    {id:'track_03',name:'Studio_Teaser_Snippet.mp4',type:'video/mp4',size:'115.4 MB',hash:'11ce9d40b2...',shared:false}
+    {username:'minh_mastering',name:'Minh (Kỹ Sư Hòa Âm)',role:'reviewer',did:'tide:usr:minh_92a1'},
+    {username:'thu_producer',name:'Thu (Giám Đốc Sản Xuất)',role:'reviewer',did:'tide:usr:thu_44b0'},
+    {username:'lan_soundcheck',name:'Lan (Kiểm Âm Phòng Thu)',role:'reviewer',did:'tide:usr:lan_77c8'}
   ];
-  localStorage.setItem('tide_tracks',JSON.stringify(def));
+  localStorage.setItem('tide_users',JSON.stringify(def));
   return def;
 }
 
-function notifySync(tracks){
-  localStorage.setItem('tide_tracks',JSON.stringify(tracks));
-  try{new BroadcastChannel('tide_channel').postMessage({type:'SYNC_TRACKS',tracks:tracks})}catch(e){}
-  render();
+function getStoredTracks(){
+  const d=localStorage.getItem('tide_tracks_v2');
+  if(d){try{return JSON.parse(d)}catch(e){}}
+  const def=[
+    {id:'track_01',name:'Lead_Single_Master_v4.flac',type:'audio/flac',size:'42.8 MB',hash:'b79a4e912f...',allowedUsers:['minh_mastering']},
+    {id:'track_02',name:'Vocal_Stems_Studio_Dry.wav',type:'audio/wav',size:'68.1 MB',hash:'82f10ac349...',allowedUsers:[]},
+    {id:'track_03',name:'Behind_The_Scenes_Snippet.mp4',type:'video/mp4',size:'115.4 MB',hash:'11ce9d40b2...',allowedUsers:[]}
+  ];
+  localStorage.setItem('tide_tracks_v2',JSON.stringify(def));
+  return def;
 }
 
-function render(){
-  const tracks=getStoredTracks(), box=document.getElementById('tracks-list');
-  box.innerHTML='';
-  tracks.forEach((t,idx)=>{
-    const isVideo=t.type.startsWith('video');
-    const row=document.createElement('div');
-    row.className='track-row';
-    row.innerHTML=`
-      <div class="track-left">
-        <div class="track-type">${isVideo?'🎬':'🎵'}</div>
-        <div>
-          <div class="track-name">${t.name}</div>
-          <div class="track-meta mono">${t.size} · SHA256: ${t.hash} · ${isVideo?'Video Master':'Audio Master'}</div>
-        </div>
-      </div>
-      <div style="display:flex;align-items:center;gap:12px">
-        <span class="badge ${t.shared?'badge-ok':'badge-danger'}">${t.shared?'ĐÃ CẤP QUYỀN CHO MINH':'CHƯA CẤP / ĐÃ THU HỒI'}</span>
-        <button class="btn ${t.shared?'btn-danger':'btn-ok'}" onclick="toggleShare('${t.id}')">
-          ${t.shared?'🚫 Thu hồi quyền':'✅ Cấp quyền nghe'}
-        </button>
-        <button class="btn btn-ghost" onclick="deleteTrack('${t.id}')" style="padding:8px;font-size:12px">✕</button>
-      </div>
-    `;
-    box.appendChild(row);
-  });
+function saveTracks(tracks){
+  localStorage.setItem('tide_tracks_v2',JSON.stringify(tracks));
+  try{new BroadcastChannel('tide_channel').postMessage({type:'SYNC_DATA'})}catch(e){}
+  renderArtistTracks();
 }
 
-function toggleShare(id){
-  const tracks=getStoredTracks();
-  const t=tracks.find(x=>x.id===id);
-  if(t){
-    t.shared=!t.shared;
-    notifySync(tracks);
-    const msg=document.getElementById('sync-msg');
-    msg.textContent=`Đã cập nhật quyền tác phẩm "${t.name}" -> ${t.shared?'CẤP QUYỀN':'THU HỒI QUYỀN'} tức thì!`;
+function loginArtist(){
+  const u=document.getElementById('artist-login-user').value.trim();
+  const p=document.getElementById('artist-login-pass').value.trim();
+  if(!u){alert('Vui lòng nhập tên tài khoản!');return;}
+  if(p!=='123'){alert('Mật khẩu không đúng! (Gợi ý: Mật khẩu là 123)');return;}
+  localStorage.setItem('tide_logged_artist',u);
+  checkAuth();
+}
+
+function logoutArtist(){
+  localStorage.removeItem('tide_logged_artist');
+  checkAuth();
+}
+
+function checkAuth(){
+  const u=localStorage.getItem('tide_logged_artist');
+  const authView=document.getElementById('artist-auth-view');
+  const mainView=document.getElementById('artist-main-view');
+  const userInfo=document.getElementById('artist-user-info');
+  const nameDisp=document.getElementById('artist-name-display');
+
+  if(u){
+    authView.classList.add('hidden');
+    mainView.classList.remove('hidden');
+    userInfo.classList.remove('hidden');
+    nameDisp.textContent=u;
+    renderArtistTracks();
+  }else{
+    authView.classList.remove('hidden');
+    mainView.classList.add('hidden');
+    userInfo.classList.add('hidden');
   }
 }
 
-function deleteTrack(id){
-  let tracks=getStoredTracks();
-  tracks=tracks.filter(x=>x.id!==id);
-  notifySync(tracks);
+function renderArtistTracks(){
+  const tracks=getStoredTracks();
+  const users=getStoredUsers();
+  const box=document.getElementById('artist-tracks-container');
+  box.innerHTML='';
+
+  tracks.forEach(t=>{
+    const isVideo=t.type.startsWith('video');
+    const card=document.createElement('div');
+    card.className='track-card';
+
+    // Xây dựng danh sách người dùng được cấp quyền
+    let allowedChips='';
+    if(t.allowedUsers.length===0){
+      allowedChips='<span style="font-size:12px;color:var(--danger)">🔒 Chưa cấp quyền cho bất kỳ ai (Bảo mật tuyệt đối)</span>';
+    }else{
+      t.allowedUsers.forEach(u=>{
+        const userObj=users.find(x=>x.username===u)||{name:u,username:u};
+        allowedChips+=`
+          <span class="user-chip">
+            <span>👤 ${userObj.name||userObj.username}</span>
+            <button class="btn btn-ghost btn-sm" onclick="revokeUser('${t.id}','${u}')" style="padding:1px 6px;color:var(--danger)">Thu hồi</button>
+          </span>
+        `;
+      });
+    }
+
+    // Dropdown chọn người để cấp quyền
+    let options='<option value="">-- Chọn danh tính người nghe để cấp quyền --</option>';
+    users.forEach(u=>{
+      if(!t.allowedUsers.includes(u.username)){
+        options+=`<option value="${u.username}">${u.name||u.username} (${u.username})</option>`;
+      }
+    });
+
+    card.innerHTML=`
+      <div class="track-header">
+        <div>
+          <div class="track-title">${isVideo?'🎬 ':'🎵 '}${t.name}</div>
+          <div class="track-info mono">${t.size} · SHA256: ${t.hash} · ${isVideo?'Video Master':'Audio Master'}</div>
+        </div>
+        <button class="btn btn-ghost btn-sm" onclick="deleteTrack('${t.id}')" style="color:var(--danger)">Xóa Tác Phẩm</button>
+      </div>
+
+      <div style="margin-bottom:14px">
+        <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px">DANH TÍNH ĐANG ĐƯỢC PHÉP GIẢI MÃ:</div>
+        <div>${allowedChips}</div>
+      </div>
+
+      <div style="display:flex;gap:10px;align-items:center;background:var(--surface-2);padding:10px 14px;border-radius:10px">
+        <select id="select-user-${t.id}" class="form-input" style="flex:1;padding:8px 12px;font-size:13px">
+          ${options}
+        </select>
+        <button class="btn btn-accent btn-sm" onclick="grantUser('${t.id}')">⚡ Cấp Quyền Truy Cập (Mint Entitlement)</button>
+      </div>
+    `;
+    box.appendChild(card);
+  });
 }
 
-function resetDefaults(){
-  localStorage.removeItem('tide_tracks');
-  render();
+function grantUser(trackId){
+  const select=document.getElementById(`select-user-${trackId}`);
+  const u=select.value;
+  if(!u){alert('Vui lòng chọn một danh tính người nghe!');return;}
+  const tracks=getStoredTracks();
+  const t=tracks.find(x=>x.id===trackId);
+  if(t && !t.allowedUsers.includes(u)){
+    t.allowedUsers.push(u);
+    saveTracks(tracks);
+  }
+}
+
+function revokeUser(trackId,username){
+  const tracks=getStoredTracks();
+  const t=tracks.find(x=>x.id===trackId);
+  if(t){
+    t.allowedUsers=t.allowedUsers.filter(x=>x!==username);
+    saveTracks(tracks);
+  }
+}
+
+function deleteTrack(trackId){
+  let tracks=getStoredTracks();
+  tracks=tracks.filter(x=>x.id!==trackId);
+  saveTracks(tracks);
 }
 
 async function handleFileUpload(e){
@@ -219,7 +322,7 @@ async function handleFileUpload(e){
   if(!file)return;
   const stat=document.getElementById('upload-status');
   stat.style.display='block';
-  stat.textContent=`> Đang tính toán băm SHA256 và sinh vector mã hóa AES-256-GCM cho ${file.name}...`;
+  stat.textContent=`> Đang mã hóa client-side AES-256-GCM cho ${file.name}...`;
 
   const id='track_'+Date.now();
   await saveMediaBlob(id,file);
@@ -234,17 +337,18 @@ async function handleFileUpload(e){
     type:file.type||'audio/mp3',
     size:sizeMb,
     hash:hashPart,
-    shared:true,
-    hasCustomBlob:true
+    allowedUsers:[]
   });
-  notifySync(tracks);
+  saveTracks(tracks);
 
-  stat.textContent=`> [THÀNH CÔNG] Đã niêm phong ${file.name}! Đã cấp quyền tự động cho Minh. Bạn có thể mở Trang 2 để phát thử ngay!`;
+  stat.textContent=`> [THÀNH CÔNG] Đã niêm phong ${file.name}! Hãy chọn người nghe bên dưới để cấp quyền.`;
   e.target.value='';
 }
 
-window.addEventListener('storage',render);
-render();
+window.addEventListener('storage',()=>{getStoredUsers();renderArtistTracks();});
+try{new BroadcastChannel('tide_channel').onmessage=()=>{getStoredUsers();renderArtistTracks();}}catch(e){}
+
+checkAuth();
 </script>
 </body>
 </html>

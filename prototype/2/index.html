@@ -3,96 +3,97 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Phòng Nghe Thử Bảo Mật · UNRELEASED (Trang 2/3)</title>
+<title>Người Nghe Thử · UNRELEASED (Tide BYOiD Identity)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
+
 :root{
-  --bg:#08090d;--surface:rgba(255,255,255,.025);--surface-2:rgba(255,255,255,.05);
-  --line:rgba(255,255,255,.08);--line-strong:rgba(255,255,255,.15);
-  --fg:#f4f5f7;--muted:#8b8fa0;--dim:#5a5e6e;
-  --accent:#d4ff3f;--danger:#ff4d6d;--danger-dim:rgba(255,77,109,.12);
+  --bg:#07080c;--surface:rgba(255,255,255,.03);--surface-2:rgba(255,255,255,.06);
+  --line:rgba(255,255,255,.08);--line-strong:rgba(255,255,255,.16);
+  --fg:#f4f5f7;--muted:#8b8fa0;--dim:#555968;
+  --accent:#d4ff3f;--accent-dim:rgba(212,255,63,.12);
+  --danger:#ff4d6d;--danger-dim:rgba(255,77,109,.12);
   --ok:#3ee88f;--ok-dim:rgba(62,232,143,.12);--radius:16px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--fg);font-family:'Space Grotesk',sans-serif;line-height:1.5;min-height:100vh}
-body::before{content:'';position:fixed;inset:0;z-index:-2;background:radial-gradient(900px 500px at 20% -5%,rgba(0,242,254,.07),transparent 60%)}
+body::before{content:'';position:fixed;inset:0;z-index:-2;background:radial-gradient(900px 500px at 80% -5%,rgba(212,255,63,.07),transparent 60%)}
 .mono{font-family:'JetBrains Mono',monospace}
 
-.topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:16px 32px;backdrop-filter:blur(18px);background:rgba(8,9,13,.75);border-bottom:1px solid var(--line)}
+/* Topbar sạch sẽ - KHÔNG CÒN 3 NÚT CHUYỂN CHẾ ĐỘ */
+.topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:16px 32px;backdrop-filter:blur(20px);background:rgba(7,8,12,.8);border-bottom:1px solid var(--line)}
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;font-weight:700}
 .brand-dot{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent)}
 .brand small{display:block;font-size:11px;color:var(--muted);font-weight:400}
-
-.nav-links{display:flex;gap:6px;background:var(--surface);border:1px solid var(--line);padding:4px;border-radius:12px}
-.nav-link{font-size:13px;font-weight:500;color:var(--muted);text-decoration:none;padding:8px 14px;border-radius:8px;transition:.18s;display:flex;align-items:center;gap:6px}
-.nav-link:hover{color:var(--fg)}
-.nav-link.active{background:var(--fg);color:#0a0b0e;font-weight:600}
+.topbar-right{display:flex;align-items:center;gap:14px}
 .pill-tide{font-size:11px;font-weight:600;color:#0a0b0e;background:var(--accent);padding:6px 12px;border-radius:999px}
+.user-badge{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);padding:6px 12px;border-radius:10px;font-size:12px}
+.user-dot{width:7px;height:7px;border-radius:50%;background:var(--ok)}
 
-.container{max-width:1080px;margin:40px auto 80px;padding:0 24px}
-.page-header{margin-bottom:28px;display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
-.page-title h1{font-size:28px;letter-spacing:-.03em;font-weight:700}
-.page-title p{color:var(--muted);font-size:14px;margin-top:4px}
+/* Container */
+.container{max-width:1080px;margin:36px auto 80px;padding:0 24px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:28px;margin-bottom:24px;backdrop-filter:blur(14px)}
 
-.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:28px;margin-bottom:24px;backdrop-filter:blur(12px)}
-
-/* Player elements */
-.now-playing{display:flex;align-items:center;gap:20px;margin-bottom:24px}
-.disc{
-  width:78px;height:78px;border-radius:50%;flex-shrink:0;
-  background:repeating-radial-gradient(#0c0d12,#0c0d12 2px,#17181f 3px,#0c0d12 4px);
-  border:1px solid var(--line-strong);position:relative;display:flex;align-items:center;justify-content:center;
+/* Form controls */
+.form-group{margin-bottom:16px}
+.form-label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em}
+.form-input{
+  width:100%;padding:11px 14px;background:var(--bg);border:1px solid var(--line);border-radius:10px;
+  color:var(--fg);font-family:inherit;font-size:14px;outline:none;transition:.18s;
 }
+.form-input:focus{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-dim)}
+
+.btn{
+  font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;
+  padding:10px 18px;border-radius:10px;border:1px solid transparent;transition:.18s;
+  display:inline-flex;align-items:center;gap:8px;text-decoration:none;
+}
+.btn-accent{background:var(--accent);color:#0a0b0e}
+.btn-accent:hover{filter:brightness(1.1);transform:translateY(-1px)}
+.btn-danger{background:var(--danger-dim);color:var(--danger);border-color:rgba(255,77,109,.3)}
+.btn-danger:hover{background:rgba(255,77,109,.2)}
+.btn-ok{background:var(--ok-dim);color:var(--ok);border-color:rgba(62,232,143,.3)}
+.btn-ok:hover{background:rgba(62,232,143,.2)}
+.btn-ghost{background:transparent;border-color:var(--line-strong);color:var(--fg)}
+.btn-ghost:hover{background:var(--surface-2)}
+.btn-sm{padding:6px 12px;font-size:12px}
+
+.auth-box{max-width:440px;margin:60px auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:36px;backdrop-filter:blur(16px)}
+.auth-title{font-size:24px;font-weight:700;margin-bottom:8px}
+.auth-sub{font-size:13px;color:var(--muted);margin-bottom:24px}
+.auth-tabs{display:flex;gap:6px;margin-bottom:20px;background:var(--bg);padding:4px;border-radius:10px;border:1px solid var(--line)}
+.auth-tab{flex:1;text-align:center;padding:8px;font-size:12px;font-weight:600;color:var(--muted);background:transparent;border:none;border-radius:8px;cursor:pointer}
+.auth-tab.active{background:var(--surface-2);color:var(--fg)}
+
+.badge{font-size:11px;font-weight:600;padding:5px 10px;border-radius:999px;white-space:nowrap}
+.badge-ok{color:var(--ok);background:var(--ok-dim);border:1px solid rgba(62,232,143,.25)}
+.badge-danger{color:var(--danger);background:var(--danger-dim);border:1px solid rgba(255,77,109,.25)}
+
+.hidden{display:none!important}
+.footer{max-width:1080px;margin:0 auto;padding:24px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;color:var(--dim);font-size:12px}
+
+.now-playing{display:flex;align-items:center;gap:20px;margin-bottom:24px}
+.disc{width:78px;height:78px;border-radius:50%;flex-shrink:0;background:repeating-radial-gradient(#0c0d12,#0c0d12 2px,#17181f 3px,#0c0d12 4px);border:1px solid var(--line-strong);position:relative;display:flex;align-items:center;justify-content:center}
 .disc::after{content:'';width:20px;height:20px;border-radius:50%;background:var(--accent)}
 .disc.spin{animation:spin 3s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.np-title{font-size:18px;font-weight:700}
-.np-status{font-size:12px;color:var(--ok);margin-top:4px;display:flex;align-items:center;gap:6px}
-
-.visualizer{
-  height:96px;display:flex;align-items:flex-end;gap:3px;border:1px solid var(--line);border-radius:14px;
-  background:linear-gradient(180deg,transparent,rgba(212,255,63,.015));overflow:hidden;padding:14px;margin-bottom:24px;
-}
+.visualizer{height:96px;display:flex;align-items:flex-end;gap:3px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(180deg,transparent,rgba(212,255,63,.015));overflow:hidden;padding:14px;margin-bottom:24px}
 .bar{flex:1;background:var(--line-strong);border-radius:3px;height:10%;transition:height .1s ease}
 .bar.on{background:linear-gradient(180deg,var(--accent),rgba(212,255,63,.3))}
-
-.player-controls{display:flex;align-items:center;gap:18px}
-.play-btn{
-  width:56px;height:56px;border-radius:50%;flex-shrink:0;cursor:pointer;border:none;
-  background:var(--accent);color:#0a0b0e;font-size:20px;transition:.2s;display:flex;align-items:center;justify-content:center;
-}
+.play-btn{width:56px;height:56px;border-radius:50%;flex-shrink:0;cursor:pointer;border:none;background:var(--accent);color:#0a0b0e;font-size:20px;display:flex;align-items:center;justify-content:center;transition:.2s}
 .play-btn:hover{transform:scale(1.06)}
 .timebar{flex:1}
-.track-line{height:6px;border-radius:999px;background:var(--surface-2);overflow:hidden;cursor:pointer}
+.track-line{height:6px;border-radius:999px;background:var(--surface-2);overflow:hidden}
 .fill{height:100%;width:0%;background:var(--accent);transition:width .25s linear}
 .times{display:flex;justify-content:space-between;font-size:11px;color:var(--dim);margin-top:8px}
-
-.video-wrap{margin-bottom:20px;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:#000}
-video{width:100%;max-height:480px;display:block}
-
-/* Denied state */
-.denied-card{
-  text-align:center;padding:60px 24px;border:1px solid rgba(255,77,109,.3);
-  border-radius:18px;background:var(--danger-dim);margin-bottom:24px;
-}
-.denied-icon{font-size:48px;margin-bottom:12px}
-.denied-title{font-size:22px;color:var(--danger);font-weight:700}
-.denied-desc{color:var(--muted);font-size:14px;max-width:540px;margin:10px auto 0}
-.denied-code{display:inline-block;font-size:12px;color:var(--danger);border:1px solid rgba(255,77,109,.3);padding:6px 14px;border-radius:8px;margin-top:18px}
-
-/* Selector pill */
+.denied-box{text-align:center;padding:50px 20px;border:1px solid rgba(255,77,109,.3);border-radius:18px;background:var(--danger-dim);margin-bottom:24px}
 .track-picker{display:flex;gap:8px;overflow-x:auto;padding-bottom:12px;margin-bottom:20px}
-.picker-btn{
-  background:var(--surface);border:1px solid var(--line);color:var(--muted);
-  padding:8px 14px;border-radius:10px;cursor:pointer;font-family:inherit;font-size:12px;white-space:nowrap;transition:.18s;
-}
+.picker-btn{background:var(--surface);border:1px solid var(--line);color:var(--muted);padding:8px 14px;border-radius:10px;cursor:pointer;font-family:inherit;font-size:12px;white-space:nowrap;transition:.18s}
 .picker-btn:hover{color:var(--fg);border-color:var(--line-strong)}
 .picker-btn.active{background:var(--surface-2);color:var(--accent);border-color:var(--accent)}
-
-.footer{max-width:1080px;margin:0 auto;padding:24px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;color:var(--dim);font-size:12px}
-.hidden{display:none!important}
+video{width:100%;max-height:480px;border-radius:14px;border:1px solid var(--line);background:#000;display:block}
 </style>
 </head>
 <body>
@@ -100,90 +101,153 @@ video{width:100%;max-height:480px;display:block}
 <header class="topbar">
   <a href="/rmit" class="brand">
     <span class="brand-dot"></span>
-    <div>UNRELEASED<small>Zero-Trust Media Vault</small></div>
+    <div>UNRELEASED<small>Phòng Nghe Thử & Đánh Giá</small></div>
   </a>
-  <nav class="nav-links">
-    <a href="/rmit/1" class="nav-link">🎧 1. Nghệ Sĩ</a>
-    <a href="/rmit/2" class="nav-link active">🎙 2. Người Nghe Thử</a>
-    <a href="/rmit/3" class="nav-link">⚠️ 3. Quản Trị Máy Chủ</a>
-  </nav>
-  <span class="pill-tide">Powered by TideCloak</span>
+  <div class="topbar-right">
+    <div id="reviewer-user-info" class="user-badge hidden">
+      <span class="user-dot"></span>
+      <span id="reviewer-name-display" class="mono">minh_mastering</span>
+      <button class="btn btn-ghost btn-sm" onclick="logoutReviewer()" style="margin-left:6px;padding:2px 8px">Đăng xuất</button>
+    </div>
+    <span class="pill-tide">Tide BYOiD Session</span>
+  </div>
 </header>
 
 <main class="container">
-  <div class="page-header">
-    <div class="page-title">
-      <h1>Phòng Nghe Thử & Đánh Giá (Kỹ Sư Minh)</h1>
-      <p>Xác thực qua TideCloak BYOiD · Giải mã trực tiếp trên bộ nhớ RAM (Zero Disk Cache)</p>
+
+  <!-- MÀN HÌNH ĐĂNG NHẬP / TẠO DANH TÍNH NGƯỜI NGHE -->
+  <div id="reviewer-auth-view" class="auth-box">
+    <div class="auth-tabs">
+      <button id="tab-login" class="auth-tab active" onclick="switchAuthTab('login')">Đăng Nhập Danh Tính</button>
+      <button id="tab-register" class="auth-tab" onclick="switchAuthTab('register')">Tạo Danh Tính Mới</button>
     </div>
-    <div style="font-size:12px;color:var(--muted)">Đồng bộ tự động từ Trang 1</div>
+
+    <!-- Tab Đăng nhập -->
+    <div id="form-login">
+      <div class="auth-title">Đăng Nhập Người Nghe</div>
+      <div class="auth-sub">Chọn danh tính đã có hoặc nhập username của bạn (Mật khẩu: 123)</div>
+
+      <div class="form-group">
+        <label class="form-label">Chọn Hoặc Nhập Username</label>
+        <select id="quick-user-select" class="form-input" style="margin-bottom:8px" onchange="document.getElementById('reviewer-login-user').value=this.value">
+          <option value="minh_mastering">minh_mastering — Minh (Kỹ Sư Hòa Âm)</option>
+          <option value="thu_producer">thu_producer — Thu (Giám Đốc Sản Xuất)</option>
+          <option value="lan_soundcheck">lan_soundcheck — Lan (Kiểm Âm)</option>
+        </select>
+        <input type="text" id="reviewer-login-user" class="form-input" value="minh_mastering" placeholder="Tên đăng nhập">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Mật Khẩu (Tất cả tài khoản: 123)</label>
+        <input type="password" id="reviewer-login-pass" class="form-input" value="123" placeholder="123">
+      </div>
+      <button class="btn btn-accent" style="width:100%;justify-content:center" onclick="loginReviewer()">Đăng Nhập Vào Phiên Nghe</button>
+    </div>
+
+    <!-- Tab Tạo Danh Tính Mới -->
+    <div id="form-register" class="hidden">
+      <div class="auth-title">Tạo Danh Tính Tide BYOiD Mới</div>
+      <div class="auth-sub">Tạo một danh tính phi tập trung để nhận quyền nghe từ Nghệ Sĩ</div>
+
+      <div class="form-group">
+        <label class="form-label">Tên Của Bạn / Vai Trò</label>
+        <input type="text" id="reg-name" class="form-input" placeholder="Ví dụ: Hoàng (Audio Engineer)">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Username (Không dấu, viết liền)</label>
+        <input type="text" id="reg-user" class="form-input" placeholder="hoang_audio">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Mật Khẩu (Mặc định: 123)</label>
+        <input type="password" id="reg-pass" class="form-input" value="123" placeholder="123">
+      </div>
+      <button class="btn btn-accent" style="width:100%;justify-content:center" onclick="registerReviewer()">Khởi Tạo Danh Tính Mật Mã</button>
+    </div>
+
+    <div style="margin-top:18px;font-size:12px;color:var(--dim);text-align:center">
+      Tất cả mật khẩu đều là <code class="mono" style="color:var(--accent)">123</code>
+    </div>
   </div>
 
-  <!-- Track selector -->
-  <div class="track-picker" id="picker-container"></div>
-
-  <!-- PLAYER CONTAINER (HIỆN KHI ĐƯỢC CẤP QUYỀN) -->
-  <div id="player-box" class="card">
-    <div class="now-playing">
-      <div class="disc" id="disc"></div>
+  <!-- GIAO DIỆN NGƯỜI NGHE SAU KHI ĐĂNG NHẬP -->
+  <div id="reviewer-main-view" class="hidden">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:24px">
       <div>
-        <div class="np-title" id="active-title">Lead Single — Master v4</div>
-        <div class="np-status mono" id="active-status">● Quyền hạn tự sinh hợp lệ (Tide Emergent Authority) · RAM Playback</div>
+        <h1 style="font-size:26px;font-weight:700">Phòng Nghe Thử Bảo Mật (In-Memory Playback)</h1>
+        <p style="color:var(--muted);font-size:14px">
+          Danh tính hiện tại: <strong id="logged-user-title" style="color:var(--accent)">minh_mastering</strong> · Giải mã trực tiếp trên RAM qua Tide Emergent Authority
+        </p>
       </div>
+      <span class="badge badge-ok mono" id="entitlement-status-badge">PHIÊN LÀM VIỆC HỢP LỆ</span>
     </div>
 
-    <!-- Video container (nếu là video) -->
-    <div id="video-wrap" class="video-wrap hidden">
-      <video id="html5-video" controls></video>
-    </div>
+    <!-- Chọn bài hát trong danh sách -->
+    <div class="track-picker" id="reviewer-track-picker"></div>
 
-    <!-- Audio Visualizer (nếu là audio) -->
-    <div id="audio-visualizer-wrap">
-      <div class="visualizer" id="viz"></div>
-      <div class="player-controls">
-        <button class="play-btn" id="play-btn" onclick="togglePlay()">▶</button>
-        <div class="timebar" onclick="seekAudio(event)">
-          <div class="track-line"><div class="fill" id="fill"></div></div>
-          <div class="times mono"><span id="cur">0:00</span><span id="dur">3:42</span></div>
+    <!-- KHUNG PHÁT KHI CÓ QUYỀN -->
+    <div id="player-box" class="card">
+      <div class="now-playing">
+        <div class="disc" id="disc"></div>
+        <div>
+          <div style="font-size:18px;font-weight:700" id="np-title">Lead_Single_Master_v4.flac</div>
+          <div style="font-size:12px;color:var(--ok);margin-top:4px" class="mono" id="np-status">
+            ● Đã xác thực danh tính với Tide Quorum · Quyền hạn tự sinh hợp lệ
+          </div>
         </div>
       </div>
+
+      <!-- Video player nếu là video -->
+      <div id="video-container" class="hidden" style="margin-bottom:20px">
+        <video id="html5-video" controls></video>
+      </div>
+
+      <!-- Audio player visualizer -->
+      <div id="audio-visualizer-container">
+        <div class="visualizer" id="viz"></div>
+        <div style="display:flex;align-items:center;gap:18px">
+          <button class="play-btn" id="play-btn" onclick="togglePlay()">▶</button>
+          <div class="timebar">
+            <div class="track-line"><div class="fill" id="fill"></div></div>
+            <div class="times mono"><span id="cur">0:00</span><span id="dur">3:42</span></div>
+          </div>
+        </div>
+      </div>
+
+      <audio id="native-audio" style="display:none"></audio>
     </div>
 
-    <audio id="native-audio" style="display:none"></audio>
+    <!-- KHUNG BÁO LỖI KHI BỊ THU HỒI / CHƯA CẤP QUYỀN -->
+    <div id="denied-box" class="denied-box hidden">
+      <div style="font-size:44px;margin-bottom:8px">⛔</div>
+      <h3 style="font-size:22px;color:var(--danger);font-weight:700">Tide Quorum: TỪ CHỐI GIẢI MÃ</h3>
+      <p style="color:var(--muted);font-size:14px;max-width:540px;margin:8px auto 0">
+        Danh tính của bạn (<strong id="denied-username" style="color:var(--fg)"></strong>) chưa được cấp quyền hoặc vừa bị Nghệ Sĩ thu hồi quyền đối với tác phẩm này.
+      </p>
+      <div class="mono" style="font-size:12px;color:var(--danger);border:1px solid rgba(255,77,109,.3);display:inline-block;padding:6px 14px;border-radius:8px;margin-top:16px">
+        403 EntitlementDenied · Zero-Trust Policy Enforced
+      </div>
+    </div>
   </div>
 
-  <!-- BLOCKED CONTAINER (HIỆN KHI THU HỒI QUYỀN) -->
-  <div id="denied-box" class="denied-card hidden">
-    <div class="denied-icon">⛔</div>
-    <div class="denied-title">Mạng Quorum Đã Từ Chối Cấp Khóa Giải Mã</div>
-    <div class="denied-desc">
-      Nghệ sĩ Alice đã thu hồi quyền của tác phẩm này ở Trang 1. Vì quyền hạn mang tính tự sinh tức thời từ mạng phân tán chứ không lưu trên máy chủ, không một bộ nhớ cache hay token nào có thể giải mã được luồng âm thanh/video này.
-    </div>
-    <div class="denied-code mono">403 · EntitlementRevoked · Zero-Trust Policy Enforced</div>
-  </div>
 </main>
 
 <footer class="footer">
-  <span>Trang 2 / 3 · Người Nghe Thử · Team Foodseekers</span>
-  <span class="mono">RMIT Hackathon 2026</span>
+  <span>UNRELEASED · Cổng Người Nghe Thử · Powered by TideCloak</span>
+  <span class="mono">Mật khẩu hệ thống: 123</span>
 </footer>
 
 <script>
-const DB_NAME = 'tide_vault_db', STORE_NAME = 'media_blobs';
-function openDB(){
-  return new Promise((res,rej)=>{
-    const req=indexedDB.open(DB_NAME,1);
-    req.onupgradeneeded=e=>{if(!e.target.result.objectStoreNames.contains(STORE_NAME))e.target.result.createObjectStore(STORE_NAME)};
-    req.onsuccess=()=>res(req.result);req.onerror=()=>rej(req.error);
-  });
-}
-async function getMediaBlob(id){
-  const db=await openDB();
-  return new Promise((res,rej)=>{const tx=db.transaction(STORE_NAME,'readonly');const req=tx.objectStore(STORE_NAME).get(id);req.onsuccess=()=>res(req.result);req.onerror=()=>rej(tx.error)});
+const DB_NAME='tide_vault_db', STORE_NAME='media_blobs';
+function openDB(){return new Promise((res,rej)=>{const r=indexedDB.open(DB_NAME,1);r.onupgradeneeded=e=>{if(!e.target.result.objectStoreNames.contains(STORE_NAME))e.target.result.createObjectStore(STORE_NAME)};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});}
+async function getMediaBlob(id){const db=await openDB();return new Promise((res,rej)=>{const tx=db.transaction(STORE_NAME,'readonly');const req=tx.objectStore(STORE_NAME).get(id);req.onsuccess=()=>res(req.result);req.onerror=()=>rej(tx.error)});}
+
+function getStoredUsers(){
+  const d=localStorage.getItem('tide_users');
+  if(d){try{return JSON.parse(d)}catch(e){}}
+  return [];
 }
 
 function getStoredTracks(){
-  const d=localStorage.getItem('tide_tracks');
+  const d=localStorage.getItem('tide_tracks_v2');
   if(d){try{return JSON.parse(d)}catch(e){}}
   return [];
 }
@@ -192,79 +256,157 @@ let activeTrackId = null;
 let isPlaying = false, synthInterval = null, timerInterval = null, ctx = null, t = 0, noteIdx = 0;
 const notes = [261.63, 329.63, 392, 523.25, 440, 392, 329.63, 293.66];
 
-// Build visualizer bars
-const viz = document.getElementById('viz');
+const viz=document.getElementById('viz');
 for(let i=0;i<56;i++){const b=document.createElement('div');b.className='bar';viz.appendChild(b)}
 const bars=[...document.querySelectorAll('.bar')];
 
-function setupPicker(){
-  const tracks=getStoredTracks(), picker=document.getElementById('picker-container');
+function switchAuthTab(tab){
+  document.getElementById('tab-login').classList.toggle('active',tab==='login');
+  document.getElementById('tab-register').classList.toggle('active',tab==='register');
+  document.getElementById('form-login').classList.toggle('hidden',tab!=='login');
+  document.getElementById('form-register').classList.toggle('hidden',tab!=='register');
+}
+
+function loginReviewer(){
+  const u=document.getElementById('reviewer-login-user').value.trim();
+  const p=document.getElementById('reviewer-login-pass').value.trim();
+  if(!u){alert('Vui lòng nhập username!');return;}
+  if(p!=='123'){alert('Mật khẩu không đúng! (Gợi ý: Mật khẩu là 123)');return;}
+  localStorage.setItem('tide_logged_reviewer',u);
+  checkAuth();
+}
+
+function registerReviewer(){
+  const name=document.getElementById('reg-name').value.trim();
+  const u=document.getElementById('reg-user').value.trim().toLowerCase();
+  const p=document.getElementById('reg-pass').value.trim();
+  if(!name || !u){alert('Vui lòng điền đủ tên và username!');return;}
+  if(p!=='123'){alert('Vui lòng đặt mật khẩu 123!');return;}
+
+  const users=getStoredUsers();
+  if(users.some(x=>x.username===u)){alert('Username này đã tồn tại!');return;}
+
+  const newUser={username:u,name:name,role:'reviewer',did:'tide:usr:'+u+'_'+Math.random().toString(16).substring(2,6)};
+  users.push(newUser);
+  localStorage.setItem('tide_users',JSON.stringify(users));
+  try{new BroadcastChannel('tide_channel').postMessage({type:'SYNC_DATA'})}catch(e){}
+
+  localStorage.setItem('tide_logged_reviewer',u);
+  alert(`Đã khởi tạo danh tính Tide BYOiD thành công: ${newUser.did}! Nghệ sĩ ở Trang 1 có thể thấy và cấp quyền cho bạn ngay bây giờ.`);
+  checkAuth();
+}
+
+function logoutReviewer(){
+  localStorage.removeItem('tide_logged_reviewer');
+  checkAuth();
+}
+
+function checkAuth(){
+  const u=localStorage.getItem('tide_logged_reviewer');
+  const authView=document.getElementById('reviewer-auth-view');
+  const mainView=document.getElementById('reviewer-main-view');
+  const userInfo=document.getElementById('reviewer-user-info');
+  const nameDisp=document.getElementById('reviewer-name-display');
+
+  // Cập nhật dropdown đăng nhập nhanh
+  const users=getStoredUsers();
+  const quickSelect=document.getElementById('quick-user-select');
+  if(quickSelect && users.length){
+    quickSelect.innerHTML=users.map(x=>`<option value="${x.username}">${x.username} — ${x.name}</option>`).join('');
+  }
+
+  if(u){
+    authView.classList.add('hidden');
+    mainView.classList.remove('hidden');
+    userInfo.classList.remove('hidden');
+    nameDisp.textContent=u;
+    document.getElementById('logged-user-title').textContent=u;
+    renderTracksPicker();
+    syncPlaybackState();
+  }else{
+    authView.classList.remove('hidden');
+    mainView.classList.add('hidden');
+    userInfo.classList.add('hidden');
+    stopAudio();
+  }
+}
+
+function renderTracksPicker(){
+  const tracks=getStoredTracks();
+  const picker=document.getElementById('reviewer-track-picker');
   picker.innerHTML='';
   if(!tracks.length) return;
   if(!activeTrackId || !tracks.some(x=>x.id===activeTrackId)){
     activeTrackId=tracks[0].id;
   }
+  const currentUser=localStorage.getItem('tide_logged_reviewer');
+
   tracks.forEach(t=>{
+    const isAllowed=t.allowedUsers.includes(currentUser);
     const btn=document.createElement('button');
     btn.className='picker-btn '+(t.id===activeTrackId?'active':'');
-    btn.textContent=(t.type.startsWith('video')?'🎬 ':'🎵 ')+t.name+(t.shared?' (Được nghe)':' (Khóa)');
-    btn.onclick=()=>{activeTrackId=t.id;stop();setupPicker();syncView();};
+    btn.textContent=(t.type.startsWith('video')?'🎬 ':'🎵 ')+t.name+(isAllowed?' (Có quyền)':' (Bị khóa)');
+    btn.onclick=()=>{
+      activeTrackId=t.id;
+      stopAudio();
+      renderTracksPicker();
+      syncPlaybackState();
+    };
     picker.appendChild(btn);
   });
 }
 
-async function syncView(){
+async function syncPlaybackState(){
+  const currentUser=localStorage.getItem('tide_logged_reviewer');
+  if(!currentUser) return;
+
   const tracks=getStoredTracks();
   const track=tracks.find(x=>x.id===activeTrackId)||tracks[0];
   if(!track) return;
 
   const playerBox=document.getElementById('player-box');
   const deniedBox=document.getElementById('denied-box');
-  const activeTitle=document.getElementById('active-title');
-  const activeStatus=document.getElementById('active-status');
-  const videoWrap=document.getElementById('video-wrap');
-  const audioVizWrap=document.getElementById('audio-visualizer-wrap');
-  const disc=document.getElementById('disc');
-  const html5Video=document.getElementById('html5-video');
+  const badge=document.getElementById('entitlement-status-badge');
+  const npTitle=document.getElementById('np-title');
+  const isAllowed=track.allowedUsers.includes(currentUser);
 
-  activeTitle.textContent=track.name;
+  npTitle.textContent=track.name;
 
-  if(!track.shared){
-    stop();
+  if(!isAllowed){
+    stopAudio();
     playerBox.classList.add('hidden');
     deniedBox.classList.remove('hidden');
+    document.getElementById('denied-username').textContent=currentUser;
+    badge.className='badge badge-danger mono';
+    badge.textContent='QUYỀN BỊ TỪ CHỐI (403)';
     return;
   }
 
   playerBox.classList.remove('hidden');
   deniedBox.classList.add('hidden');
+  badge.className='badge badge-ok mono';
+  badge.textContent='ỦY QUYỀN HỢP LỆ';
 
   const isVideo=track.type.startsWith('video');
+  const videoCont=document.getElementById('video-container');
+  const audioCont=document.getElementById('audio-visualizer-container');
+  const disc=document.getElementById('disc');
+
   if(isVideo){
-    videoWrap.classList.remove('hidden');
-    audioVizWrap.classList.add('hidden');
+    videoCont.classList.remove('hidden');
+    audioCont.classList.add('hidden');
     disc.classList.add('hidden');
-    activeStatus.textContent='● Luồng Video Được Giải Mã Qua Emergent Authority';
-
-    // Load video blob if uploaded
     const blob=await getMediaBlob(track.id);
     if(blob){
-      html5Video.src=URL.createObjectURL(blob);
+      document.getElementById('html5-video').src=URL.createObjectURL(blob);
     }
-  } else {
-    videoWrap.classList.add('hidden');
-    audioVizWrap.classList.remove('hidden');
+  }else{
+    videoCont.classList.add('hidden');
+    audioCont.classList.remove('hidden');
     disc.classList.remove('hidden');
-    activeStatus.textContent='● Quyền hạn tự sinh hợp lệ (Tide Emergent Authority) · RAM Playback';
-
-    // Load audio blob if uploaded
-    const nativeAudio=document.getElementById('native-audio');
     const blob=await getMediaBlob(track.id);
-    if(blob){
-      nativeAudio.src=URL.createObjectURL(blob);
-    } else {
-      nativeAudio.removeAttribute('src');
-    }
+    const na=document.getElementById('native-audio');
+    if(blob){na.src=URL.createObjectURL(blob);}else{na.removeAttribute('src');}
   }
 }
 
@@ -280,7 +422,7 @@ function tone(f){
   }catch(e){}
 }
 
-function stop(){
+function stopAudio(){
   isPlaying=false;
   document.getElementById('play-btn').textContent='▶';
   document.getElementById('disc').classList.remove('spin');
@@ -293,9 +435,10 @@ function stop(){
 }
 
 function togglePlay(){
+  const currentUser=localStorage.getItem('tide_logged_reviewer');
   const tracks=getStoredTracks();
   const track=tracks.find(x=>x.id===activeTrackId);
-  if(!track || !track.shared) return;
+  if(!track || !track.allowedUsers.includes(currentUser)) return;
 
   isPlaying=!isPlaying;
   const playBtn=document.getElementById('play-btn');
@@ -305,7 +448,6 @@ function togglePlay(){
   if(isPlaying){
     playBtn.textContent='⏸';
     disc.classList.add('spin');
-
     if(na && na.src && na.src.startsWith('blob:')){
       na.play().catch(e=>console.log(e));
       na.ontimeupdate=()=>{
@@ -318,7 +460,7 @@ function togglePlay(){
         bars.forEach(b=>b.style.height=(15+Math.random()*80)+'%');
         bars.forEach(b=>b.classList.toggle('on',Math.random()>.25));
       },180);
-    } else {
+    }else{
       tone(notes[noteIdx]);
       synthInterval=setInterval(()=>{
         noteIdx=(noteIdx+1)%notes.length;tone(notes[noteIdx]);
@@ -331,26 +473,16 @@ function togglePlay(){
         document.getElementById('fill').style.width=Math.min(t/222*100,100)+'%';
       },1000);
     }
-  } else {
-    stop();
+  }else{
+    stopAudio();
   }
 }
 
-// Bắt sự kiện đồng bộ từ Trang 1
-try{
-  const bc=new BroadcastChannel('tide_channel');
-  bc.onmessage=(e)=>{
-    if(e.data && e.data.type==='SYNC_TRACKS'){
-      setupPicker();
-      syncView();
-    }
-  };
-}catch(e){}
+// Lắng nghe sự kiện thu hồi/cấp quyền từ Trang 1 theo thời gian thực
+window.addEventListener('storage',()=>{renderTracksPicker();syncPlaybackState();});
+try{new BroadcastChannel('tide_channel').onmessage=()=>{renderTracksPicker();syncPlaybackState();}}catch(e){}
 
-window.addEventListener('storage',()=>{setupPicker();syncView();});
-
-setupPicker();
-syncView();
+checkAuth();
 </script>
 </body>
 </html>
