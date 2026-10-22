@@ -4,8 +4,9 @@
 
 > **RMIT Hackathon 2026 · Challenge 2 (UNLOCKED by Tide)** — Team Foodseekers (UIT)
 >
-> Interactive demo: open [`prototype/index.html`](./prototype/index.html) in any browser (zero install).
-> Two-minute demo video: [`demo/unreleased-demo.mp4`](./demo/).
+> 🌐 **Live Web App:** [https://bersious.io.vn/rmit](https://bersious.io.vn/rmit)
+> 💻 **Local Interactive Demo:** open [`prototype/index.html`](./prototype/index.html) in any browser (zero install).
+> 🎥 **Two-minute demo video:** [`demo/unreleased-demo.mp4`](./demo/).
 
 ## Project overview
 
