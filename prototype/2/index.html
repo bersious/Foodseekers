@@ -388,6 +388,21 @@ video{width:100%;max-height:460px;border-radius:14px;border:1px solid var(--line
       <audio id="native-audio" style="display:none"></audio>
     </div>
 
+    
+    <!-- KHUNG GÓP Ý & BÌNH LUẬN CHO NGHỆ SĨ -->
+    <div class="card" style="margin-top:20px;background:linear-gradient(145deg,#141914,#0e130f)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h3 style="font-size:14px;font-weight:700">Góp ý & Đánh giá gửi tới Nghệ Sĩ</h3>
+        <span class="mono" style="font-size:11px;color:var(--muted)" id="comment-track-target">Bài hát hiện tại</span>
+      </div>
+      <div style="display:flex;gap:10px;margin-bottom:14px">
+        <input type="text" id="comment-input" class="form-input" style="flex:1" placeholder="Nhập nhận xét về bản mix, vocal, độ dày của bass..." onkeydown="if(event.key==='Enter')submitReviewerComment()">
+        <button class="btn btn-accent btn-sm" onclick="submitReviewerComment()">Gửi góp ý</button>
+      </div>
+      <div id="reviewer-comments-list" style="max-height:160px;overflow-y:auto;display:flex;flex-direction:column;gap:8px">
+      </div>
+    </div>
+
     <!-- BẢNG NHẬT KÝ ĐÁNH GIÁ QUYỀN HẠN TIDECLOAK (AUDIT LOG) -->
     <div class="card">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
@@ -449,6 +464,7 @@ async function fetchCloudState() {
       localStorage.setItem('tide_users', JSON.stringify(cloudStateCache.users || []));
       localStorage.setItem('tide_requests_v2', newRequestsStr);
       localStorage.setItem('tide_artists', JSON.stringify(cloudStateCache.artists || []));
+      localStorage.setItem('tide_comments_v2', JSON.stringify(cloudStateCache.comments || []));
 
       // CHỈ CẬP NHẬT GIAO DIỆN KHI THỰC SỰ CÓ THAY ĐỔI VỀ QUYỀN TRUY CẬP HOẶC BÀI HÁT MỚI!
       if (prevTracksStr !== newTracksStr || prevRequestsStr !== newRequestsStr) {
@@ -860,9 +876,11 @@ async function syncActiveTrackView(){
     npStatus.style.color = 'var(--accent)';
     const isSingle = Array.isArray(track.singlePlayUsers) && track.singlePlayUsers.includes(currentUser);
     let wmBadge = '';
+    let tamperBadge = '';
+    if(track.tamperProtection) tamperBadge = ' <span class="badge badge-danger mono" style="margin-left:6px">Chống can thiệp: Bật</span>';
     if(track.watermarkMode === 'duck') wmBadge = ' <span class="badge badge-warn mono" style="margin-left:6px">Watermark tiếng vịt</span>';
     else if(track.watermarkMode === 'voice') wmBadge = ' <span class="badge badge-warn mono" style="margin-left:6px">Watermark giọng AI</span>';
-    npBadge.innerHTML = `<span class="badge badge-ok">Đã được duyệt</span>${isSingle?' <span class="badge badge-warn mono" style="margin-left:6px">Chỉ nghe 1 lần</span>':''}${wmBadge}`;
+    npBadge.innerHTML = `<span class="badge badge-ok">Đã được duyệt</span>${isSingle?' <span class="badge badge-warn mono" style="margin-left:6px">Chỉ nghe 1 lần</span>':''}${tamperBadge}${wmBadge}`;
     lockedPanel.classList.add('hidden');
 
     if(isVideo){
@@ -1104,6 +1122,7 @@ function togglePlay(){
     disc.classList.add('spin');
     appendLog(`[PLAYBACK] Bắt đầu luồng giải mã in-memory cho "${track.name}"`, 'var(--accent)');
     startWatermarkEngine(track);
+    startTamperWatchdog(track);
 
     if(na && na.src && (na.src.startsWith('http') || na.src.startsWith('blob:'))){
       na.play().catch(e=>console.log(e));
@@ -1143,6 +1162,136 @@ function togglePlay(){
     stopAudio();
     appendLog(`[TẠM DỪNG] Luồng giải mã tạm ngắt.`, 'var(--muted)');
   }
+}
+
+
+// ==================== BÌNH LUẬN & GÓP Ý CHO NGHỆ SĨ ====================
+function getStoredComments(){
+  const d = localStorage.getItem('tide_comments_v2');
+  if(d){try{return JSON.parse(d)}catch(e){}}
+  return [];
+}
+
+function renderReviewerComments(){
+  const list = document.getElementById('reviewer-comments-list');
+  const targetLabel = document.getElementById('comment-track-target');
+  if(!list) return;
+
+  const tracks = getStoredTracks();
+  const track = tracks.find(x => x.id === activeTrackId);
+  if(!track){
+    list.innerHTML = '<div style="font-size:12px;color:var(--muted)">Chọn một bài hát để xem và gửi nhận xét.</div>';
+    return;
+  }
+
+  if(targetLabel) targetLabel.textContent = track.name;
+  const comments = getStoredComments();
+  const trackComments = comments.filter(c => c.trackId === track.id);
+
+  if(!trackComments.length){
+    list.innerHTML = '<div style="font-size:12px;color:var(--dim)" class="mono">Chưa có bình luận nào cho bài hát này. Hãy để lại nhận xét đầu tiên!</div>';
+    return;
+  }
+
+  list.innerHTML = trackComments.map(c => `
+    <div style="background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:12px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:2px">
+        <strong style="color:var(--accent)">${c.username}</strong>
+        <span style="font-size:10px;color:var(--dim)" class="mono">${new Date(c.createdAt||Date.now()).toLocaleTimeString()}</span>
+      </div>
+      <div style="color:var(--fg)">${c.text}</div>
+    </div>
+  `).join('');
+}
+
+function submitReviewerComment(){
+  const input = document.getElementById('comment-input');
+  const text = input ? input.value.trim() : '';
+  const currentUser = localStorage.getItem('tide_logged_reviewer') || 'Reviewer';
+  if(!text){ alert('Vui lòng nhập nội dung nhận xét!'); return; }
+  if(!activeTrackId){ alert('Vui lòng chọn bài hát trước khi bình luận!'); return; }
+
+  const newComment = {
+    id: 'cmt_' + Date.now(),
+    trackId: activeTrackId,
+    username: currentUser,
+    text: text,
+    createdAt: new Date().toISOString()
+  };
+
+  const comments = getStoredComments();
+  comments.unshift(newComment);
+  localStorage.setItem('tide_comments_v2', JSON.stringify(comments));
+
+  pushCloudAction('ADD_COMMENT', {
+    trackId: activeTrackId,
+    username: currentUser,
+    text: text
+  });
+
+  input.value = '';
+  renderReviewerComments();
+  appendLog(`[GÓP Ý] Đã gửi nhận xét tới Nghệ Sĩ cho bài hát.`, 'var(--ok)');
+}
+
+// ==================== CƠ CHẾ PHÁT HIỆN CAN THIỆP & TỰ ĐỘNG THU HỒI ====================
+let tamperWatchdogTimer = null;
+
+function startTamperWatchdog(track){
+  stopTamperWatchdog();
+  if(!track || !track.tamperProtection) return;
+
+  tamperWatchdogTimer = setInterval(() => {
+    if(!isPlaying) return;
+
+    // 1. Phát hiện mở DevTools bằng chênh lệch kích thước cửa sổ
+    const widthDiff = window.outerWidth - window.innerWidth;
+    const heightDiff = window.outerHeight - window.innerHeight;
+    const isDevToolsOpen = widthDiff > 160 || heightDiff > 160;
+
+    // 2. Phát hiện khi trình duyệt bị mất focus (chuyển sang phần mềm ghi màn hình OBS/Screen Recorder)
+    const isWindowBlurred = document.hidden || document.visibilityState === 'hidden';
+
+    if(isDevToolsOpen || isWindowBlurred){
+      triggerInstantTamperRevocation(track, isDevToolsOpen ? 'Phát hiện mở công cụ DevTools / Trích xuất luồng' : 'Phát hiện chuyển sang ứng dụng quay quét màn hình');
+    }
+  }, 1000);
+}
+
+function stopTamperWatchdog(){
+  if(tamperWatchdogTimer){
+    clearInterval(tamperWatchdogTimer);
+    tamperWatchdogTimer = null;
+  }
+}
+
+function triggerInstantTamperRevocation(track, reason){
+  stopAudio();
+  stopTamperWatchdog();
+  const currentUser = localStorage.getItem('tide_logged_reviewer');
+
+  appendLog(`[CẢNH BÁO CAN THIỆP] ${reason}! Kích hoạt thu hồi quyền khẩn cấp.`, 'var(--danger)');
+
+  // Thu hồi quyền hạn ngay lập tức trên cloud
+  pushCloudAction('REVOKE_ACCESS', { trackId: track.id, username: currentUser });
+
+  // Thu hồi quyền cục bộ
+  if(Array.isArray(track.allowedUsers)){
+    track.allowedUsers = track.allowedUsers.filter(u => u !== currentUser);
+  }
+  const tracks = getStoredTracks();
+  const t = tracks.find(x => x.id === track.id);
+  if(t && Array.isArray(t.allowedUsers)){
+    t.allowedUsers = t.allowedUsers.filter(u => u !== currentUser);
+  }
+  localStorage.setItem('tide_tracks_v2', JSON.stringify(tracks));
+
+  alert(`CẢNH BÁO AN NINH TIDECLOAK:
+${reason}!
+Theo chính sách bảo vệ tác phẩm của Nghệ Sĩ, quyền nghe của bạn đã bị thu hồi ngay lập tức.`);
+
+  renderAlbumGrid();
+  syncActiveTrackView();
 }
 
 function appendLog(msg, color='var(--muted)'){
