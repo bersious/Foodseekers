@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="/rmit/logo.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UNRELEASED · Studio Âm Nhạc Zero-Trust — RMIT Hackathon 2026</title>
+<title>SONARA · Studio Âm Nhạc Zero-Trust — RMIT Hackathon 2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -91,14 +91,44 @@ body::before{content:'';position:fixed;inset:0;z-index:-2;background:radial-grad
 .gate-desc{font-size:13px;color:var(--muted);margin-bottom:24px;line-height:1.6}
 .gate-cta{font-size:13px;font-weight:600;color:var(--fg);display:flex;align-items:center;gap:6px}
 @media(max-width:768px){.grid{grid-template-columns:1fr}}
+
+/* ==================== PROFESSIONAL FOOTER ==================== */
+.footer{
+  max-width:1200px;margin:48px auto 20px;padding:32px 24px 24px;
+  border-top:1px solid var(--line);display:flex;flex-direction:column;gap:18px;
+  color:var(--dim);font-size:12px;
+}
+.footer-top{
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;
+}
+.footer-brand{
+  display:flex;align-items:center;gap:10px;color:var(--fg);font-weight:700;font-size:13px;
+}
+.footer-brand img{width:22px;height:22px;object-fit:contain}
+.footer-links{
+  display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+}
+.footer-links a{
+  color:var(--muted);text-decoration:none;transition:color .2s;
+}
+.footer-links a:hover{color:var(--accent)}
+.footer-bottom{
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
+  padding-top:16px;border-top:1px dashed rgba(255,255,255,.06);font-size:11px;color:var(--dim);
+}
+.footer-badge{
+  display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.03);
+  padding:4px 10px;border-radius:6px;border:1px solid var(--line);
+}
+
 </style>
 </head>
 <body>
 
 <header class="topbar">
   <a href="/rmit" class="brand">
-    <img src="/rmit/logo.png" alt="UNRELEASED Logo" style="width:34px;height:34px;object-fit:contain;filter:drop-shadow(0 0 8px rgba(184,243,107,0.45));flex-shrink:0;">
-    <div>UNRELEASED<small>Zero-Trust Media Vault</small></div>
+    <img src="/rmit/logo.png" alt="SONARA Logo" style="width:34px;height:34px;object-fit:contain;filter:drop-shadow(0 0 8px rgba(184,243,107,0.45));flex-shrink:0;">
+    <div>SONARA<small>Zero-Trust Media Vault</small></div>
   </a>
   <span class="pill-tide">Powered by TideCloak</span>
 </header>
@@ -145,8 +175,29 @@ body::before{content:'';position:fixed;inset:0;z-index:-2;background:radial-grad
 </div>
 
 <footer class="footer">
-  <span>UNRELEASED · Team Foodseekers (UIT)</span>
-  <span class="mono">RMIT Hackathon 2026 — Challenge 2 (Tide)</span>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <img src="/rmit/logo.png" alt="SONARA">
+      <span>SONARA · Studio Két Sắt Âm Nhạc Zero-Trust</span>
+    </div>
+    <div class="footer-links mono">
+      <a href="/rmit">Cổng Trung Tâm</a>
+      <span>·</span>
+      <a href="/rmit/1">Cổng Nghệ Sĩ</a>
+      <span>·</span>
+      <a href="/rmit/2">Cổng Người Nghe (SONARA)</a>
+      <span>·</span>
+      <a href="/rmit/3">Giám Sát S3</a>
+      <span>·</span>
+      <a href="https://github.com/bersious/Foodseekers" target="_blank" rel="noopener">Mã Nguồn GitHub</a>
+    </div>
+  </div>
+  <div class="footer-bottom mono">
+    <div>Đội thi <strong>Foodseekers</strong> — Trường Đại học Công nghệ Thông tin (UIT), ĐHQG-HCM</div>
+    <div class="footer-badge">
+      <span style="color:var(--accent)">●</span> Tích hợp bảo mật TideCloak & Emergent Authority · RMIT Hackathon 2026
+    </div>
+  </div>
 </footer>
 
 </body>

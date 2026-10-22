@@ -1,0 +1,318 @@
+import os
+
+FS_PROTO = r"C:\Users\nguye\Foodseekers\prototype"
+BW_RMIT = r"C:\Users\nguye\bersious-web\rmit"
+
+PAGE_3_HTML = r'''<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hạ Tầng S3 · UNRELEASED Studio (TideCloak Oblivious Proxy)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07080c;--surface:rgba(255,255,255,.025);--surface-2:rgba(255,255,255,.05);
+  --line:rgba(255,255,255,.08);--line-strong:rgba(255,255,255,.16);
+  --fg:#f4f5f7;--muted:#8b8fa0;--dim:#555968;
+  --accent:#d4ff3f;--accent-dim:rgba(212,255,63,.12);
+  --danger:#ff4d6d;--danger-dim:rgba(255,77,109,.12);
+  --ok:#3ee88f;--ok-dim:rgba(62,232,143,.12);--radius:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--bg);color:var(--fg);font-family:'Space Grotesk',sans-serif;
+  line-height:1.5;min-height:100vh;overflow-x:hidden;
+}
+body::before{
+  content:'';position:fixed;inset:0;z-index:-2;
+  background:
+    radial-gradient(900px 500px at 80% -5%,rgba(255,77,109,.06),transparent 60%),
+    radial-gradient(700px 500px at 0% 100%,rgba(90,110,255,.06),transparent 55%);
+}
+body::after{
+  content:'';position:fixed;inset:0;z-index:-1;opacity:.3;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:64px 64px;
+}
+.mono{font-family:'JetBrains Mono',monospace}
+
+/* Topbar */
+.topbar{
+  position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
+  padding:16px 32px;backdrop-filter:blur(20px);background:rgba(7,8,12,.8);border-bottom:1px solid var(--line);
+}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;font-weight:700}
+.brand-dot{width:10px;height:10px;border-radius:50%;background:var(--danger);box-shadow:0 0 12px var(--danger)}
+.brand small{display:block;font-size:11px;color:var(--muted);font-weight:400}
+.topbar-right{display:flex;align-items:center;gap:14px}
+.pill-tide{font-size:11px;font-weight:600;color:var(--danger);background:var(--danger-dim);padding:6px 12px;border-radius:999px;border:1px solid rgba(255,77,109,.25)}
+
+.container{max-width:1120px;margin:32px auto 80px;padding:0 24px}
+.card{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  padding:26px;margin-bottom:24px;backdrop-filter:blur(14px);position:relative;
+}
+
+/* Metrics strip */
+.metrics-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);
+  border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:24px;
+}
+.metric-box{background:var(--bg);padding:18px 20px}
+.metric-num{font-size:22px;font-weight:700;letter-spacing:-.02em}
+.metric-label{font-size:11px;color:var(--muted);margin-top:4px}
+
+/* S3 inspection table */
+.s3-table{width:100%;border-collapse:collapse;margin-top:14px}
+.s3-th{
+  text-align:left;padding:12px 14px;font-size:11px;font-weight:700;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--line);
+}
+.s3-td{
+  padding:14px;border-bottom:1px solid var(--line);font-size:12px;vertical-align:middle;
+}
+.s3-row:hover{background:var(--surface-2)}
+
+/* Badges */
+.badge{font-size:11px;font-weight:700;padding:4px 8px;border-radius:999px;white-space:nowrap}
+.badge-danger{color:var(--danger);background:var(--danger-dim);border:1px solid rgba(255,77,109,.25)}
+.badge-ok{color:var(--ok);background:var(--ok-dim);border:1px solid rgba(62,232,143,.25)}
+.badge-dim{color:var(--muted);background:var(--surface-2);border:1px solid var(--line)}
+
+/* Terminal console */
+.terminal-card{
+  background:#05070a;border:1px solid var(--line);border-radius:14px;padding:22px;
+  min-height:160px;font-size:12px;color:var(--muted);line-height:1.7;margin-top:16px;
+}
+.terminal-output{max-height:240px;overflow-y:auto}
+
+.btn{
+  font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;
+  padding:10px 20px;border-radius:10px;border:1px solid transparent;transition:.18s;
+  display:inline-flex;align-items:center;gap:8px;text-decoration:none;
+}
+.btn-danger{background:var(--danger-dim);color:var(--danger);border-color:rgba(255,77,109,.3)}
+.btn-danger:hover{background:rgba(255,77,109,.25)}
+
+.footer{max-width:1120px;margin:0 auto;padding:24px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;color:var(--dim);font-size:12px}
+
+@media(max-width:768px){
+  .metrics-grid{grid-template-columns:repeat(2,1fr)}
+  .s3-table{display:block;overflow-x:auto}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a href="/rmit" class="brand">
+    <span class="brand-dot"></span>
+    <div>UNRELEASED<small>Hạ Tầng Lưu Trữ Đám Mây S3 (Oblivious Proxy)</small></div>
+  </a>
+  <div class="topbar-right">
+    <span class="pill-tide mono">Zero-Custody Enforced</span>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- Header -->
+  <div style="margin-bottom:24px">
+    <h1 style="font-size:26px;font-weight:700">Trình Giám Sát Hạ Tầng Đám Mây S3</h1>
+    <p style="color:var(--muted);font-size:13px">Mô phỏng góc nhìn của Kẻ xâm nhập hoặc Quản trị viên máy chủ nắm quyền Root AWS</p>
+  </div>
+
+  <!-- Dải chỉ số an ninh thời gian thực -->
+  <div class="metrics-grid mono">
+    <div class="metric-box">
+      <div class="metric-num" style="color:var(--ok)">3/3 Nodes</div>
+      <div class="metric-label">Mạng Quorum Độc Lập</div>
+    </div>
+    <div class="metric-box">
+      <div class="metric-num" style="color:var(--danger)">0 Keys</div>
+      <div class="metric-label">Chìa Khóa Chủ Lưu Trên Server</div>
+    </div>
+    <div class="metric-box">
+      <div class="metric-num" id="metric-blob-count" style="color:var(--fg)">0 Blobs</div>
+      <div class="metric-label">Khối Nhị Phân Mã Hóa S3</div>
+    </div>
+    <div class="metric-box">
+      <div class="metric-num" style="color:var(--accent)">0.00%</div>
+      <div class="metric-label">Rủi Ro Rò Rỉ Nội Bộ</div>
+    </div>
+  </div>
+
+  <!-- Kiến trúc bảo mật -->
+  <div class="card" style="background:linear-gradient(145deg,rgba(255,255,255,.02),rgba(255,255,255,.01))">
+    <div style="font-size:13px;color:var(--muted);line-height:1.7">
+      <strong style="color:var(--fg)">Nguyên lý bảo mật TideCloak Emergent Authority:</strong>
+      Dù Nghệ sĩ tải lên bài hát nào ở Trang 1 và cấp quyền cho ai ở Trang 2, máy chủ lưu trữ S3 vĩnh viễn <strong>chỉ chứa các khối nhị phân mã hóa vô nghĩa (.enc)</strong>.
+      Chìa khóa giải mã master hoàn toàn không tồn tại trong cơ sở dữ liệu hay bộ nhớ của máy chủ.
+    </div>
+  </div>
+
+  <!-- Bảng kiểm tra tệp tin nhị phân S3 thời gian thực -->
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <h2 style="font-size:16px;font-weight:700">Các Tệp Tin Nhị Phân Trong S3: <code class="mono" style="color:var(--accent)">s3://unreleased-vault/</code></h2>
+      <span class="mono" style="font-size:11px;color:var(--dim)" id="s3-sync-time">Live Sync: 0s ago</span>
+    </div>
+
+    <div style="overflow-x:auto">
+      <table class="s3-table mono" id="s3-table">
+        <thead>
+          <tr>
+            <th class="s3-th">Đối Tượng S3</th>
+            <th class="s3-th">Nghệ Sĩ</th>
+            <th class="s3-th">Mã Băm Nhị Phân</th>
+            <th class="s3-th">Chìa Khóa Trên Server</th>
+            <th class="s3-th">Chính Sách Quorum</th>
+          </tr>
+        </thead>
+        <tbody id="s3-table-body">
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Nút thử nghiệm tấn công Root Admin -->
+    <div style="margin-top:28px">
+      <button class="btn btn-danger" onclick="executeRootExploitSimulation()">Thực thi kịch bản Root Admin giải mã trộm</button>
+      <div id="terminal" class="terminal-card mono hidden">
+        <div id="terminal-content" class="terminal-output"></div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>UNRELEASED · Trình Giám Sát Hạ Tầng Đám Mây S3 · Powered by TideCloak</span>
+  <span class="mono">RMIT Hackathon 2026 — Challenge 2</span>
+</footer>
+
+<script>
+const API_VAULT_URL = '/api/rmit-vault';
+let isSyncingWithCloud = false;
+
+async function fetchCloudState() {
+  if (isSyncingWithCloud) return;
+  try {
+    const res = await fetch(API_VAULT_URL);
+    if (!res.ok) return;
+    const json = await res.json();
+    if (json.ok && json.data) {
+      const cloud = json.data;
+      localStorage.setItem('tide_tracks_v2', JSON.stringify(cloud.tracks || []));
+      renderS3Inspector();
+    }
+  } catch (err) {}
+}
+
+setInterval(fetchCloudState, 2500);
+fetchCloudState();
+
+function getStoredTracks(){
+  const d = localStorage.getItem('tide_tracks_v2');
+  if(d){try{return JSON.parse(d)}catch(e){}}
+  return [];
+}
+
+function renderS3Inspector(){
+  const tracks = getStoredTracks().filter(t => !t.id.startsWith('track_0'));
+  const tbody = document.getElementById('s3-table-body');
+  const countEl = document.getElementById('metric-blob-count');
+  const timeEl = document.getElementById('s3-sync-time');
+  if(!tbody) return;
+
+  tbody.innerHTML = '';
+  countEl.textContent = `${tracks.length} Blobs`;
+  timeEl.textContent = `Live Sync: ${new Date().toLocaleTimeString()}`;
+
+  if(!tracks.length){
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="5" style="padding:24px;text-align:center;color:var(--muted)">
+          Két sắt S3 hiện tại trống (Zero objects). Hãy mở Trang 1 tải tệp âm nhạc/video lên để tạo khối mã hóa!
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  tracks.forEach(t => {
+    const row = document.createElement('tr');
+    row.className = 's3-row';
+    const allowedCount = Array.isArray(t.allowedUsers) ? t.allowedUsers.length : 0;
+    const isSingle = Array.isArray(t.singlePlayUsers) && t.singlePlayUsers.length > 0;
+    const limitSec = Number(t.previewLimitSeconds) || 0;
+
+    let policyDesc = 'Chưa cấp quyền';
+    if(allowedCount > 0){
+      policyDesc = `${allowedCount} danh tính DID`;
+      if(isSingle) policyDesc += ' · Tự hủy 1 lần';
+      if(limitSec > 0) policyDesc += ` · ${limitSec}s preview`;
+    }
+
+    row.innerHTML = `
+      <td class="s3-td"><span style="color:var(--fg)">s3://vault/${t.name}.enc</span><br><span style="font-size:10px;color:var(--dim)">${t.size} · AES-256-GCM</span></td>
+      <td class="s3-td" style="color:var(--accent)">@${t.artistUsername||'alice_artist'}</td>
+      <td class="s3-td" style="color:#7b6fff">${t.hash.replace('...','')}d8a391e4fc29...</td>
+      <td class="s3-td"><span class="badge badge-danger">KEY: ∅ (KHÔNG CÓ)</span></td>
+      <td class="s3-td"><span class="badge ${allowedCount>0?'badge-ok':'badge-dim'}">${policyDesc}</span></td>
+    `;
+    tbody.appendChild(row);
+  });
+}
+
+function executeRootExploitSimulation(){
+  const term = document.getElementById('terminal');
+  const content = document.getElementById('terminal-content');
+  term.classList.remove('hidden');
+  content.innerHTML = '';
+
+  const tracks = getStoredTracks().filter(t => !t.id.startsWith('track_0'));
+  const blobCount = tracks.length;
+
+  const logs = [
+    '> root@s3-cluster-01: dump --target s3://unreleased-vault/ --decrypt-all --force',
+    `> Scanning physical disk blocks: Located ${blobCount} encrypted binary blob(s).`,
+    '> Inspecting database credentials and environment variables for Master Private Key...',
+    '> RESULT: 0 master keys found. Server is an Oblivious Proxy (Zero-Custody Architecture).',
+    '> Attempting direct forgery attack: Synthesizing raw decryption key without Quorum signature...',
+    '> Connecting to Tide Fabric Quorum Node [10.244.0.12:8443]...',
+    '> [TIDE QUORUM ENFORCEMENT] 403 Forbidden: Requestor identity lacks Emergent Policy entitlement.',
+    '> ERROR: Root administrative privilege cannot synthesize decryption keys.',
+    '> ATTACK MITIGATED: 0 bytes of plaintext audio/video leaked. All assets remain cryptographically sealed.'
+  ];
+
+  let idx = 0;
+  function printLine(){
+    if(idx < logs.length){
+      const p = document.createElement('div');
+      p.textContent = logs[idx++];
+      if(idx === logs.length) p.style.color = 'var(--ok)';
+      else if(logs[idx-1].includes('Forbidden') || logs[idx-1].includes('ERROR')) p.style.color = 'var(--danger)';
+      content.appendChild(p);
+      content.scrollTop = content.scrollHeight;
+      setTimeout(printLine, 350);
+    }
+  }
+  printLine();
+}
+
+renderS3Inspector();
+</script>
+</body>
+</html>
+'''
+
+for base in [FS_PROTO, BW_RMIT]:
+    p = os.path.join(base, "3", "index.html")
+    with open(p, "w", encoding="utf-8") as f:
+        f.write(PAGE_3_HTML)
+    print(f"Updated Page 3 at: {p}")
+
+print("✓ Hoàn tất nâng cấp Trang 3 chuyên nghiệp chuẩn giám sát an ninh mạng!")

@@ -1,10 +1,10 @@
 [![Built with TideCloak](https://tide.org/badges/built-with-tidecloak.svg)](https://tide.org/tidecloak?utm_source=github&utm_medium=readme&utm_campaign=unlocked)
 
-# UNRELEASED — Zero-Trust Audio/Video Preview Vault
+# SONARA — Zero-Trust Audio/Video Preview Vault
 
 ## Project overview
 
-_UNRELEASED is a zero-trust creative pre-release preview vault that eliminates cloud master keys using TideCloak Emergent Authority, allowing artists to share unreleased masters with reviewers without risk of server-side leaks._
+_SONARA is a zero-trust creative pre-release preview vault that eliminates cloud master keys using TideCloak Emergent Authority, allowing artists to share sonara masters with reviewers without risk of server-side leaks._
 
 Built with [TideCloak](https://tide.org/tidecloak?utm_source=github&utm_medium=readme&utm_campaign=unlocked).
 
@@ -14,7 +14,7 @@ Built with [TideCloak](https://tide.org/tidecloak?utm_source=github&utm_medium=r
 
 - **Central Portal:** [https://bersious.io.vn/rmit](https://bersious.io.vn/rmit)
 - **Portal 01 · Artist Vault:** [https://bersious.io.vn/rmit/1](https://bersious.io.vn/rmit/1) *(Upload masters, manage DID access, configure preview limits & audio watermarks)*
-- **Portal 02 · Reviewer Listening Room (SONORA):** [https://bersious.io.vn/rmit/2](https://bersious.io.vn/rmit/2) *(Browse artists, request access, in-memory stream, leave feedback, tamper protection)*
+- **Portal 02 · Reviewer Listening Room (SONARA):** [https://bersious.io.vn/rmit/2](https://bersious.io.vn/rmit/2) *(Browse artists, request access, in-memory stream, leave feedback, tamper protection)*
 - **Portal 03 · S3 Oblivious Proxy Inspector:** [https://bersious.io.vn/rmit/3](https://bersious.io.vn/rmit/3) *(Real-time SOC monitoring, root exploit simulation with 0 master keys)*
 
 > **Credentials for Testing:** All demo accounts use password `123`.  
@@ -27,7 +27,7 @@ Built with [TideCloak](https://tide.org/tidecloak?utm_source=github&utm_medium=r
 
 Pre-release music and video leaks cost artists and record labels millions of dollars annually, destroying promotional rollouts and creative momentum. Traditional cloud storage platforms (Dropbox, Google Drive, Box) rely on delegated trust: administrators and cloud providers retain access to decryption keys. 
 
-**UNRELEASED** introduces a decentralized, zero-custody creative studio where **no central master key ever exists**. Decryption keys are never stored on disk or server databases — they emerge dynamically in the reviewer's volatile RAM only during authorized playback, synthesized via Tide Fabric Quorum consensus. The moment an artist revokes access, playback terminates instantly within 0.069ms.
+**SONARA** introduces a decentralized, zero-custody creative studio where **no central master key ever exists**. Decryption keys are never stored on disk or server databases — they emerge dynamically in the reviewer's volatile RAM only during authorized playback, synthesized via Tide Fabric Quorum consensus. The moment an artist revokes access, playback terminates instantly within 0.069ms.
 
 ### 2. Trust constraint insight
 
@@ -41,7 +41,7 @@ When the trust constraint is removed through cryptographic zero-custody, artists
 ### 3. Value & impact
 
 - **For Artists & Record Labels:** Retain 100% sovereign authority over intellectual property. Enforce fine-grained policies such as **Single-Play Self-Destruction** (access automatically revokes upon playback completion) and **Preview Duration Limits** (stream automatically halts at 10s, 15s, or 30s).
-- **For Audio Reviewers & Critics:** Stream pristine lossless audio in-memory without storing unreleased files on local drives, eliminating legal exposure.
+- **For Audio Reviewers & Critics:** Stream pristine lossless audio in-memory without storing sonara files on local drives, eliminating legal exposure.
 - **Leak Defense Ecosystem:** Built-in acoustic watermarking (periodic audio watermark and AI voice disclaimer) and an active **Tamper Watchdog** that immediately revokes decryption rights if DevTools inspection or screen recording software is detected.
 
 ### 4. Why TideCloak matters
@@ -58,7 +58,7 @@ Conventional authentication systems (OAuth2, JWT, Keycloak) authenticate users b
 Our live prototype demonstrates a complete end-to-end creative workflow across 3 dedicated portals:
 
 1. **Artist Sovereign Vault (`/rmit/1`):** The artist uploads audio/video tracks, configures a 15-second teaser limit, enables periodic acoustic watermarking, and grants access to specific reviewer DIDs.
-2. **Reviewer Listening Room (`/rmit/2`):** The reviewer logs in via SONORA, browses the artist's discography, requests access with one click, streams the master in-memory upon artist approval, and leaves mixing feedback. If DevTools or screen capture is triggered, access is revoked automatically.
+2. **Reviewer Listening Room (`/rmit/2`):** The reviewer logs in via SONARA, browses the artist's discography, requests access with one click, streams the master in-memory upon artist approval, and leaves mixing feedback. If DevTools or screen capture is triggered, access is revoked automatically.
 3. **S3 Oblivious Proxy Inspector (`/rmit/3`):** Judges can trigger a **Root Admin Dump Simulation**, demonstrating that even with full root privilege on the storage server, 0 master keys exist and 0 bytes of plaintext audio can be extracted.
 
 ---

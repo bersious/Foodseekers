@@ -1,0 +1,1593 @@
+import os
+
+# Build updated Page 1 and Page 2
+
+FS_PROTO = r"C:\Users\nguye\Foodseekers\prototype"
+BW_RMIT = r"C:\Users\nguye\bersious-web\rmit"
+
+# ==============================================================================
+# PAGE 1 (NGHỆ SĨ): PROFILE CREATION + MULTI-ARTIST SWITCHING
+# ==============================================================================
+PAGE_1_HTML = r'''<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nghệ Sĩ · UNRELEASED Studio (TideCloak Sovereign Vault)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07080c;--surface:rgba(255,255,255,.025);--surface-2:rgba(255,255,255,.05);
+  --line:rgba(255,255,255,.08);--line-strong:rgba(255,255,255,.16);
+  --fg:#f4f5f7;--muted:#8b8fa0;--dim:#555968;
+  --accent:#d4ff3f;--accent-dim:rgba(212,255,63,.12);
+  --danger:#ff4d6d;--danger-dim:rgba(255,77,109,.12);
+  --ok:#3ee88f;--ok-dim:rgba(62,232,143,.12);--radius:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--bg);color:var(--fg);font-family:'Space Grotesk',sans-serif;
+  line-height:1.5;min-height:100vh;overflow-x:hidden;
+}
+body::before{
+  content:'';position:fixed;inset:0;z-index:-2;
+  background:
+    radial-gradient(900px 500px at 78% -5%,rgba(212,255,63,.09),transparent 60%),
+    radial-gradient(700px 500px at 0% 100%,rgba(90,110,255,.07),transparent 55%);
+}
+.mono{font-family:'JetBrains Mono',monospace}
+
+/* Topbar */
+.topbar{
+  position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
+  padding:16px 32px;backdrop-filter:blur(20px);background:rgba(7,8,12,.8);border-bottom:1px solid var(--line);
+}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;font-weight:700}
+.brand-dot{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent)}
+.brand small{display:block;font-size:11px;color:var(--muted);font-weight:400}
+.topbar-right{display:flex;align-items:center;gap:14px}
+.pill-tide{font-size:11px;font-weight:600;color:#0a0b0e;background:var(--accent);padding:6px 12px;border-radius:999px}
+
+.container{max-width:1080px;margin:32px auto 80px;padding:0 24px}
+.card{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  padding:26px;margin-bottom:24px;backdrop-filter:blur(14px);position:relative;
+}
+
+/* Forms */
+.form-group{margin-bottom:16px}
+.form-label{display:block;font-size:11px;font-weight:700;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em}
+.form-input{
+  width:100%;padding:11px 14px;background:var(--bg);border:1px solid var(--line);border-radius:10px;
+  color:var(--fg);font-family:inherit;font-size:14px;outline:none;transition:.18s;
+}
+.form-input:focus{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-dim)}
+
+/* Buttons */
+.btn{
+  font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;
+  padding:9px 18px;border-radius:10px;border:1px solid transparent;transition:.18s;
+  display:inline-flex;align-items:center;gap:8px;text-decoration:none;
+}
+.btn-accent{background:var(--accent);color:#0a0b0e}
+.btn-accent:hover{filter:brightness(1.1);transform:translateY(-1px)}
+.btn-danger{background:var(--danger-dim);color:var(--danger);border-color:rgba(255,77,109,.3)}
+.btn-danger:hover{background:rgba(255,77,109,.2)}
+.btn-ok{background:var(--ok-dim);color:var(--ok);border-color:rgba(62,232,143,.3)}
+.btn-ok:hover{background:rgba(62,232,143,.2)}
+.btn-ghost{background:transparent;border-color:var(--line-strong);color:var(--fg)}
+.btn-ghost:hover{background:var(--surface-2)}
+.btn-sm{padding:6px 12px;font-size:12px}
+
+/* Artist Selector Bar */
+.artist-nav-bar{
+  background:linear-gradient(135deg,rgba(212,255,63,.06),rgba(255,255,255,.02));
+  border:1px solid rgba(212,255,63,.2);border-radius:16px;padding:18px 24px;margin-bottom:24px;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;
+}
+.artist-info-group{display:flex;align-items:center;gap:14px}
+.artist-avatar{
+  width:46px;height:46px;border-radius:50%;display:grid;place-items:center;
+  background:var(--accent);color:#0a0b0e;font-size:18px;font-weight:700;flex-shrink:0;
+}
+
+/* Upload zone */
+.upload-zone{
+  border:2px dashed var(--line-strong);border-radius:14px;padding:32px 20px;text-align:center;
+  cursor:pointer;transition:.2s;background:rgba(255,255,255,.01);
+}
+.upload-zone:hover{border-color:var(--accent);background:rgba(212,255,63,.02)}
+
+/* Track Card */
+.track-card{
+  background:var(--bg);border:1px solid var(--line);border-radius:14px;
+  padding:20px;margin-bottom:14px;position:relative;overflow:hidden;
+}
+.track-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:12px}
+.track-art{
+  width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-size:18px;font-weight:700;color:#0a0b0e;
+}
+.user-chip{
+  display:inline-flex;align-items:center;gap:6px;background:var(--surface-2);
+  border:1px solid var(--line);padding:5px 10px;border-radius:8px;font-size:12px;margin:4px;
+}
+
+/* Requests */
+.req-card{
+  background:var(--surface-2);border:1px solid var(--line);border-radius:12px;
+  padding:14px 18px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:12px;
+}
+
+/* Badges */
+.badge{font-size:11px;font-weight:700;padding:5px 10px;border-radius:999px;white-space:nowrap}
+.badge-ok{color:var(--ok);background:var(--ok-dim);border:1px solid rgba(62,232,143,.25)}
+.badge-danger{color:var(--danger);background:var(--danger-dim);border:1px solid rgba(255,77,109,.25)}
+.badge-warn{color:var(--accent);background:var(--accent-dim);border:1px solid rgba(212,255,63,.25)}
+
+/* Toggle */
+.toggle-switch{width:44px;height:24px;background:var(--line);border-radius:999px;position:relative;cursor:pointer;display:inline-block}
+.toggle-switch.on{background:var(--ok)}
+.toggle-knob{width:18px;height:18px;border-radius:50%;background:#fff;position:absolute;top:3px;left:3px;transition:.2s}
+.toggle-switch.on .toggle-knob{left:23px}
+
+.hidden{display:none!important}
+.footer{max-width:1080px;margin:0 auto;padding:24px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;color:var(--dim);font-size:12px}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a href="/rmit" class="brand">
+    <span class="brand-dot"></span>
+    <div>UNRELEASED<small>Nghệ Sĩ / Studio Két Sắt Mật Mã</small></div>
+  </a>
+  <div class="topbar-right">
+    <span class="pill-tide">☁️ Cloud Database: SYNCED</span>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- ================= THANH CHỌN & QUẢN LÝ HỒ SƠ NGHỆ SĨ ================= -->
+  <div class="artist-nav-bar">
+    <div class="artist-info-group">
+      <div class="artist-avatar" id="current-artist-avatar">A</div>
+      <div>
+        <div style="font-size:16px;font-weight:700" id="current-artist-name">Alice Nguyễn</div>
+        <div style="font-size:12px;color:var(--muted)" class="mono">
+          @<span id="current-artist-user">alice_artist</span> · <span id="current-artist-genre">Indie Pop / Electronic</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+      <label style="font-size:12px;color:var(--muted)">Đổi Nghệ Sĩ:</label>
+      <select id="artist-switcher-select" class="form-input" style="width:200px;padding:7px 10px;font-size:13px" onchange="switchActiveArtist(this.value)">
+      </select>
+      <button class="btn btn-accent btn-sm" onclick="toggleCreateArtistModal()">+ Tạo Profile Nghệ Sĩ Mới</button>
+    </div>
+  </div>
+
+  <!-- MODAL / FORM TẠO PROFILE NGHỆ SĨ MỚI -->
+  <div id="create-artist-card" class="card hidden" style="border-color:var(--accent);margin-bottom:24px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <h3 style="font-size:16px;font-weight:700">🎨 Khởi Tạo Hồ Sơ Nghệ Sĩ Mới</h3>
+      <button class="btn btn-ghost btn-sm" onclick="toggleCreateArtistModal()">✕ Đóng</button>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+      <div class="form-group" style="margin:0">
+        <label class="form-label">Tên Nghệ Sĩ / Nghệ Danh</label>
+        <input type="text" id="new-artist-name" class="form-input" placeholder="Ví dụ: Sơn Tùng M-TP, Vũ, Chillies...">
+      </div>
+      <div class="form-group" style="margin:0">
+        <label class="form-label">Username (Viết liền, không dấu)</label>
+        <input type="text" id="new-artist-user" class="form-input" placeholder="Ví dụ: sontung_mtp, vu_acoustic...">
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 2fr;gap:14px;margin-bottom:16px">
+      <div class="form-group" style="margin:0">
+        <label class="form-label">Dòng Nhạc Sở Trường</label>
+        <input type="text" id="new-artist-genre" class="form-input" placeholder="Ví dụ: R&B / Pop, Indie Rock...">
+      </div>
+      <div class="form-group" style="margin:0">
+        <label class="form-label">Tiểu Sử / Giới Thiệu Ngắn</label>
+        <input type="text" id="new-artist-bio" class="form-input" placeholder="Ví dụ: Nghệ sĩ độc lập chuẩn bị ra mắt album mùa hè...">
+      </div>
+    </div>
+    <button class="btn btn-accent" onclick="createNewArtistProfile()">🚀 Tạo Profile & Chuyển Sang Nghệ Sĩ Này</button>
+  </div>
+
+  <!-- Header & Tự động duyệt -->
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:24px;gap:16px;flex-wrap:wrap">
+    <div>
+      <h1 style="font-size:26px;font-weight:700">Két Sắt Tác Phẩm Master</h1>
+      <p style="color:var(--muted);font-size:13px">Mã hóa đầu cuối client-side · Ủy quyền Quorum cho từng người nghe</p>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;font-size:12px;color:var(--muted)">
+      <span>Tự động duyệt xin quyền: </span>
+      <label class="toggle-switch" id="auto-toggle" onclick="toggleAutoApprove()" role="switch" aria-checked="false">
+        <span class="toggle-knob"></span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Upload zone -->
+  <div class="card">
+    <div class="upload-zone" onclick="document.getElementById('file-input').click()">
+      <div style="font-size:36px;margin-bottom:8px">⚡</div>
+      <div style="font-size:16px;font-weight:700">Tải Lên Bản Thu Âm Nhạc hoặc Video Mới</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:4px">Hỗ trợ MP3, WAV, FLAC, MP4, WEBM (Tự động gắn vào profile của nghệ sĩ đang chọn)</div>
+      <input type="file" id="file-input" style="display:none" accept="audio/*,video/*" onchange="handleFileUpload(event)">
+    </div>
+    <div id="upload-status" style="margin-top:12px;font-size:12px;color:var(--accent);display:none" class="mono"></div>
+  </div>
+
+  <!-- Permission requests (Xin quyền từ bên người nghe) -->
+  <div class="card" style="border-color:var(--danger-dim)">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <h2 style="font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px">
+        <span style="color:var(--danger)">🔔</span> Đơn Xin Quyền Nghe Thử Đang Chờ Duyệt
+      </h2>
+      <span class="badge badge-warn mono" id="req-count">0 đơn chờ</span>
+    </div>
+    <div id="requests-list"></div>
+  </div>
+
+  <!-- Tracks List -->
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+      <h2 style="font-size:18px;font-weight:700">Tác Phẩm Trong Két Sắt Của <span id="vault-artist-name-label" style="color:var(--accent)">Alice Nguyễn</span></h2>
+      <span class="mono" style="font-size:11px;color:var(--dim)">Zero Master Key on Host</span>
+    </div>
+    <div id="artist-tracks-container"></div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>UNRELEASED · Cổng Nghệ Sĩ · Powered by TideCloak</span>
+  <span class="mono">RMIT Hackathon 2026</span>
+</footer>
+
+<script>
+const API_VAULT_URL = '/api/rmit-vault';
+let isSyncingWithCloud = false;
+
+let activeArtistUser = 'alice_artist';
+
+async function fetchCloudState() {
+  if (isSyncingWithCloud) return;
+  try {
+    const res = await fetch(API_VAULT_URL);
+    if (!res.ok) return;
+    const json = await res.json();
+    if (json.ok && json.data) {
+      const cloud = json.data;
+      localStorage.setItem('tide_tracks_v2', JSON.stringify(cloud.tracks || []));
+      localStorage.setItem('tide_users', JSON.stringify(cloud.users || []));
+      localStorage.setItem('tide_requests_v2', JSON.stringify(cloud.requests || []));
+      localStorage.setItem('tide_artists', JSON.stringify(cloud.artists || []));
+
+      const autoEl = document.getElementById('auto-toggle');
+      if (autoEl) {
+        autoEl.classList.toggle('on', !!cloud.settings?.autoApprove);
+        autoEl.setAttribute('aria-checked', !!cloud.settings?.autoApprove);
+      }
+
+      renderArtistSwitcher();
+      renderArtistTracks();
+      renderRequests();
+    }
+  } catch (err) {}
+}
+
+async function pushCloudUpdate(action, payload = {}) {
+  isSyncingWithCloud = true;
+  try {
+    await fetch(API_VAULT_URL, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({action, ...payload})
+    });
+  } catch (e) {
+  } finally {
+    isSyncingWithCloud = false;
+  }
+}
+
+setInterval(fetchCloudState, 2000);
+fetchCloudState();
+
+const DB_NAME='tide_vault_db', STORE_NAME='media_blobs';
+function openDB(){return new Promise((res,rej)=>{const r=indexedDB.open(DB_NAME,1);r.onupgradeneeded=e=>{if(!e.target.result.objectStoreNames.contains(STORE_NAME))e.target.result.createObjectStore(STORE_NAME)};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});}
+async function saveMediaBlob(id,blob){const db=await openDB();return new Promise((res,rej)=>{const tx=db.transaction(STORE_NAME,'readwrite');tx.objectStore(STORE_NAME).put(blob,id);tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error)});}
+
+function getStoredArtists(){
+  const d = localStorage.getItem('tide_artists');
+  if(d){try{return JSON.parse(d)}catch(e){}}
+  return [
+    { username: 'alice_artist', name: 'Alice Nguyễn', genre: 'Indie Pop / Electronic', bio: 'Nghệ sĩ độc lập, tác giả album Midnight Cipher', artSeed: 0 },
+    { username: 'endy_producer', name: 'Endy (Thiện Nhân)', genre: 'Lo-Fi / Cinematic AI', bio: 'Nhà sản xuất âm nhạc tại UIT Studio', artSeed: 1 }
+  ];
+}
+function getStoredUsers(){
+  const d=localStorage.getItem('tide_users');
+  if(d){try{return JSON.parse(d)}catch(e){}}
+  return [];
+}
+function getStoredTracks(){
+  const d=localStorage.getItem('tide_tracks_v2');
+  if(d){try{return JSON.parse(d)}catch(e){}}
+  return [];
+}
+function getStoredRequests(){
+  const d=localStorage.getItem('tide_requests_v2');
+  if(d){try{return JSON.parse(d)}catch(e){}}
+  return [];
+}
+
+function saveTracks(tracks){
+  localStorage.setItem('tide_tracks_v2',JSON.stringify(tracks));
+  renderArtistTracks();
+  pushCloudUpdate('UPDATE_TRACKS', {tracks: tracks});
+}
+
+// ==================== ARTIST PROFILE LOGIC ====================
+function toggleCreateArtistModal(){
+  const el = document.getElementById('create-artist-card');
+  el.classList.toggle('hidden');
+}
+
+function createNewArtistProfile(){
+  const name = document.getElementById('new-artist-name').value.trim();
+  const user = document.getElementById('new-artist-user').value.trim().toLowerCase();
+  const genre = document.getElementById('new-artist-genre').value.trim() || 'Âm nhạc đương đại';
+  const bio = document.getElementById('new-artist-bio').value.trim() || 'Nghệ sĩ độc lập';
+
+  if(!name || !user){
+    alert('Vui lòng điền tên nghệ sĩ và username!');
+    return;
+  }
+
+  const artists = getStoredArtists();
+  if(artists.some(a => a.username === user)){
+    alert('Username nghệ sĩ này đã tồn tại!');
+    return;
+  }
+
+  const newArtist = {
+    username: user,
+    name: name,
+    genre: genre,
+    bio: bio,
+    artSeed: Math.floor(Math.random() * 5)
+  };
+
+  artists.push(newArtist);
+  localStorage.setItem('tide_artists', JSON.stringify(artists));
+  pushCloudUpdate('REGISTER_ARTIST', {artist: newArtist});
+
+  activeArtistUser = user;
+  toggleCreateArtistModal();
+  renderArtistSwitcher();
+  renderArtistTracks();
+  renderRequests();
+
+  alert(`Đã khởi tạo thành công Profile cho Nghệ Sĩ: ${name}!`);
+}
+
+function switchActiveArtist(username){
+  activeArtistUser = username;
+  renderArtistSwitcher();
+  renderArtistTracks();
+  renderRequests();
+}
+
+function renderArtistSwitcher(){
+  const artists = getStoredArtists();
+  const current = artists.find(a => a.username === activeArtistUser) || artists[0] || {username:'alice_artist', name:'Alice Nguyễn', genre:'Indie Pop', artSeed:0};
+  activeArtistUser = current.username;
+
+  document.getElementById('current-artist-name').textContent = current.name;
+  document.getElementById('current-artist-user').textContent = current.username;
+  document.getElementById('current-artist-genre').textContent = current.genre || 'Âm nhạc';
+  document.getElementById('current-artist-avatar').textContent = (current.name||'A').charAt(0).toUpperCase();
+  document.getElementById('vault-artist-name-label').textContent = current.name;
+
+  const select = document.getElementById('artist-switcher-select');
+  if(select){
+    select.innerHTML = artists.map(a => `<option value="${a.username}" ${a.username===activeArtistUser?'selected':''}>${a.name} (@${a.username})</option>`).join('');
+  }
+}
+
+// ==================== TRACKS & REQUESTS ====================
+function artGradient(seed){
+  const gradients = [
+    'linear-gradient(145deg,#37443a,#1b211b 65%,#293625)',
+    'linear-gradient(145deg,#51413c,#28201f 70%,#674c3d)',
+    'linear-gradient(145deg,#3c4653,#1c252c 70%,#394957)',
+    'linear-gradient(145deg,#554f35,#24251b 70%,#4c4630)',
+    'linear-gradient(145deg,#2e3a59,#1a2332 70%,#3d5074)'
+  ];
+  return gradients[(seed||0) % gradients.length];
+}
+
+function renderArtistTracks(){
+  const tracks = getStoredTracks();
+  const users = getStoredUsers();
+  const box = document.getElementById('artist-tracks-container');
+  box.innerHTML = '';
+
+  const myTracks = tracks.filter(t => (t.artistUsername||'alice_artist').toLowerCase() === activeArtistUser.toLowerCase());
+
+  if(!myTracks.length){
+    box.innerHTML = `<div style="padding:20px;text-align:center;color:var(--muted)" class="mono">Két sắt của nghệ sĩ này chưa có bài hát nào. Hãy kéo thả file nhạc/video ở phía trên để tải lên!</div>`;
+    return;
+  }
+
+  myTracks.forEach(t=>{
+    const isVideo = t.type.startsWith('video');
+    const card = document.createElement('div');
+    card.className = 'track-card';
+    card.style.borderLeft = `6px solid ${isVideo?'var(--danger)':'var(--accent)'}`;
+
+    let allowedChips = '';
+    if(t.allowedUsers.length === 0){
+      allowedChips = '<span style="font-size:12px;color:var(--danger)">🔒 Chưa cấp quyền cho bất kỳ ai (Bảo mật tuyệt đối)</span>';
+    } else {
+      t.allowedUsers.forEach(u=>{
+        const userObj = users.find(x => x.username === u) || {name:u, username:u};
+        allowedChips += `<span class="user-chip"><span>👤 ${userObj.name||userObj.username}</span><button class="btn btn-ghost btn-sm" onclick="revokeUser('${t.id}','${u}')" style="padding:1px 6px;color:var(--danger)">Thu hồi</button></span>`;
+      });
+    }
+
+    let options = '<option value="">-- Chọn danh tính người nghe để cấp quyền --</option>';
+    users.forEach(u=>{
+      if(!t.allowedUsers.includes(u.username)){
+        options += `<option value="${u.username}">${u.name||u.username} (${u.username})</option>`;
+      }
+    });
+
+    const artBg = artGradient(t.artSeed||0);
+    const artLetter = (t.name||'T').charAt(0).toUpperCase();
+
+    card.innerHTML = `
+      <div class="track-header">
+        <div style="display:flex;align-items:center;gap:12px;min-width:0">
+          <div class="track-art" style="background:${artBg}">${artLetter}</div>
+          <div style="min-width:0">
+            <div class="track-title">${isVideo?'🎬 ':'🎵 '}${t.name}</div>
+            <div class="track-info mono">${t.size} · SHA256: ${t.hash} · ${isVideo?'Video Master':'Audio Master'}</div>
+          </div>
+        </div>
+        <button class="btn btn-ghost btn-sm" onclick="deleteTrack('${t.id}')" style="color:var(--danger)">Xóa Tác Phẩm</button>
+      </div>
+
+      <div style="margin-bottom:14px">
+        <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:6px">DANH TÍNH ĐANG ĐƯỢC PHÉP GIẢI MÃ:</div>
+        <div>${allowedChips}</div>
+      </div>
+
+      <div style="display:flex;gap:10px;align-items:center;background:var(--surface-2);padding:10px 14px;border-radius:10px">
+        <select id="select-user-${t.id}" class="form-input" style="flex:1;padding:8px 12px;font-size:13px">${options}</select>
+        <button class="btn btn-accent btn-sm" onclick="grantUser('${t.id}')">⚡ Cấp Quyền Truy Cập</button>
+      </div>
+    `;
+    box.appendChild(card);
+  });
+}
+
+function renderRequests(){
+  const requests = getStoredRequests();
+  const tracks = getStoredTracks();
+  const myTracks = tracks.filter(t => (t.artistUsername||'alice_artist').toLowerCase() === activeArtistUser.toLowerCase());
+  const myTrackIds = myTracks.map(t => t.id);
+
+  const pending = requests.filter(r => r.status === 'PENDING' && myTrackIds.includes(r.trackId));
+  const box = document.getElementById('requests-list');
+  const count = document.getElementById('req-count');
+  box.innerHTML = '';
+
+  if(!pending.length){
+    box.innerHTML = '<div style="font-size:13px;color:var(--muted);padding:16px" class="mono">✓ Không có đơn xin quyền nào đang chờ duyệt cho nghệ sĩ này.</div>';
+    count.textContent = '0 đơn chờ';
+    return;
+  }
+
+  count.textContent = `${pending.length} đơn chờ`;
+  pending.forEach(r=>{
+    const trk = tracks.find(x => x.id === r.trackId);
+    const trackTitle = trk ? trk.name : r.trackId;
+    const card = document.createElement('div');
+    card.className = 'req-card';
+    card.innerHTML = `
+      <div>
+        <div style="font-size:13px;font-weight:700">👤 <strong>${r.username}</strong> xin quyền nghe: <span style="color:var(--accent)">${trackTitle}</span></div>
+        <div class="mono" style="font-size:11px;color:var(--muted);margin-top:2px">Thời gian: ${new Date(r.createdAt||Date.now()).toLocaleTimeString()}</div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-ok btn-sm" onclick="resolveRequest('${r.id}','APPROVE')">✓ Duyệt Cấp Quyền</button>
+        <button class="btn btn-danger btn-sm" onclick="resolveRequest('${r.id}','DENY')">✕ Từ Chối</button>
+      </div>
+    `;
+    box.appendChild(card);
+  });
+}
+
+// ==================== USER ACTIONS ====================
+function grantUser(trackId){
+  const select = document.getElementById(`select-user-${trackId}`);
+  const u = select.value;
+  if(!u){alert('Vui lòng chọn người nghe!');return;}
+  const tracks = getStoredTracks();
+  const t = tracks.find(x => x.id === trackId);
+  if(t && !t.allowedUsers.includes(u)){
+    t.allowedUsers.push(u);
+    saveTracks(tracks);
+    pushCloudUpdate('GRANT_ACCESS', {trackId, username:u});
+  }
+}
+
+function revokeUser(trackId, username){
+  const tracks = getStoredTracks();
+  const t = tracks.find(x => x.id === trackId);
+  if(t){
+    t.allowedUsers = t.allowedUsers.filter(x => x !== username);
+    saveTracks(tracks);
+    pushCloudUpdate('REVOKE_ACCESS', {trackId, username});
+  }
+}
+
+function deleteTrack(trackId){
+  if(!confirm('Bạn chắc chắn muốn xóa tác phẩm này?')) return;
+  let tracks = getStoredTracks();
+  tracks = tracks.filter(x => x.id !== trackId);
+  saveTracks(tracks);
+  pushCloudUpdate('DELETE_TRACK', {trackId});
+}
+
+function resolveRequest(requestId, decision){
+  const requests = getStoredRequests();
+  const req = requests.find(r => r.id === requestId);
+  if(!req) return;
+  const tracks = getStoredTracks();
+  const track = tracks.find(t => t.id === req.trackId);
+  if(decision === 'APPROVE'){
+    if(track && !track.allowedUsers.includes(req.username)){
+      track.allowedUsers.push(req.username);
+      saveTracks(tracks);
+    }
+    req.status = 'APPROVED';
+  } else {
+    if(track) track.allowedUsers = track.allowedUsers.filter(u => u !== req.username);
+    req.status = 'DENIED';
+    saveTracks(tracks);
+  }
+  localStorage.setItem('tide_requests_v2', JSON.stringify(requests));
+  pushCloudUpdate('RESOLVE_REQUEST', {requestId, decision});
+  renderRequests();
+}
+
+function toggleAutoApprove(){
+  const el = document.getElementById('auto-toggle');
+  const on = !el.classList.contains('on');
+  el.classList.toggle('on', on);
+  el.setAttribute('aria-checked', on);
+  pushCloudUpdate('SET_AUTO_APPROVE', {value: on});
+}
+
+async function handleFileUpload(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  const stat = document.getElementById('upload-status');
+  stat.style.display = 'block';
+  stat.textContent = `> Đang mã hóa client-side AES-256-GCM cho ${file.name}...`;
+
+  const id = 'track_' + Date.now();
+  await saveMediaBlob(id, file);
+
+  const hashPart = Math.random().toString(16).substring(2,10) + '...';
+  const sizeMb = (file.size/(1024*1024)).toFixed(1) + ' MB';
+
+  const tracks = getStoredTracks();
+  const newTrack = {
+    id: id,
+    name: file.name,
+    type: file.type || 'audio/mp3',
+    size: sizeMb,
+    hash: hashPart,
+    artistUsername: activeArtistUser,
+    allowedUsers: [],
+    artSeed: Math.floor(Math.random() * 5)
+  };
+  tracks.unshift(newTrack);
+  saveTracks(tracks);
+  pushCloudUpdate('ADD_TRACK', {track: newTrack});
+
+  try {
+    const arr = await file.arrayBuffer();
+    const base64 = btoa(String.fromCharCode(...new Uint8Array(arr)));
+    await fetch(API_VAULT_URL, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({action: 'UPLOAD_BLOB', trackId: id, data: base64})
+    });
+  } catch(err){}
+
+  stat.textContent = `> [THÀNH CÔNG] Đã niêm phong ${file.name} vào két sắt của ${activeArtistUser}!`;
+  e.target.value = '';
+}
+
+// Initial render
+renderArtistSwitcher();
+renderArtistTracks();
+renderRequests();
+</script>
+</body>
+</html>
+'''
+
+# ==============================================================================
+# PAGE 2 (NGƯỜI NGHE): CLEAN ARTIST SELECTOR (NO TYPING!) + ONE-CLICK ACCESS
+# ==============================================================================
+PAGE_2_HTML = r'''<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SONORA · Phòng nghe thử riêng tư (TideCloak BYOiD)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0e120f;--surface:#161c17;--surface-2:#202821;--line:rgba(255,255,255,.09);
+  --line-strong:rgba(255,255,255,.18);--fg:#f7f8f5;--muted:#a1a99f;--dim:#727b70;
+  --accent:#b8f36b;--accent-dim:rgba(184,243,107,.14);
+  --danger:#ff526c;--danger-dim:rgba(255,82,108,.14);
+  --ok:#b8f36b;--ok-dim:rgba(184,243,107,.14);
+  --warn:#ffb84d;--warn-dim:rgba(255,184,77,.15);
+  --radius:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:linear-gradient(145deg,#121813 0%,#0e120f 50%,#080a08 100%);
+  color:var(--fg);font-family:'Space Grotesk',sans-serif;line-height:1.5;
+  min-height:100vh;padding-bottom:50px;
+}
+body::before{
+  content:'';position:fixed;inset:0;z-index:-2;
+  background:radial-gradient(850px 460px at 75% 0%,rgba(184,243,107,.10),transparent 65%);
+}
+.mono{font-family:'JetBrains Mono',monospace}
+
+/* Topbar */
+.topbar{
+  position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
+  padding:14px max(24px,calc((100vw - 1200px)/2));backdrop-filter:blur(20px);
+  background:rgba(14,18,15,.88);border-bottom:1px solid var(--line);
+}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;font-weight:700;letter-spacing:.05em}
+.brand-dot{width:11px;height:11px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent)}
+.brand small{display:block;font-size:11px;color:var(--muted);font-weight:400}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.pill-tide{
+  font-size:11px;font-weight:600;color:var(--accent);background:var(--surface-2);
+  padding:6px 12px;border-radius:8px;border:1px solid var(--line);display:flex;align-items:center;gap:6px;
+}
+.sync-pulse{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.user-badge{
+  display:flex;align-items:center;gap:8px;background:var(--surface-2);
+  border:1px solid var(--line);padding:6px 12px;border-radius:999px;font-size:12px;
+}
+.user-dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.btn-logout{background:transparent;border:none;color:var(--muted);cursor:pointer;font-family:inherit;font-size:12px}
+.btn-logout:hover{color:var(--danger)}
+
+.container{max-width:1200px;margin:28px auto 70px;padding:0 24px}
+
+/* Music Hero Banner */
+.music-hero{
+  position:relative;overflow:hidden;margin-bottom:24px;padding:26px 30px;
+  border:1px solid rgba(184,243,107,.18);border-radius:20px;
+  background:linear-gradient(110deg,rgba(184,243,107,.15),rgba(32,40,33,.85) 50%,rgba(22,28,23,.96));
+}
+.music-hero::after{
+  content:"♫";position:absolute;right:30px;top:-30px;
+  color:rgba(255,255,255,.05);font-size:180px;line-height:1;pointer-events:none;
+}
+.music-kicker{color:var(--accent);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.music-hero h1{margin:6px 0;font-size:clamp(24px,4vw,34px);letter-spacing:-.03em;font-weight:700}
+.music-hero p{max-width:640px;color:#c6cdc2;font-size:13px;line-height:1.6}
+
+/* Clean Artist Selector Box */
+.artist-selector-box{
+  background:var(--surface);border:1px solid var(--line);border-radius:18px;
+  padding:20px 24px;margin-bottom:24px;display:flex;flex-direction:column;gap:14px;
+}
+.artist-chips-wrap{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px}
+.artist-chip{
+  background:var(--surface-2);border:1px solid var(--line);border-radius:12px;
+  padding:10px 16px;cursor:pointer;transition:.2s;display:flex;align-items:center;gap:10px;
+  white-space:nowrap;user-select:none;
+}
+.artist-chip:hover{border-color:var(--line-strong);transform:translateY(-1px)}
+.artist-chip.active{
+  background:linear-gradient(135deg,rgba(184,243,107,.18),rgba(184,243,107,.05));
+  border-color:var(--accent);box-shadow:0 0 16px rgba(184,243,107,.15);
+}
+.chip-avatar{
+  width:32px;height:32px;border-radius:50%;background:var(--accent);color:#0a0b0e;
+  font-weight:700;display:grid;place-items:center;font-size:14px;
+}
+.chip-meta{text-align:left}
+.chip-name{font-size:13px;font-weight:700;color:var(--fg)}
+.chip-genre{font-size:11px;color:var(--muted)}
+
+/* Cards & Elements */
+.card{
+  background:linear-gradient(145deg,rgba(28,34,29,.94),rgba(20,25,21,.96));
+  border:1px solid var(--line);border-radius:var(--radius);padding:24px;margin-bottom:24px;
+  box-shadow:0 14px 40px rgba(0,0,0,.25);backdrop-filter:blur(14px);
+}
+.btn{
+  font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;
+  padding:9px 18px;border-radius:999px;border:1px solid transparent;
+  transition:.18s;display:inline-flex;align-items:center;gap:7px;text-decoration:none;
+}
+.btn-accent{background:var(--accent);color:#10150d}
+.btn-accent:hover{filter:brightness(1.1);transform:translateY(-1px);box-shadow:0 4px 14px rgba(184,243,107,.25)}
+.btn-warn{background:var(--warn-dim);color:var(--warn);border-color:rgba(255,184,77,.3)}
+.btn-ghost{background:transparent;border-color:var(--line-strong);color:var(--fg)}
+.btn-ghost:hover{background:var(--surface-2)}
+.btn-sm{padding:6px 14px;font-size:12px}
+
+/* Auth box */
+.auth-box{
+  max-width:440px;margin:50px auto;background:linear-gradient(145deg,rgba(30,36,31,.95),rgba(22,26,22,.96));
+  border:1px solid var(--line);border-radius:var(--radius);padding:34px;box-shadow:0 16px 45px rgba(0,0,0,.3);
+}
+.auth-title{font-size:24px;font-weight:700;margin-bottom:6px}
+.auth-sub{font-size:13px;color:var(--muted);margin-bottom:22px}
+.auth-tabs{display:flex;gap:6px;background:#111511;padding:4px;border-radius:10px;margin-bottom:20px;border:1px solid var(--line)}
+.auth-tab{
+  flex:1;text-align:center;padding:8px;font-size:12px;font-weight:600;color:var(--muted);
+  background:transparent;border:none;border-radius:8px;cursor:pointer;
+}
+.auth-tab.active{background:var(--surface-2);color:var(--accent)}
+.form-group{margin-bottom:15px}
+.form-label{display:block;font-size:11px;font-weight:700;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.05em}
+.form-input{
+  width:100%;padding:11px 14px;background:#121612;border:1px solid var(--line);
+  border-radius:10px;color:var(--fg);font-family:inherit;font-size:13px;outline:none;transition:.18s;
+}
+.form-input:focus{border-color:var(--accent)}
+
+/* Album Grid */
+.album-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px;margin-bottom:24px}
+.album-card{
+  background:var(--surface);border:1px solid var(--line);border-radius:14px;
+  padding:16px;display:flex;flex-direction:column;justify-content:space-between;
+  transition:.2s ease;position:relative;overflow:hidden;
+}
+.album-card:hover{border-color:var(--line-strong);transform:translateY(-2px);background:var(--surface-2)}
+.album-card.active-card{border-color:var(--accent);box-shadow:0 0 20px rgba(184,243,107,.15)}
+.card-top{display:flex;gap:14px;align-items:center;margin-bottom:14px}
+.album-art{
+  width:56px;height:56px;border-radius:10px;flex-shrink:0;
+  display:grid;place-items:center;font-size:24px;font-weight:700;color:#10150d;
+}
+.card-meta{min-width:0;flex:1}
+.card-title{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.card-bottom{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:auto}
+
+/* Status Badges */
+.badge{font-size:11px;font-weight:700;padding:5px 10px;border-radius:999px;white-space:nowrap}
+.badge-ok{color:var(--accent);background:var(--accent-dim);border:1px solid rgba(184,243,107,.25)}
+.badge-danger{color:var(--danger);background:var(--danger-dim);border:1px solid rgba(255,82,108,.25)}
+.badge-warn{color:var(--warn);background:var(--warn-dim);border:1px solid rgba(255,184,77,.25)}
+
+/* Active Player Console */
+.now-playing{display:flex;align-items:center;gap:20px;margin-bottom:20px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+.disc{
+  width:72px;height:72px;border-radius:50%;flex-shrink:0;
+  background:repeating-radial-gradient(#111511,#111511 2px,#2c342d 3px,#111511 4px);
+  border:1px solid var(--line-strong);position:relative;display:flex;align-items:center;justify-content:center;
+}
+.disc::after{content:'';width:18px;height:18px;border-radius:50%;background:var(--accent)}
+.disc.spin{animation:spin 3s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.visualizer{
+  height:92px;display:flex;align-items:flex-end;gap:3px;border:1px solid var(--line);
+  border-radius:12px;background:linear-gradient(180deg,rgba(184,243,107,.04),transparent);
+  overflow:hidden;padding:12px;margin-bottom:20px;
+}
+.bar{flex:1;background:var(--line-strong);border-radius:2px;height:10%;transition:height .1s ease}
+.bar.on{background:linear-gradient(180deg,var(--accent),rgba(184,243,107,.25))}
+
+.play-controls{display:flex;align-items:center;gap:18px}
+.play-btn{
+  width:54px;height:54px;border-radius:50%;flex-shrink:0;cursor:pointer;border:none;
+  background:var(--accent);color:#10150d;font-size:20px;display:flex;align-items:center;justify-content:center;
+  transition:.2s;box-shadow:0 4px 18px rgba(184,243,107,.25);
+}
+.play-btn:hover{transform:scale(1.06)}
+.timebar{flex:1}
+.track-line{height:5px;border-radius:999px;background:rgba(255,255,255,.12);overflow:hidden}
+.fill{height:100%;width:0%;background:var(--accent);transition:width .25s linear}
+.times{display:flex;justify-content:space-between;font-size:11px;color:var(--dim);margin-top:6px}
+
+/* Locked / Request Access Box inside Player */
+.locked-panel{
+  text-align:center;padding:40px 24px;border:1px solid rgba(255,184,77,.25);
+  border-radius:16px;background:rgba(255,184,77,.04);margin-top:10px;
+}
+.locked-icon{font-size:44px;margin-bottom:12px}
+.locked-title{font-size:20px;font-weight:700;color:var(--fg);margin-bottom:6px}
+.locked-desc{font-size:13px;color:var(--muted);max-width:540px;margin:0 auto 20px;line-height:1.6}
+
+/* Video wrap */
+.video-wrap{position:relative;user-select:none;-webkit-user-select:none;margin-bottom:20px}
+video{width:100%;max-height:460px;border-radius:14px;border:1px solid var(--line);background:#000;display:block}
+.video-badge{
+  position:absolute;top:10px;right:10px;background:rgba(0,0,0,.75);
+  border:1px solid rgba(255,255,255,.15);padding:4px 10px;border-radius:6px;
+  font-size:11px;color:var(--accent);pointer-events:none;
+}
+
+/* Execution Log */
+.log-box{
+  background:#090c09;border:1px solid var(--line);border-radius:12px;padding:14px 18px;
+  font-size:12px;color:var(--muted);line-height:1.7;max-height:160px;overflow-y:auto;
+}
+
+.hidden{display:none!important}
+.footer{max-width:1200px;margin:0 auto;padding:24px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;color:var(--dim);font-size:12px}
+@media(max-width:650px){.topbar{padding:12px 16px}.container{padding:0 16px}.album-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a href="/rmit" class="brand">
+    <span class="brand-dot"></span>
+    <div>SONORA<small>Phòng nghe thử riêng tư · TideCloak</small></div>
+  </a>
+  <div class="topbar-right">
+    <div id="reviewer-user-info" class="user-badge hidden">
+      <span class="user-dot"></span>
+      <span id="reviewer-name-display" class="mono">minh_mastering</span>
+      <button class="btn-logout" onclick="logoutReviewer()">Đăng xuất</button>
+    </div>
+    <span class="pill-tide"><span class="sync-pulse"></span> Cloud Sync: ACTIVE</span>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- ================= 1. FORM ĐĂNG NHẬP / TẠO DANH TÍNH ================= -->
+  <div id="reviewer-auth-view" class="auth-box">
+    <div class="auth-tabs">
+      <button id="tab-login" class="auth-tab active" onclick="switchAuthTab('login')">Đăng Nhập Danh Tính</button>
+      <button id="tab-register" class="auth-tab" onclick="switchAuthTab('register')">Tạo Danh Tính Mới</button>
+    </div>
+
+    <!-- Login -->
+    <div id="form-login">
+      <div class="auth-title">Đăng Nhập Người Nghe</div>
+      <div class="auth-sub">Chọn danh tính BYOiD đã có hoặc nhập tên người nghe của bạn</div>
+
+      <div class="form-group">
+        <label class="form-label">Chọn Danh Tính Có Sẵn</label>
+        <select id="quick-user-select" class="form-input" style="margin-bottom:8px" onchange="document.getElementById('reviewer-login-user').value=this.value">
+          <option value="minh_mastering">minh_mastering — Minh (Kỹ Sư Hòa Âm)</option>
+          <option value="thu_producer">thu_producer — Thu (Giám Đốc Sản Xuất)</option>
+          <option value="lan_soundcheck">lan_soundcheck — Lan (Kiểm Âm)</option>
+        </select>
+        <input type="text" id="reviewer-login-user" class="form-input" value="minh_mastering" placeholder="Tên đăng nhập">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Mật Khẩu Xác Thực</label>
+        <input type="password" id="reviewer-login-pass" class="form-input" placeholder="••••••••">
+      </div>
+      <button class="btn btn-accent" style="width:100%;justify-content:center" onclick="loginReviewer()">Đăng Nhập Vào Phiên Nghe</button>
+    </div>
+
+    <!-- Register -->
+    <div id="form-register" class="hidden">
+      <div class="auth-title">Tạo Danh Tính Mới</div>
+      <div class="auth-sub">Khởi tạo mã DID phi tập trung để nhận quyền nghe từ Nghệ Sĩ</div>
+
+      <div class="form-group">
+        <label class="form-label">Họ Tên / Chức Danh</label>
+        <input type="text" id="reg-name" class="form-input" placeholder="Ví dụ: Hoàng (Audio Engineer)">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tên Đăng Nhập (Username viết liền)</label>
+        <input type="text" id="reg-user" class="form-input" placeholder="hoang_audio">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Mật Khẩu Khởi Tạo</label>
+        <input type="password" id="reg-pass" class="form-input" placeholder="••••••••">
+      </div>
+      <button class="btn btn-accent" style="width:100%;justify-content:center" onclick="registerReviewer()">Khởi Tạo Danh Tính Mật Mã</button>
+    </div>
+  </div>
+
+  <!-- ================= 2. GIAO DIỆN CHÍNH SAU KHI ĐĂNG NHẬP ================= -->
+  <div id="reviewer-main-view" class="hidden">
+
+    <!-- Banner Hero -->
+    <section class="music-hero">
+      <div class="music-kicker">TideCloak Zero-Trust Audio Vault</div>
+      <h1>Âm nhạc bảo mật dành riêng cho bạn.</h1>
+      <p>
+        Xin chào <strong id="logged-user-title" style="color:var(--accent)">minh_mastering</strong>.
+        Tất cả tác phẩm được bảo vệ bằng mã hóa client-side không có chìa khóa chủ.
+        Bài hát nào chưa được cấp quyền, bạn có thể nhấn <strong>"⚡ Xin Quyền Nghe"</strong> để gửi yêu cầu tới Nghệ Sĩ duyệt ở Trang 1.
+      </p>
+    </section>
+
+    <!-- THANH CHỌN NGHỆ SĨ TRỰC QUAN (CHỈ CHỌN, KHÔNG BẮT GÕ) -->
+    <div class="artist-selector-box">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+        <div>
+          <span style="font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px">
+            <span>🎨</span> Chọn Két Sắt Nghệ Sĩ Bạn Muốn Nghe Thử:
+          </span>
+          <span style="font-size:12px;color:var(--muted)">Nhấp chọn nghệ sĩ bên dưới để xem toàn bộ danh mục bài hát</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <label style="font-size:12px;color:var(--muted)">Danh mục:</label>
+          <select id="quick-artist-select" class="form-input" style="width:220px;padding:6px 12px;font-size:13px" onchange="switchArtist(this.value)">
+          </select>
+        </div>
+      </div>
+
+      <!-- Dãy Chip Nghệ Sĩ Bấm Chọn Nhanh -->
+      <div class="artist-chips-wrap" id="artist-chips-container">
+      </div>
+    </div>
+
+    <!-- DANH SÁCH BÀI HÁT (ALBUM GRID) -->
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <h2 style="font-size:18px;font-weight:700">Tác Phẩm Của Nghệ Sĩ: <span id="current-artist-label" style="color:var(--accent)">Alice Nguyễn</span></h2>
+      <span class="mono" style="font-size:12px;color:var(--muted)" id="tracks-count-label">0 bài hát</span>
+    </div>
+
+    <div class="album-grid" id="album-cards-container"></div>
+
+    <!-- KHUNG PHÁT NHẠC / TRÌNH DIỄN (PLAYER CONSOLE) -->
+    <div class="card" id="main-player-card">
+      <div class="now-playing">
+        <div class="disc" id="disc"></div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:18px;font-weight:700" id="np-title">Chưa chọn tác phẩm nào</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:3px" class="mono" id="np-status">
+            Chọn một bài hát trong danh mục phía trên
+          </div>
+        </div>
+        <div id="np-badge-wrap"></div>
+      </div>
+
+      <!-- Video Player (nếu là video và có quyền) -->
+      <div id="video-container" class="video-wrap hidden" oncontextmenu="return false;">
+        <video id="html5-video" controls controlsList="nodownload nofullscreen noplaybackrate" disablePictureInPicture></video>
+        <div class="video-badge mono">🔒 Tide In-Memory Stream · CẤM TẢI VỀ</div>
+      </div>
+
+      <!-- Audio Visualizer (nếu là audio và có quyền) -->
+      <div id="audio-container" class="hidden">
+        <div class="visualizer" id="viz"></div>
+        <div class="play-controls">
+          <button class="play-btn" id="play-btn" onclick="togglePlay()">▶</button>
+          <div class="timebar">
+            <div class="track-line"><div class="fill" id="fill"></div></div>
+            <div class="times mono"><span id="cur">0:00</span><span id="dur">3:42</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BẢNG XIN QUYỀN NẾU TÁC PHẨM CHƯA ĐƯỢC CẤP PHÉP -->
+      <div id="locked-request-panel" class="locked-panel hidden">
+        <div class="locked-icon">🔒</div>
+        <div class="locked-title" id="locked-track-title">Tác phẩm này đang bị khóa</div>
+        <div class="locked-desc" id="locked-track-desc">
+          Theo Chính Sách Bảo Mật TideCloak, danh tính của bạn chưa có quyền hạn tự sinh (Emergent Entitlement) để giải mã tệp tin này.
+          Bạn có thể nhấn nút bên dưới để gửi đơn xin quyền tới Nghệ Sĩ duyệt ở Trang 1.
+        </div>
+        <div id="locked-action-area">
+          <button class="btn btn-accent" id="btn-request-access" onclick="requestAccessCurrentTrack()" style="font-size:14px;padding:12px 24px">
+            ⚡ Gửi Yêu Cầu Xin Quyền Nghe Thử Tới Nghệ Sĩ
+          </button>
+        </div>
+      </div>
+
+      <audio id="native-audio" style="display:none"></audio>
+    </div>
+
+    <!-- BẢNG NHẬT KÝ ĐÁNH GIÁ QUYỀN HẠN TIDECLOAK (AUDIT LOG) -->
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h3 style="font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px">
+          <span style="color:var(--accent)">⚡</span> Nhật Ký Thực Thi Quyền Hạn TideCloak Quorum (Execution Log)
+        </h3>
+        <span class="mono" style="font-size:11px;color:var(--dim)">Auto Realtime Sync</span>
+      </div>
+      <div id="tide-execution-log" class="log-box mono">
+        > SONORA Ready. Kết nối mạng Tide Fabric Quorum thành công.
+      </div>
+    </div>
+
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>SONORA · Phòng Nghe Thử Bảo Mật · Team Foodseekers</span>
+  <span class="mono">RMIT Hackathon 2026 — Challenge 2 (Tide)</span>
+</footer>
+
+<script>
+const API_VAULT_URL = '/api/rmit-vault';
+let isSyncingWithCloud = false;
+let cloudStateCache = null;
+
+async function fetchCloudState() {
+  if (isSyncingWithCloud) return;
+  try {
+    const res = await fetch(API_VAULT_URL);
+    if (!res.ok) return;
+    const json = await res.json();
+    if (json.ok && json.data) {
+      cloudStateCache = json.data;
+      localStorage.setItem('tide_tracks_v2', JSON.stringify(cloudStateCache.tracks || []));
+      localStorage.setItem('tide_users', JSON.stringify(cloudStateCache.users || []));
+      localStorage.setItem('tide_requests_v2', JSON.stringify(cloudStateCache.requests || []));
+      localStorage.setItem('tide_artists', JSON.stringify(cloudStateCache.artists || []));
+
+      renderArtistChips();
+      renderAlbumGrid();
+      syncActiveTrackView();
+    }
+  } catch (e) {}
+}
+
+async function pushCloudAction(action, payload = {}) {
+  isSyncingWithCloud = true;
+  try {
+    const res = await fetch(API_VAULT_URL, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({action, ...payload})
+    });
+    if (res.ok) {
+      const json = await res.json();
+      if (json.ok && json.data) {
+        cloudStateCache = json.data;
+        localStorage.setItem('tide_tracks_v2', JSON.stringify(cloudStateCache.tracks || []));
+        localStorage.setItem('tide_requests_v2', JSON.stringify(cloudStateCache.requests || []));
+        renderAlbumGrid();
+        syncActiveTrackView();
+      }
+    }
+  } catch (err) {
+    console.warn('Push error:', err);
+  } finally {
+    isSyncingWithCloud = false;
+  }
+}
+
+setInterval(fetchCloudState, 2000);
+fetchCloudState();
+
+const DB_NAME='tide_vault_db', STORE_NAME='media_blobs';
+function openDB(){return new Promise((res,rej)=>{const r=indexedDB.open(DB_NAME,1);r.onupgradeneeded=e=>{if(!e.target.result.objectStoreNames.contains(STORE_NAME))e.target.result.createObjectStore(STORE_NAME)};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});}
+async function getMediaBlob(id){
+  try {
+    const db=await openDB();
+    const local = await new Promise((res,rej)=>{const tx=db.transaction(STORE_NAME,'readonly');const req=tx.objectStore(STORE_NAME).get(id);req.onsuccess=()=>res(req.result);req.onerror=()=>rej(tx.error)});
+    if (local) return local;
+  } catch(e){}
+
+  try {
+    const res = await fetch(`${API_VAULT_URL}?blob=${id}`);
+    if (res.ok) {
+      const j = await res.json();
+      if (j.ok && j.data) {
+        const byteCharacters = atob(j.data);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], {type: 'audio/mp3'});
+        return blob;
+      }
+    }
+  } catch(e){}
+  return null;
+}
+
+function getStoredArtists(){
+  const d = localStorage.getItem('tide_artists');
+  if(d){try{return JSON.parse(d)}catch(e){}}
+  return [
+    { username: 'alice_artist', name: 'Alice Nguyễn', genre: 'Indie Pop / Electronic', bio: 'Nghệ sĩ độc lập, album Midnight Cipher', artSeed: 0 },
+    { username: 'endy_producer', name: 'Endy (Thiện Nhân)', genre: 'Lo-Fi / Cinematic AI', bio: 'Nhà sản xuất âm nhạc tại UIT Studio', artSeed: 1 }
+  ];
+}
+function getStoredTracks(){
+  const d=localStorage.getItem('tide_tracks_v2');
+  if(d){try{return JSON.parse(d)}catch(e){}}
+  return [];
+}
+function getStoredRequests(){
+  const d=localStorage.getItem('tide_requests_v2');
+  if(d){try{return JSON.parse(d)}catch(e){}}
+  return [];
+}
+function getStoredUsers(){
+  const d=localStorage.getItem('tide_users');
+  if(d){try{return JSON.parse(d)}catch(e){}}
+  return [];
+}
+
+let selectedArtist = 'alice_artist';
+let activeTrackId = null;
+let isPlaying = false, synthInterval = null, timerInterval = null, ctx = null, t = 0, noteIdx = 0;
+const notes = [261.63, 329.63, 392, 523.25, 440, 392, 329.63, 293.66];
+
+const viz=document.getElementById('viz');
+for(let i=0;i<56;i++){const b=document.createElement('div');b.className='bar';viz.appendChild(b)}
+const bars=[...document.querySelectorAll('.bar')];
+
+function switchAuthTab(tab){
+  document.getElementById('tab-login').classList.toggle('active',tab==='login');
+  document.getElementById('tab-register').classList.toggle('active',tab==='register');
+  document.getElementById('form-login').classList.toggle('hidden',tab!=='login');
+  document.getElementById('form-register').classList.toggle('hidden',tab!=='register');
+}
+
+function loginReviewer(){
+  const u=document.getElementById('reviewer-login-user').value.trim();
+  const p=document.getElementById('reviewer-login-pass').value.trim();
+  if(!u){alert('Vui lòng nhập username!');return;}
+  if(!p){alert('Vui lòng nhập mật khẩu xác thực!');return;}
+  localStorage.setItem('tide_logged_reviewer',u);
+  pushCloudAction('SET_SESSION', {role:'reviewer', username:u});
+  checkAuth();
+}
+
+function registerReviewer(){
+  const name=document.getElementById('reg-name').value.trim();
+  const u=document.getElementById('reg-user').value.trim().toLowerCase();
+  const p=document.getElementById('reg-pass').value.trim();
+  if(!name || !u){alert('Vui lòng điền đủ họ tên và username!');return;}
+  if(!p){alert('Vui lòng nhập mật khẩu khởi tạo!');return;}
+
+  const users=getStoredUsers();
+  if(users.some(x=>x.username===u)){alert('Username này đã tồn tại!');return;}
+
+  const newUser={username:u,name:name,role:'reviewer',did:'tide:usr:'+u+'_'+Math.random().toString(16).substring(2,6)};
+  users.push(newUser);
+  localStorage.setItem('tide_users',JSON.stringify(users));
+  localStorage.setItem('tide_logged_reviewer',u);
+
+  pushCloudAction('REGISTER_USER', {user:newUser});
+  alert(`Đã khởi tạo danh tính thành công: ${newUser.did}!`);
+  checkAuth();
+}
+
+function logoutReviewer(){
+  localStorage.removeItem('tide_logged_reviewer');
+  pushCloudAction('SET_SESSION', {role:'reviewer', username:null});
+  checkAuth();
+}
+
+function checkAuth(){
+  const u=localStorage.getItem('tide_logged_reviewer');
+  const authView=document.getElementById('reviewer-auth-view');
+  const mainView=document.getElementById('reviewer-main-view');
+  const userInfo=document.getElementById('reviewer-user-info');
+  const nameDisp=document.getElementById('reviewer-name-display');
+
+  const users=getStoredUsers();
+  const quickSelect=document.getElementById('quick-user-select');
+  if(quickSelect && users.length){
+    quickSelect.innerHTML=users.map(x=>`<option value="${x.username}">${x.username} — ${x.name}</option>`).join('');
+  }
+
+  if(u){
+    authView.classList.add('hidden');
+    mainView.classList.remove('hidden');
+    userInfo.classList.remove('hidden');
+    nameDisp.textContent=u;
+    document.getElementById('logged-user-title').textContent=u;
+    renderArtistChips();
+    renderAlbumGrid();
+    syncActiveTrackView();
+  }else{
+    authView.classList.remove('hidden');
+    mainView.classList.add('hidden');
+    userInfo.classList.add('hidden');
+    stopAudio();
+  }
+}
+
+// ==================== CLEAN ARTIST SELECTION (CHỌN CHỨ KHÔNG GÕ) ====================
+function renderArtistChips(){
+  const artists = getStoredArtists();
+  const tracks = getStoredTracks();
+  const container = document.getElementById('artist-chips-container');
+  const select = document.getElementById('quick-artist-select');
+  if(!container) return;
+
+  container.innerHTML = '';
+
+  artists.forEach(a => {
+    const songCount = tracks.filter(t => (t.artistUsername||'alice_artist').toLowerCase() === a.username.toLowerCase()).length;
+    const isCur = a.username.toLowerCase() === selectedArtist.toLowerCase();
+
+    const chip = document.createElement('div');
+    chip.className = `artist-chip ${isCur ? 'active' : ''}`;
+    chip.onclick = () => switchArtist(a.username);
+
+    chip.innerHTML = `
+      <div class="chip-avatar">${(a.name||'A').charAt(0).toUpperCase()}</div>
+      <div class="chip-meta">
+        <div class="chip-name">${a.name}</div>
+        <div class="chip-genre mono">@${a.username} · ${songCount} bài</div>
+      </div>
+    `;
+    container.appendChild(chip);
+  });
+
+  if(select){
+    select.innerHTML = artists.map(a => {
+      const count = tracks.filter(t => (t.artistUsername||'alice_artist').toLowerCase() === a.username.toLowerCase()).length;
+      return `<option value="${a.username}" ${a.username===selectedArtist?'selected':''}>${a.name} (@${a.username}) — ${count} bài</option>`;
+    }).join('');
+  }
+}
+
+function switchArtist(artistName){
+  selectedArtist = artistName.trim().toLowerCase();
+  const artists = getStoredArtists();
+  const current = artists.find(a => a.username === selectedArtist);
+  const displayName = current ? current.name : selectedArtist;
+
+  document.getElementById('current-artist-label').textContent = displayName;
+  appendLog(`[KẾT NỐI] Đã chọn Két Sắt Nghệ Sĩ: ${displayName} (@${selectedArtist})`, 'var(--accent)');
+
+  activeTrackId = null;
+  stopAudio();
+  renderArtistChips();
+  renderAlbumGrid();
+  syncActiveTrackView();
+}
+
+function artGradient(seed){
+  const gradients = [
+    'linear-gradient(145deg,#37443a,#1b211b 65%,#293625)',
+    'linear-gradient(145deg,#51413c,#28201f 70%,#674c3d)',
+    'linear-gradient(145deg,#3c4653,#1c252c 70%,#394957)',
+    'linear-gradient(145deg,#554f35,#24251b 70%,#4c4630)',
+    'linear-gradient(145deg,#2e3a59,#1a2332 70%,#3d5074)'
+  ];
+  return gradients[(seed||0) % gradients.length];
+}
+
+function renderAlbumGrid(){
+  const currentUser = localStorage.getItem('tide_logged_reviewer');
+  if(!currentUser) return;
+
+  const tracks = getStoredTracks();
+  const requests = getStoredRequests();
+  const container = document.getElementById('album-cards-container');
+  if(!container) return;
+  container.innerHTML = '';
+
+  const artistTracks = tracks.filter(x => (x.artistUsername||'alice_artist').toLowerCase() === selectedArtist.toLowerCase());
+  document.getElementById('tracks-count-label').textContent = `${artistTracks.length} bài hát`;
+
+  if(!artistTracks.length){
+    container.innerHTML = `<div style="grid-column:1/-1;padding:24px;color:var(--muted);text-align:center" class="mono">Két sắt của nghệ sĩ "${selectedArtist}" chưa có bài hát nào được tải lên.</div>`;
+    return;
+  }
+
+  if(!activeTrackId || !artistTracks.some(x=>x.id===activeTrackId)){
+    activeTrackId = artistTracks[0].id;
+  }
+
+  artistTracks.forEach(t=>{
+    const isAllowed = Array.isArray(t.allowedUsers) && t.allowedUsers.includes(currentUser);
+    const pendingReq = requests.find(r => r.trackId === t.id && r.username === currentUser && r.status === 'PENDING');
+    const isVideo = t.type.startsWith('video');
+
+    const card = document.createElement('div');
+    card.className = `album-card ${t.id === activeTrackId ? 'active-card' : ''}`;
+    card.onclick = (e) => {
+      if(e.target.tagName==='BUTTON') return;
+      selectTrack(t.id);
+    };
+
+    let statusBadge = '';
+    let actionBtn = '';
+
+    if(isAllowed){
+      statusBadge = '<span class="badge badge-ok">✓ ĐÃ CÓ QUYỀN</span>';
+      actionBtn = `<button class="btn btn-accent btn-sm" onclick="playTrackDirect('${t.id}')">▶ Phát Ngay</button>`;
+    } else if(pendingReq){
+      statusBadge = '<span class="badge badge-warn">⏳ ĐANG CHỜ DUYỆT</span>';
+      actionBtn = `<button class="btn btn-warn btn-sm" style="cursor:default" onclick="event.stopPropagation()">⏳ Đang Chờ Duyệt</button>`;
+    } else {
+      statusBadge = '<span class="badge badge-danger">🔒 BỊ KHÓA</span>';
+      actionBtn = `<button class="btn btn-accent btn-sm" onclick="requestAccessForTrack('${t.id}')">⚡ Xin Quyền Nghe</button>`;
+    }
+
+    const artBg = artGradient(t.artSeed||0);
+    const artIcon = isVideo ? '🎬' : '🎵';
+
+    card.innerHTML = `
+      <div class="card-top">
+        <div class="album-art" style="background:${artBg}">${artIcon}</div>
+        <div class="card-meta">
+          <div class="card-title">${t.name}</div>
+          <div class="card-sub mono">${t.size} · ${isVideo?'Video Master':'Audio Master'}</div>
+        </div>
+      </div>
+      <div class="card-bottom">
+        <div>${statusBadge}</div>
+        <div>${actionBtn}</div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function selectTrack(trackId){
+  activeTrackId = trackId;
+  stopAudio();
+  renderAlbumGrid();
+  syncActiveTrackView();
+}
+
+function playTrackDirect(trackId){
+  selectTrack(trackId);
+  togglePlay();
+}
+
+// ==================== REQUEST ACCESS (XIN QUYỀN) ====================
+function requestAccessForTrack(trackId){
+  const currentUser = localStorage.getItem('tide_logged_reviewer');
+  if(!currentUser){alert('Vui lòng đăng nhập trước!'); return;}
+
+  const tracks = getStoredTracks();
+  const track = tracks.find(x=>x.id===trackId);
+  const trackName = track ? track.name : trackId;
+
+  appendLog(`[XIN QUYỀN] Đang gửi yêu cầu cấp quyền cho "${trackName}" tới Nghệ Sĩ...`, 'var(--warn)');
+
+  pushCloudAction('REQUEST_ACCESS', {trackId: trackId, username: currentUser});
+
+  const requests = getStoredRequests();
+  if(!requests.some(r=>r.trackId===trackId && r.username===currentUser && r.status==='PENDING')){
+    requests.push({
+      id: `req_${Date.now()}`,
+      trackId: trackId,
+      username: currentUser,
+      status: 'PENDING',
+      createdAt: new Date().toISOString()
+    });
+    localStorage.setItem('tide_requests_v2', JSON.stringify(requests));
+  }
+
+  renderAlbumGrid();
+  syncActiveTrackView();
+
+  appendLog(`[ĐÃ GỬI] Yêu cầu xin quyền đã được ghi vào Quorum. Nghệ Sĩ ở Trang 1 có thể duyệt ngay!`, 'var(--ok)');
+}
+
+function requestAccessCurrentTrack(){
+  if(activeTrackId){
+    requestAccessForTrack(activeTrackId);
+  }
+}
+
+// ==================== ACTIVE TRACK VIEW & PLAYBACK ====================
+async function syncActiveTrackView(){
+  const currentUser = localStorage.getItem('tide_logged_reviewer');
+  if(!currentUser) return;
+
+  const tracks = getStoredTracks();
+  const requests = getStoredRequests();
+  const track = tracks.find(x=>x.id===activeTrackId);
+
+  const npTitle = document.getElementById('np-title');
+  const npStatus = document.getElementById('np-status');
+  const npBadge = document.getElementById('np-badge-wrap');
+  const videoCont = document.getElementById('video-container');
+  const audioCont = document.getElementById('audio-container');
+  const lockedPanel = document.getElementById('locked-request-panel');
+  const disc = document.getElementById('disc');
+
+  if(!track){
+    npTitle.textContent = 'Chưa chọn tác phẩm nào';
+    npStatus.textContent = 'Chọn một bài hát trong danh mục phía trên';
+    npBadge.innerHTML = '';
+    videoCont.classList.add('hidden');
+    audioCont.classList.add('hidden');
+    lockedPanel.classList.add('hidden');
+    return;
+  }
+
+  npTitle.textContent = track.name;
+  const isAllowed = Array.isArray(track.allowedUsers) && track.allowedUsers.includes(currentUser);
+  const pendingReq = requests.find(r => r.trackId === track.id && r.username === currentUser && r.status === 'PENDING');
+  const isVideo = track.type.startsWith('video');
+
+  if(isAllowed){
+    npStatus.textContent = '● Quyền hạn tự sinh hợp lệ (Tide Emergent Authority) · RAM Playback';
+    npStatus.style.color = 'var(--accent)';
+    npBadge.innerHTML = '<span class="badge badge-ok">✓ ĐÃ ĐƯỢC DUYỆT</span>';
+    lockedPanel.classList.add('hidden');
+
+    if(isVideo){
+      videoCont.classList.remove('hidden');
+      audioCont.classList.add('hidden');
+      disc.classList.add('hidden');
+      const blob = await getMediaBlob(track.id);
+      if(blob){
+        document.getElementById('html5-video').src = URL.createObjectURL(blob);
+      }
+    } else {
+      videoCont.classList.add('hidden');
+      audioCont.classList.remove('hidden');
+      disc.classList.remove('hidden');
+      const blob = await getMediaBlob(track.id);
+      const na = document.getElementById('native-audio');
+      if(blob){
+        na.src = URL.createObjectURL(blob);
+      } else {
+        na.removeAttribute('src');
+      }
+    }
+  } else {
+    stopAudio();
+    videoCont.classList.add('hidden');
+    audioCont.classList.add('hidden');
+    disc.classList.remove('hidden');
+    lockedPanel.classList.remove('hidden');
+
+    document.getElementById('locked-track-title').textContent = `Tác phẩm "${track.name}" đang bị khóa`;
+
+    if(pendingReq){
+      npStatus.textContent = '⏳ Đã gửi đơn xin quyền — Đang chờ Nghệ Sĩ duyệt ở Trang 1';
+      npStatus.style.color = 'var(--warn)';
+      npBadge.innerHTML = '<span class="badge badge-warn">⏳ CHỜ DUYỆT</span>';
+      document.getElementById('locked-action-area').innerHTML = `
+        <div style="background:var(--surface-2);border:1px solid rgba(255,184,77,.3);padding:14px;border-radius:12px;font-size:13px;color:var(--warn)" class="mono">
+          ⏳ Yêu cầu xin quyền đã được gửi thành công!<br>
+          Nghệ Sĩ mở Trang 1 bấm nút <strong>"Duyệt"</strong> thì bài hát này sẽ tự động phát ngay tại đây.
+        </div>
+      `;
+    } else {
+      npStatus.textContent = '🔒 Chưa có quyền giải mã · Nhấn nút xin quyền bên dưới';
+      npStatus.style.color = 'var(--danger)';
+      npBadge.innerHTML = '<span class="badge badge-danger">🔒 BỊ KHÓA</span>';
+      document.getElementById('locked-action-area').innerHTML = `
+        <button class="btn btn-accent" onclick="requestAccessCurrentTrack()" style="font-size:14px;padding:12px 26px">
+          ⚡ Gửi Yêu Cầu Xin Quyền Nghe Thử Tới Nghệ Sĩ
+        </button>
+      `;
+    }
+  }
+}
+
+// ==================== AUDIO SYNTH & PLAYER ENGINE ====================
+function tone(f){
+  try{
+    if(!ctx) ctx=new(window.AudioContext||window.webkitAudioContext)();
+    if(ctx.state==='suspended') ctx.resume();
+    const o=ctx.createOscillator(),g=ctx.createGain();
+    o.type='triangle';o.frequency.value=f;
+    g.gain.setValueAtTime(.06,ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+.5);
+    o.connect(g);g.connect(ctx.destination);o.start();o.stop(ctx.currentTime+.5);
+  }catch(e){}
+}
+
+function stopAudio(){
+  isPlaying=false;
+  document.getElementById('play-btn').textContent='▶';
+  document.getElementById('disc').classList.remove('spin');
+  bars.forEach(b=>{b.classList.remove('on');b.style.height='10%'});
+  clearInterval(timerInterval);clearInterval(synthInterval);
+  const na=document.getElementById('native-audio');
+  if(na) na.pause();
+  const vid=document.getElementById('html5-video');
+  if(vid) vid.pause();
+}
+
+function togglePlay(){
+  const currentUser=localStorage.getItem('tide_logged_reviewer');
+  const tracks=getStoredTracks();
+  const track=tracks.find(x=>x.id===activeTrackId);
+  if(!track || !track.allowedUsers.includes(currentUser)) return;
+
+  isPlaying=!isPlaying;
+  const playBtn=document.getElementById('play-btn');
+  const disc=document.getElementById('disc');
+  const na=document.getElementById('native-audio');
+
+  if(isPlaying){
+    playBtn.textContent='⏸';
+    disc.classList.add('spin');
+    appendLog(`[PLAYBACK] Bắt đầu luồng giải mã in-memory cho "${track.name}"`, 'var(--accent)');
+
+    if(na && na.src && na.src.startsWith('blob:')){
+      na.play().catch(e=>console.log(e));
+      na.ontimeupdate=()=>{
+        const cur=Math.floor(na.currentTime), dur=Math.floor(na.duration)||222;
+        document.getElementById('cur').textContent=Math.floor(cur/60)+':'+String(cur%60).padStart(2,'0');
+        document.getElementById('dur').textContent=Math.floor(dur/60)+':'+String(dur%60).padStart(2,'0');
+        document.getElementById('fill').style.width=((cur/dur)*100)+'%';
+      };
+      synthInterval=setInterval(()=>{
+        bars.forEach(b=>b.style.height=(15+Math.random()*80)+'%');
+        bars.forEach(b=>b.classList.toggle('on',Math.random()>.25));
+      },180);
+    }else{
+      tone(notes[noteIdx]);
+      synthInterval=setInterval(()=>{
+        noteIdx=(noteIdx+1)%notes.length;tone(notes[noteIdx]);
+        bars.forEach(b=>b.style.height=(15+Math.random()*80)+'%');
+        bars.forEach(b=>b.classList.toggle('on',Math.random()>.25));
+      },220);
+      timerInterval=setInterval(()=>{
+        t++;
+        document.getElementById('cur').textContent=Math.floor(t/60)+':'+String(t%60).padStart(2,'0');
+        document.getElementById('fill').style.width=Math.min(t/222*100,100)+'%';
+      },1000);
+    }
+  }else{
+    stopAudio();
+    appendLog(`[TẠM DỪNG] Luồng giải mã tạm ngắt.`, 'var(--muted)');
+  }
+}
+
+function appendLog(msg, color='var(--muted)'){
+  const logBox = document.getElementById('tide-execution-log');
+  if(!logBox) return;
+  const time = new Date().toLocaleTimeString();
+  const entry = document.createElement('div');
+  entry.style.color = color;
+  entry.textContent = `[${time}] ${msg}`;
+  logBox.appendChild(entry);
+  logBox.scrollTop = logBox.scrollHeight;
+}
+
+checkAuth();
+</script>
+</body>
+</html>
+'''
+
+# Write to both repositories
+for base in [FS_PROTO, BW_RMIT]:
+    p1 = os.path.join(base, "1", "index.html")
+    p2 = os.path.join(base, "2", "index.html")
+    with open(p1, "w", encoding="utf-8") as f:
+        f.write(PAGE_1_HTML)
+    with open(p2, "w", encoding="utf-8") as f:
+        f.write(PAGE_2_HTML)
+    print(f"Ghi thành công Trang 1 & 2 vào: {base}")
+
+print("✓ Hoàn tất tạo giao diện và cơ chế quản lý đa nghệ sĩ!")

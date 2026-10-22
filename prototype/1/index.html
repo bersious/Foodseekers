@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="/rmit/logo.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nghệ Sĩ · UNRELEASED Studio (TideCloak Sovereign Vault)</title>
+<title>Nghệ Sĩ · SONARA Studio (TideCloak Sovereign Vault)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -277,6 +277,36 @@ body{
 .track-art{transition:transform .3s var(--ease-out)}
 .track-card:hover .track-art{transform:scale(1.06) rotate(-2deg)}
 
+
+/* ==================== PROFESSIONAL FOOTER ==================== */
+.footer{
+  max-width:1200px;margin:48px auto 20px;padding:32px 24px 24px;
+  border-top:1px solid var(--line);display:flex;flex-direction:column;gap:18px;
+  color:var(--dim);font-size:12px;
+}
+.footer-top{
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;
+}
+.footer-brand{
+  display:flex;align-items:center;gap:10px;color:var(--fg);font-weight:700;font-size:13px;
+}
+.footer-brand img{width:22px;height:22px;object-fit:contain}
+.footer-links{
+  display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+}
+.footer-links a{
+  color:var(--muted);text-decoration:none;transition:color .2s;
+}
+.footer-links a:hover{color:var(--accent)}
+.footer-bottom{
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
+  padding-top:16px;border-top:1px dashed rgba(255,255,255,.06);font-size:11px;color:var(--dim);
+}
+.footer-badge{
+  display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.03);
+  padding:4px 10px;border-radius:6px;border:1px solid var(--line);
+}
+
 </style>
 </head>
 <body>
@@ -417,8 +447,8 @@ body{
 
 <header class="topbar">
   <a href="/rmit" class="brand">
-    <img src="/rmit/logo.png" alt="UNRELEASED Logo" style="width:34px;height:34px;object-fit:contain;filter:drop-shadow(0 0 8px rgba(184,243,107,0.45));flex-shrink:0;">
-    <div>UNRELEASED<small>Nghệ Sĩ / Studio Két Sắt Mật Mã</small></div>
+    <img src="/rmit/logo.png" alt="SONARA Logo" style="width:34px;height:34px;object-fit:contain;filter:drop-shadow(0 0 8px rgba(184,243,107,0.45));flex-shrink:0;">
+    <div>SONARA<small>Nghệ Sĩ / Studio Két Sắt Mật Mã</small></div>
   </a>
   <div class="topbar-right">
     <div id="artist-user-info" class="user-badge hidden">
@@ -484,23 +514,21 @@ body{
   <!-- ================= 2. GIAO DIỆN CHÍNH SAU KHI ĐĂNG NHẬP ================= -->
   <div id="artist-main-view" class="hidden">
 
-    <!-- THANH HIỂN THỊ PROFILE NGHỆ SĨ & ĐỔI PROFILE -->
+    <!-- THANH PROFILE NGHỆ SĨ CHÍNH CHỦ (CHUẨN BẢO MẬT SOVEREIGN IDENTITY) -->
     <div class="artist-nav-bar">
       <div class="artist-info-group">
         <div class="artist-avatar" id="current-artist-avatar">A</div>
         <div>
           <div style="font-size:16px;font-weight:700" id="current-artist-name">Alice Nguyễn</div>
           <div style="font-size:12px;color:var(--muted)" class="mono">
-            @<span id="current-artist-user">alice_artist</span> · <span id="current-artist-genre">Indie Pop / Electronic</span>
+            Tài khoản: @<strong id="current-artist-user" style="color:var(--accent)">alice_artist</strong> · <span id="current-artist-genre">Indie Pop / Electronic</span>
           </div>
         </div>
       </div>
 
       <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-        <label style="font-size:12px;color:var(--muted)">Đổi Nghệ Sĩ:</label>
-        <select id="artist-switcher-select" class="form-input" style="width:200px;padding:7px 10px;font-size:13px" onchange="switchActiveArtist(this.value)">
-        </select>
-        <button class="btn btn-accent btn-sm" onclick="showCreateArtistModal()">+ Tạo Profile Mới</button>
+        <span class="badge badge-ok mono" style="font-size:11px">KÉT SẮT RIÊNG TƯ ĐANG KHÓA CHẶT</span>
+        <button class="btn btn-ghost btn-sm" onclick="logoutArtist()" style="color:var(--danger)">Chuyển sang tài khoản khác</button>
       </div>
     </div>
 
@@ -579,8 +607,29 @@ body{
 </main>
 
 <footer class="footer">
-  <span>UNRELEASED · Cổng Nghệ Sĩ · Powered by TideCloak</span>
-  <span class="mono">RMIT Hackathon 2026</span>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <img src="/rmit/logo.png" alt="SONARA">
+      <span>SONARA · Studio Két Sắt Âm Nhạc Zero-Trust</span>
+    </div>
+    <div class="footer-links mono">
+      <a href="/rmit">Cổng Trung Tâm</a>
+      <span>·</span>
+      <a href="/rmit/1">Cổng Nghệ Sĩ</a>
+      <span>·</span>
+      <a href="/rmit/2">Cổng Người Nghe (SONARA)</a>
+      <span>·</span>
+      <a href="/rmit/3">Giám Sát S3</a>
+      <span>·</span>
+      <a href="https://github.com/bersious/Foodseekers" target="_blank" rel="noopener">Mã Nguồn GitHub</a>
+    </div>
+  </div>
+  <div class="footer-bottom mono">
+    <div>Đội thi <strong>Foodseekers</strong> — Trường Đại học Công nghệ Thông tin (UIT), ĐHQG-HCM</div>
+    <div class="footer-badge">
+      <span style="color:var(--accent)">●</span> Tích hợp bảo mật TideCloak & Emergent Authority · RMIT Hackathon 2026
+    </div>
+  </div>
 </footer>
 
 <script>
@@ -715,7 +764,7 @@ function registerArtist(){
     username: user,
     name: name,
     genre: genre,
-    bio: 'Nghệ sĩ độc lập trên hệ thống UNRELEASED',
+    bio: 'Nghệ sĩ độc lập trên hệ thống SONARA',
     artSeed: Math.floor(Math.random() * 5)
   };
 
@@ -778,20 +827,19 @@ function switchActiveArtist(username){
 
 function renderArtistSwitcher(){
   const artists = getStoredArtists();
-  const current = artists.find(a => a.username === activeArtistUser) || artists[0] || {username:'alice_artist', name:'Alice Nguyễn', genre:'Indie Pop', artSeed:0};
-  activeArtistUser = current.username;
+  // Khóa chặt theo đúng tài khoản đã đăng nhập trong localStorage
+  const logged = localStorage.getItem('tide_logged_artist') || 'alice_artist';
+  activeArtistUser = logged;
+  const current = artists.find(a => a.username.toLowerCase() === logged.toLowerCase()) || {username:logged, name:logged, genre:'Âm nhạc đương đại', artSeed:0};
 
   document.getElementById('current-artist-name').textContent = current.name;
   document.getElementById('current-artist-user').textContent = current.username;
-  document.getElementById('current-artist-genre').textContent = current.genre || 'Âm nhạc';
+  document.getElementById('current-artist-genre').textContent = current.genre || 'Âm nhạc đương đại';
   document.getElementById('current-artist-avatar').textContent = (current.name||'A').charAt(0).toUpperCase();
-  document.getElementById('vault-artist-name-label').textContent = current.name;
-  document.getElementById('artist-name-display').textContent = current.username;
-
-  const select = document.getElementById('artist-switcher-select');
-  if(select){
-    select.innerHTML = artists.map(a => `<option value="${a.username}" ${a.username===activeArtistUser?'selected':''}>${a.name} (@${a.username})</option>`).join('');
-  }
+  const vaultLabel = document.getElementById('vault-artist-name-label');
+  if(vaultLabel) vaultLabel.textContent = current.name;
+  const nameDisp = document.getElementById('artist-name-display');
+  if(nameDisp) nameDisp.textContent = current.username;
 }
 
 // ==================== 4. DỰNG DANH SÁCH BÀI HÁT & TRÌNH PHÁT ====================
