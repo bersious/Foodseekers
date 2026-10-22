@@ -212,8 +212,8 @@ body::before{
       </div>
       <div class="form-group">
         <label class="form-label">Mật Khẩu Khởi Tạo</label>
-        <input type="password" id="reg-artist-pass" class="form-input" placeholder="Nhập mật khẩu khởi tạo (123)">
-        <div style="font-size:11px;color:var(--dim);margin-top:4px" class="mono">Gợi ý: Mật khẩu khởi tạo là <strong>123</strong></div>
+        <input type="password" id="reg-artist-pass" class="form-input" placeholder="••••••••">
+        
       </div>
       <button class="btn btn-accent" style="width:100%;justify-content:center" onclick="registerArtist()">Tạo hồ sơ và đăng nhập</button>
     </div>
@@ -435,7 +435,7 @@ function loginArtist(){
   const u = document.getElementById('artist-login-user').value.trim();
   const p = document.getElementById('artist-login-pass').value.trim();
   if(!u){ alert('Vui lòng nhập username của nghệ sĩ!'); return; }
-  if(p !== '123'){ alert('Mật khẩu không đúng! (Vui lòng nhập mật khẩu là 123)'); return; }
+  if(p !== '123'){ alert('Mật khẩu xác thực không chính xác.'); return; }
 
   localStorage.setItem('tide_logged_artist', u);
   activeArtistUser = u;
@@ -450,7 +450,7 @@ function registerArtist(){
   const p = document.getElementById('reg-artist-pass').value.trim();
 
   if(!name || !user){ alert('Vui lòng điền tên nghệ sĩ và username!'); return; }
-  if(p !== '123'){ alert('Vui lòng đặt mật khẩu là 123!'); return; }
+  if(p !== '123'){ alert('Mật khẩu không hợp lệ.'); return; }
 
   const artists = getStoredArtists();
   if(artists.some(a => a.username === user)){

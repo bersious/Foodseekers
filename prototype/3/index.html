@@ -3,14 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quản Trị Đám Mây S3 · UNRELEASED (Oblivious Proxy)</title>
+<title>Hạ Tầng S3 · UNRELEASED Studio (TideCloak Oblivious Proxy)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-
 :root{
-  --bg:#07080c;--surface:rgba(255,255,255,.03);--surface-2:rgba(255,255,255,.06);
+  --bg:#07080c;--surface:rgba(255,255,255,.025);--surface-2:rgba(255,255,255,.05);
   --line:rgba(255,255,255,.08);--line-strong:rgba(255,255,255,.16);
   --fg:#f4f5f7;--muted:#8b8fa0;--dim:#555968;
   --accent:#d4ff3f;--accent-dim:rgba(212,255,63,.12);
@@ -18,67 +17,87 @@
   --ok:#3ee88f;--ok-dim:rgba(62,232,143,.12);--radius:16px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--fg);font-family:'Space Grotesk',sans-serif;line-height:1.5;min-height:100vh}
-body::before{content:'';position:fixed;inset:0;z-index:-2;background:radial-gradient(900px 500px at 80% -5%,rgba(212,255,63,.07),transparent 60%)}
+body{
+  background:var(--bg);color:var(--fg);font-family:'Space Grotesk',sans-serif;
+  line-height:1.5;min-height:100vh;overflow-x:hidden;
+}
+body::before{
+  content:'';position:fixed;inset:0;z-index:-2;
+  background:
+    radial-gradient(900px 500px at 80% -5%,rgba(255,77,109,.06),transparent 60%),
+    radial-gradient(700px 500px at 0% 100%,rgba(90,110,255,.06),transparent 55%);
+}
+body::after{
+  content:'';position:fixed;inset:0;z-index:-1;opacity:.3;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:64px 64px;
+}
 .mono{font-family:'JetBrains Mono',monospace}
 
-/* Topbar sạch sẽ - KHÔNG CÒN 3 NÚT CHUYỂN CHẾ ĐỘ */
-.topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:16px 32px;backdrop-filter:blur(20px);background:rgba(7,8,12,.8);border-bottom:1px solid var(--line)}
+/* Topbar */
+.topbar{
+  position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
+  padding:16px 32px;backdrop-filter:blur(20px);background:rgba(7,8,12,.8);border-bottom:1px solid var(--line);
+}
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;font-weight:700}
-.brand-dot{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent)}
+.brand-dot{width:10px;height:10px;border-radius:50%;background:var(--danger);box-shadow:0 0 12px var(--danger)}
 .brand small{display:block;font-size:11px;color:var(--muted);font-weight:400}
 .topbar-right{display:flex;align-items:center;gap:14px}
-.pill-tide{font-size:11px;font-weight:600;color:#0a0b0e;background:var(--accent);padding:6px 12px;border-radius:999px}
-.user-badge{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);padding:6px 12px;border-radius:10px;font-size:12px}
-.user-dot{width:7px;height:7px;border-radius:50%;background:var(--ok)}
+.pill-tide{font-size:11px;font-weight:600;color:var(--danger);background:var(--danger-dim);padding:6px 12px;border-radius:999px;border:1px solid rgba(255,77,109,.25)}
 
-/* Container */
-.container{max-width:1080px;margin:36px auto 80px;padding:0 24px}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:28px;margin-bottom:24px;backdrop-filter:blur(14px)}
-
-/* Form controls */
-.form-group{margin-bottom:16px}
-.form-label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em}
-.form-input{
-  width:100%;padding:11px 14px;background:var(--bg);border:1px solid var(--line);border-radius:10px;
-  color:var(--fg);font-family:inherit;font-size:14px;outline:none;transition:.18s;
+.container{max-width:1120px;margin:32px auto 80px;padding:0 24px}
+.card{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  padding:26px;margin-bottom:24px;backdrop-filter:blur(14px);position:relative;
 }
-.form-input:focus{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-dim)}
+
+/* Metrics strip */
+.metrics-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);
+  border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:24px;
+}
+.metric-box{background:var(--bg);padding:18px 20px}
+.metric-num{font-size:22px;font-weight:700;letter-spacing:-.02em}
+.metric-label{font-size:11px;color:var(--muted);margin-top:4px}
+
+/* S3 inspection table */
+.s3-table{width:100%;border-collapse:collapse;margin-top:14px}
+.s3-th{
+  text-align:left;padding:12px 14px;font-size:11px;font-weight:700;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--line);
+}
+.s3-td{
+  padding:14px;border-bottom:1px solid var(--line);font-size:12px;vertical-align:middle;
+}
+.s3-row:hover{background:var(--surface-2)}
+
+/* Badges */
+.badge{font-size:11px;font-weight:700;padding:4px 8px;border-radius:999px;white-space:nowrap}
+.badge-danger{color:var(--danger);background:var(--danger-dim);border:1px solid rgba(255,77,109,.25)}
+.badge-ok{color:var(--ok);background:var(--ok-dim);border:1px solid rgba(62,232,143,.25)}
+.badge-dim{color:var(--muted);background:var(--surface-2);border:1px solid var(--line)}
+
+/* Terminal console */
+.terminal-card{
+  background:#05070a;border:1px solid var(--line);border-radius:14px;padding:22px;
+  min-height:160px;font-size:12px;color:var(--muted);line-height:1.7;margin-top:16px;
+}
+.terminal-output{max-height:240px;overflow-y:auto}
 
 .btn{
   font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;
-  padding:10px 18px;border-radius:10px;border:1px solid transparent;transition:.18s;
+  padding:10px 20px;border-radius:10px;border:1px solid transparent;transition:.18s;
   display:inline-flex;align-items:center;gap:8px;text-decoration:none;
 }
-.btn-accent{background:var(--accent);color:#0a0b0e}
-.btn-accent:hover{filter:brightness(1.1);transform:translateY(-1px)}
 .btn-danger{background:var(--danger-dim);color:var(--danger);border-color:rgba(255,77,109,.3)}
-.btn-danger:hover{background:rgba(255,77,109,.2)}
-.btn-ok{background:var(--ok-dim);color:var(--ok);border-color:rgba(62,232,143,.3)}
-.btn-ok:hover{background:rgba(62,232,143,.2)}
-.btn-ghost{background:transparent;border-color:var(--line-strong);color:var(--fg)}
-.btn-ghost:hover{background:var(--surface-2)}
-.btn-sm{padding:6px 12px;font-size:12px}
+.btn-danger:hover{background:rgba(255,77,109,.25)}
 
-.auth-box{max-width:440px;margin:60px auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:36px;backdrop-filter:blur(16px)}
-.auth-title{font-size:24px;font-weight:700;margin-bottom:8px}
-.auth-sub{font-size:13px;color:var(--muted);margin-bottom:24px}
-.auth-tabs{display:flex;gap:6px;margin-bottom:20px;background:var(--bg);padding:4px;border-radius:10px;border:1px solid var(--line)}
-.auth-tab{flex:1;text-align:center;padding:8px;font-size:12px;font-weight:600;color:var(--muted);background:transparent;border:none;border-radius:8px;cursor:pointer}
-.auth-tab.active{background:var(--surface-2);color:var(--fg)}
+.footer{max-width:1120px;margin:0 auto;padding:24px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;color:var(--dim);font-size:12px}
 
-.badge{font-size:11px;font-weight:600;padding:5px 10px;border-radius:999px;white-space:nowrap}
-.badge-ok{color:var(--ok);background:var(--ok-dim);border:1px solid rgba(62,232,143,.25)}
-.badge-danger{color:var(--danger);background:var(--danger-dim);border:1px solid rgba(255,77,109,.25)}
-
-.hidden{display:none!important}
-.footer{max-width:1080px;margin:0 auto;padding:24px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;color:var(--dim);font-size:12px}
-
-.s3-row{display:grid;grid-template-columns:1.2fr 2fr .9fr;gap:16px;align-items:center;padding:14px 18px;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;background:var(--bg)}
-.s3-key{font-size:12px;color:var(--muted)}
-.s3-cipher{font-size:12px;color:#7b6fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.s3-master{font-size:11px;font-weight:700;color:var(--danger);text-align:right}
-.terminal-box{background:#050608;border:1px solid var(--line);border-radius:14px;padding:20px;min-height:100px;font-size:13px;color:var(--danger);margin-top:20px;line-height:1.6}
+@media(max-width:768px){
+  .metrics-grid{grid-template-columns:repeat(2,1fr)}
+  .s3-table{display:block;overflow-x:auto}
+}
 </style>
 </head>
 <body>
@@ -86,49 +105,90 @@ body::before{content:'';position:fixed;inset:0;z-index:-2;background:radial-grad
 <header class="topbar">
   <a href="/rmit" class="brand">
     <span class="brand-dot"></span>
-    <div>UNRELEASED<small>Hạ Tầng Đám Mây S3 (Oblivious Proxy)</small></div>
+    <div>UNRELEASED<small>Hạ Tầng Lưu Trữ Đám Mây S3 (Oblivious Proxy)</small></div>
   </a>
-  <span class="pill-tide">☁️ Cloud Database: SYNCED</span>
+  <div class="topbar-right">
+    <span class="pill-tide mono">Zero-Custody Enforced</span>
+  </div>
 </header>
 
 <main class="container">
-  <div style="margin-bottom:28px">
-    <h1 style="font-size:28px;font-weight:700">Trình Kiểm Tra Máy Chủ S3 & Cơ Sở Dữ Liệu</h1>
-    <p style="color:var(--muted);font-size:14px">Mô phỏng góc nhìn của Kẻ xâm nhập hoặc Quản trị viên máy chủ nắm quyền Root AWS</p>
+
+  <!-- Header -->
+  <div style="margin-bottom:24px">
+    <h1 style="font-size:26px;font-weight:700">Trình Giám Sát Hạ Tầng Đám Mây S3</h1>
+    <p style="color:var(--muted);font-size:13px">Mô phỏng góc nhìn của Kẻ xâm nhập hoặc Quản trị viên máy chủ nắm quyền Root AWS</p>
   </div>
 
-  <div class="card" style="background:rgba(255,255,255,.015);margin-bottom:24px">
-    <div style="display:flex;gap:12px;align-items:flex-start">
-      <span style="font-size:20px">🛡️</span>
-      <div style="font-size:13px;color:var(--muted);line-height:1.6">
-        <strong>Nguyên lý bảo mật Tide:</strong> Dù Nghệ sĩ tải lên bài hát nào ở Trang 1 và cấp quyền cho ai ở Trang 2, máy chủ lưu trữ đám mây vĩnh viễn <strong>chỉ chứa các khối nhị phân mã hóa vô nghĩa</strong>. Chìa khóa chủ (Master Decryption Key) <strong>hoàn toàn không tồn tại</strong> trên máy chủ.
+  <!-- Dải chỉ số an ninh thời gian thực -->
+  <div class="metrics-grid mono">
+    <div class="metric-box">
+      <div class="metric-num" style="color:var(--ok)">3/3 Nodes</div>
+      <div class="metric-label">Mạng Quorum Độc Lập</div>
+    </div>
+    <div class="metric-box">
+      <div class="metric-num" style="color:var(--danger)">0 Keys</div>
+      <div class="metric-label">Chìa Khóa Chủ Lưu Trên Server</div>
+    </div>
+    <div class="metric-box">
+      <div class="metric-num" id="metric-blob-count" style="color:var(--fg)">0 Blobs</div>
+      <div class="metric-label">Khối Nhị Phân Mã Hóa S3</div>
+    </div>
+    <div class="metric-box">
+      <div class="metric-num" style="color:var(--accent)">0.00%</div>
+      <div class="metric-label">Rủi Ro Rò Rỉ Nội Bộ</div>
+    </div>
+  </div>
+
+  <!-- Kiến trúc bảo mật -->
+  <div class="card" style="background:linear-gradient(145deg,rgba(255,255,255,.02),rgba(255,255,255,.01))">
+    <div style="font-size:13px;color:var(--muted);line-height:1.7">
+      <strong style="color:var(--fg)">Nguyên lý bảo mật TideCloak Emergent Authority:</strong>
+      Dù Nghệ sĩ tải lên bài hát nào ở Trang 1 và cấp quyền cho ai ở Trang 2, máy chủ lưu trữ S3 vĩnh viễn <strong>chỉ chứa các khối nhị phân mã hóa vô nghĩa (.enc)</strong>.
+      Chìa khóa giải mã master hoàn toàn không tồn tại trong cơ sở dữ liệu hay bộ nhớ của máy chủ.
+    </div>
+  </div>
+
+  <!-- Bảng kiểm tra tệp tin nhị phân S3 thời gian thực -->
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <h2 style="font-size:16px;font-weight:700">Các Tệp Tin Nhị Phân Trong S3: <code class="mono" style="color:var(--accent)">s3://unreleased-vault/</code></h2>
+      <span class="mono" style="font-size:11px;color:var(--dim)" id="s3-sync-time">Live Sync: 0s ago</span>
+    </div>
+
+    <div style="overflow-x:auto">
+      <table class="s3-table mono" id="s3-table">
+        <thead>
+          <tr>
+            <th class="s3-th">Đối Tượng S3</th>
+            <th class="s3-th">Nghệ Sĩ</th>
+            <th class="s3-th">Mã Băm Nhị Phân</th>
+            <th class="s3-th">Chìa Khóa Trên Server</th>
+            <th class="s3-th">Chính Sách Quorum</th>
+          </tr>
+        </thead>
+        <tbody id="s3-table-body">
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Nút thử nghiệm tấn công Root Admin -->
+    <div style="margin-top:28px">
+      <button class="btn btn-danger" onclick="executeRootExploitSimulation()">Thực thi kịch bản Root Admin giải mã trộm</button>
+      <div id="terminal" class="terminal-card mono hidden">
+        <div id="terminal-content" class="terminal-output"></div>
       </div>
     </div>
   </div>
 
-  <div class="card">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
-      <h2 style="font-size:18px;font-weight:700">Các Tệp Tin Nhị Phân Trong S3: <code class="mono" style="color:var(--accent)">s3://unreleased-vault/</code></h2>
-      <span class="mono" style="font-size:11px;color:var(--dim)">Live S3 Sync</span>
-    </div>
-
-    <div id="s3-list"></div>
-
-    <div style="margin-top:28px">
-      <button class="btn btn-danger" onclick="attemptRootDecryption()">🚨 Thử Dùng Quyền Root Admin Để Giải Mã / Tuồn Toàn Bộ Tệp</button>
-      <div id="terminal" class="terminal-box mono hidden"></div>
-    </div>
-  </div>
 </main>
 
 <footer class="footer">
-  <span>UNRELEASED · Cổng Quản Trị Máy Chủ · Powered by TideCloak</span>
-  <span class="mono">RMIT Hackathon 2026</span>
+  <span>UNRELEASED · Trình Giám Sát Hạ Tầng Đám Mây S3 · Powered by TideCloak</span>
+  <span class="mono">RMIT Hackathon 2026 — Challenge 2</span>
 </footer>
 
 <script>
-
-// ==================== TIDE GLOBAL CLOUD DATABASE SYNC ====================
 const API_VAULT_URL = '/api/rmit-vault';
 let isSyncingWithCloud = false;
 
@@ -139,100 +199,106 @@ async function fetchCloudState() {
     if (!res.ok) return;
     const json = await res.json();
     if (json.ok && json.data) {
-      const cloudData = json.data;
-      const localTracks = localStorage.getItem('tide_tracks_v2');
-      const cloudTracksStr = JSON.stringify(cloudData.tracks || []);
-      const cloudUsersStr = JSON.stringify(cloudData.users || []);
-
-      let hasChanged = false;
-      if (localTracks !== cloudTracksStr) {
-        localStorage.setItem('tide_tracks_v2', cloudTracksStr);
-        hasChanged = true;
-      }
-      if (localStorage.getItem('tide_users') !== cloudUsersStr) {
-        localStorage.setItem('tide_users', cloudUsersStr);
-        hasChanged = true;
-      }
-
-      if (hasChanged && typeof onCloudSync === 'function') {
-        onCloudSync();
-      }
+      const cloud = json.data;
+      localStorage.setItem('tide_tracks_v2', JSON.stringify(cloud.tracks || []));
+      renderS3Inspector();
     }
-  } catch (err) {
-    // Offline / fallback to localStorage
-  }
+  } catch (err) {}
 }
 
-async function pushCloudUpdate(action, payload = {}) {
-  isSyncingWithCloud = true;
-  try {
-    await fetch(API_VAULT_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action, ...payload })
-    });
-  } catch (e) {
-    console.warn('Cloud sync error:', e);
-  } finally {
-    isSyncingWithCloud = false;
-  }
-}
-
-// Bắt đầu vòng lặp polling 2.5s để đồng bộ từ các máy tính khác
 setInterval(fetchCloudState, 2500);
 fetchCloudState();
 
-function onCloudSync(){ renderS3(); }
-
 function getStoredTracks(){
-  const d=localStorage.getItem('tide_tracks_v2');
+  const d = localStorage.getItem('tide_tracks_v2');
   if(d){try{return JSON.parse(d)}catch(e){}}
   return [];
 }
 
-function renderS3(){
-  const tracks=getStoredTracks(), box=document.getElementById('s3-list');
-  box.innerHTML='';
-  tracks.forEach(t=>{
-    const row=document.createElement('div');
-    row.className='s3-row mono';
-    row.innerHTML=`
-      <div class="s3-key">s3://vault/${t.name}.enc</div>
-      <div class="s3-cipher">d8a391e4fc2901a88b5e027f${t.hash.replace('...','')}99014e7a881bc00192...</div>
-      <div class="s3-master">KEY: ∅ (KHÔNG CÓ TRÊN MÁY CHỦ)</div>
+function renderS3Inspector(){
+  const tracks = getStoredTracks().filter(t => !t.id.startsWith('track_0'));
+  const tbody = document.getElementById('s3-table-body');
+  const countEl = document.getElementById('metric-blob-count');
+  const timeEl = document.getElementById('s3-sync-time');
+  if(!tbody) return;
+
+  tbody.innerHTML = '';
+  countEl.textContent = `${tracks.length} Blobs`;
+  timeEl.textContent = `Live Sync: ${new Date().toLocaleTimeString()}`;
+
+  if(!tracks.length){
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="5" style="padding:24px;text-align:center;color:var(--muted)">
+          Két sắt S3 hiện tại trống (Zero objects). Hãy mở Trang 1 tải tệp âm nhạc/video lên để tạo khối mã hóa!
+        </td>
+      </tr>
     `;
-    box.appendChild(row);
+    return;
+  }
+
+  tracks.forEach(t => {
+    const row = document.createElement('tr');
+    row.className = 's3-row';
+    const allowedCount = Array.isArray(t.allowedUsers) ? t.allowedUsers.length : 0;
+    const isSingle = Array.isArray(t.singlePlayUsers) && t.singlePlayUsers.length > 0;
+    const limitSec = Number(t.previewLimitSeconds) || 0;
+
+    let policyDesc = 'Chưa cấp quyền';
+    if(allowedCount > 0){
+      policyDesc = `${allowedCount} danh tính DID`;
+      if(isSingle) policyDesc += ' · Tự hủy 1 lần';
+      if(limitSec > 0) policyDesc += ` · ${limitSec}s preview`;
+    }
+
+    row.innerHTML = `
+      <td class="s3-td"><span style="color:var(--fg)">s3://vault/${t.name}.enc</span><br><span style="font-size:10px;color:var(--dim)">${t.size} · AES-256-GCM</span></td>
+      <td class="s3-td" style="color:var(--accent)">@${t.artistUsername||'alice_artist'}</td>
+      <td class="s3-td" style="color:#7b6fff">${t.hash.replace('...','')}d8a391e4fc29...</td>
+      <td class="s3-td"><span class="badge badge-danger">KEY: ∅ (KHÔNG CÓ)</span></td>
+      <td class="s3-td"><span class="badge ${allowedCount>0?'badge-ok':'badge-dim'}">${policyDesc}</span></td>
+    `;
+    tbody.appendChild(row);
   });
 }
 
-function attemptRootDecryption(){
-  const term=document.getElementById('terminal');
+function executeRootExploitSimulation(){
+  const term = document.getElementById('terminal');
+  const content = document.getElementById('terminal-content');
   term.classList.remove('hidden');
-  term.innerHTML='';
-  const lines=[
-    '> root@s3-cluster: dump --target s3://unreleased-vault/ --decrypt-all',
-    '> Inspecting database credentials: Zero master keys found in vault records.',
-    '> Querying Tide Fabric Quorum node [10.244.0.12] for emergency decryption certificate...',
+  content.innerHTML = '';
+
+  const tracks = getStoredTracks().filter(t => !t.id.startsWith('track_0'));
+  const blobCount = tracks.length;
+
+  const logs = [
+    '> root@s3-cluster-01: dump --target s3://unreleased-vault/ --decrypt-all --force',
+    `> Scanning physical disk blocks: Located ${blobCount} encrypted binary blob(s).`,
+    '> Inspecting database credentials and environment variables for Master Private Key...',
+    '> RESULT: 0 master keys found. Server is an Oblivious Proxy (Zero-Custody Architecture).',
+    '> Attempting direct forgery attack: Synthesizing raw decryption key without Quorum signature...',
+    '> Connecting to Tide Fabric Quorum Node [10.244.0.12:8443]...',
     '> [TIDE QUORUM ENFORCEMENT] 403 Forbidden: Requestor identity lacks Emergent Policy entitlement.',
-    '> ERROR: Server is an Oblivious Proxy. Root administrative privilege cannot synthesize decryption keys.',
-    '> ATTACK MITIGATED: Zero bytes of plaintext audio/video leaked.'
+    '> ERROR: Root administrative privilege cannot synthesize decryption keys.',
+    '> ATTACK MITIGATED: 0 bytes of plaintext audio/video leaked. All assets remain cryptographically sealed.'
   ];
-  let cur=0;
-  function printNext(){
-    if(cur<lines.length){
-      const p=document.createElement('div');
-      p.textContent=lines[cur++];
-      if(cur===lines.length-1) p.style.color='var(--ok)';
-      term.appendChild(p);
-      setTimeout(printNext, 400);
+
+  let idx = 0;
+  function printLine(){
+    if(idx < logs.length){
+      const p = document.createElement('div');
+      p.textContent = logs[idx++];
+      if(idx === logs.length) p.style.color = 'var(--ok)';
+      else if(logs[idx-1].includes('Forbidden') || logs[idx-1].includes('ERROR')) p.style.color = 'var(--danger)';
+      content.appendChild(p);
+      content.scrollTop = content.scrollHeight;
+      setTimeout(printLine, 350);
     }
   }
-  printNext();
+  printLine();
 }
 
-window.addEventListener('storage',renderS3);
-try{new BroadcastChannel('tide_channel').onmessage=renderS3;}catch(e){}
-renderS3();
+renderS3Inspector();
 </script>
 </body>
 </html>

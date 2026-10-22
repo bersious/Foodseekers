@@ -275,8 +275,8 @@ video{width:100%;max-height:460px;border-radius:14px;border:1px solid var(--line
       </div>
       <div class="form-group">
         <label class="form-label">Mật Khẩu Khởi Tạo</label>
-        <input type="password" id="reg-pass" class="form-input" placeholder="Nhập mật khẩu khởi tạo (123)">
-        <div style="font-size:11px;color:var(--dim);margin-top:4px" class="mono">Gợi ý: Mật khẩu khởi tạo là <strong>123</strong></div>
+        <input type="password" id="reg-pass" class="form-input" placeholder="••••••••">
+        
       </div>
       <button class="btn btn-accent" style="width:100%;justify-content:center" onclick="registerReviewer()">Khởi Tạo Danh Tính Mật Mã</button>
     </div>
@@ -558,7 +558,7 @@ function loginReviewer(){
   const p=document.getElementById('reviewer-login-pass').value.trim();
   if(!u){alert('Vui lòng nhập username!');return;}
   if(!p){alert('Vui lòng nhập mật khẩu xác thực!');return;}
-  if(p !== '123'){alert('Mật khẩu không đúng! Vui lòng nhập mật khẩu là 123');return;}
+  if(p !== '123'){alert('Mật khẩu xác thực không chính xác.');return;}
   localStorage.setItem('tide_logged_reviewer',u);
   pushCloudAction('SET_SESSION', {role:'reviewer', username:u});
   checkAuth();
@@ -570,7 +570,7 @@ function registerReviewer(){
   const p=document.getElementById('reg-pass').value.trim();
   if(!name || !u){alert('Vui lòng điền đủ họ tên và username!');return;}
   if(!p){alert('Vui lòng nhập mật khẩu khởi tạo!');return;}
-  if(p !== '123'){alert('Vui lòng đặt mật khẩu khởi tạo là 123!');return;}
+  if(p !== '123'){alert('Mật khẩu không hợp lệ.');return;}
 
   const users=getStoredUsers();
   if(users.some(x=>x.username===u)){alert('Username này đã tồn tại!');return;}
