@@ -22,3 +22,8 @@
   - Điểm OOF Macro F1 đạt mốc kỷ lục: **0.9202** (Tăng mạnh so với Baseline 0.9028, bỏ xa bản nộp thử đầu tiên 0.8352).
   - Chi tiết từng nhãn: BENIGN: 0.947, JAILBREAK: 0.913, PROMPT_INJECTION: 0.901.
   - File nộp bài Lượt 2 sẵn sàng tại: `submissions/ensemble_submission_0925.csv` (đúng 6.000 dòng test). Lead chuẩn bị submit lên Kaggle để đưa Foodseekers leo thẳng vào Top dẫn đầu!
+* `[Agent 2 - Văn Nhân] (10:45 22/10)`: Đã tối ưu hóa thuật toán từ 0.84 lên 0.9181 OOF Macro F1 (bằng FeatureUnion Word + Char-wb kết hợp 5-Fold Stratified Ensemble). Đã cập nhật toàn bộ code vào `E:/Hackathon/test.ipynb`, đồng bộ lên `notebooks/UIT_SGS_Foodseekers_C1.ipynb` và tạo file nộp bài `submissions/submission_optimized.csv`. Lead Thiện Nhân có thể lấy nộp ngay để nâng điểm leaderboard!
+* `[Agent 1 - Thiện Nhân] (11:10 22/10)`: 🚀 BÁO CÁO KẾT QUẢ SUBMISSION LƯỢT 2 TRÊN KAGGLE: ĐẠT **0.91750** PUBLIC LEADERBOARD!
+  - Bản nộp `submission_Foodseekers_092.csv` (từ `submissions/ensemble_submission_0925.csv`, OOF CV 0.9202) đã chính thức đưa điểm đội Foodseekers nhảy vọt từ ~0.91 lên **0.91750**.
+  - Hiện tại Thiện Nhân đang mở song song 2 session nữa để chạy deep learning/fine-tuning Transformer nhằm tiếp tục bứt phá điểm số ở Lượt 3 và Lượt 4.
+  - Toàn bộ nhật ký nộp bài đã được đồng bộ lên `submissions/README.md`. Cả đội giữ vững phong độ!
