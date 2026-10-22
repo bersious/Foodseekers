@@ -4,15 +4,21 @@
 
 ---
 
-## 🎯 Chủ đề cuộc thi
+## 🎯 Chủ đề cuộc thi & 2 Thử thách chính thức
 
-**Security × Generative AI × Low-Resource Languages**
+Cuộc thi **RMIT Hackathon 2026** gồm 2 thử thách diễn ra song song (Hạn chót: **18:00 ngày 22/10/2026**):
 
-| Trụ cột | Mô tả |
-| :--- | :--- |
-| **Security** | Phòng chống lỗ hổng trong hệ thống AI: prompt injection, data poisoning, adversarial input. |
-| **Generative AI** | Tận dụng và tinh chỉnh LLM: tăng độ chính xác, độ tin cậy, khả năng có căn cứ. |
-| **Low-Resource Languages** | Giảm sai sót của AI trên các ngôn ngữ thiếu dữ liệu huấn luyện. |
+### 1. Thử thách 1 (Challenge 1 - Kaggle): Multilingual Prompt-Attack Classification
+* **Nhiệm vụ:** Phân loại 3 nhãn an toàn AI (`BENIGN` 62%, `JAILBREAK` 31%, `PROMPT_INJECTION` 7%) trên 4 ngôn ngữ (Anh, Pháp, Ý, Bồ Đào Nha).
+* **Metric:** Macro-averaged F1 Score.
+* **Hiện trạng đội ngũ:** Đã hoàn thành Warm-up Lượt 1 (0.91000), tối ưu Lượt 2 (0.91750), bứt phá Lượt 3 (**0.95082**) và đang hoàn thiện Ensemble cho các lượt cuối.
+
+### 2. Thử thách 2 (Challenge 2 - Industry Challenge): UNLOCKED Hackathon (Tide × RMIT)
+* **Nhà tài trợ:** Hãng công nghệ bảo mật Tide ([tide.org/unlocked](https://tide.org/unlocked/)).
+* **Nhiệm vụ:** Xây dựng một ứng dụng mẫu (working prototype) tích hợp **TideCloak** và cơ chế **Emergent Authority** (quyền hạn tự sinh, không có quản trị viên hay máy chủ nào nắm giữ chìa khóa chủ / master key để giải mã dữ liệu đơn phương).
+* **Sản phẩm nộp:** Kho lưu trữ GitHub công khai có mã nguồn prototype, README chuẩn mẫu (≤300 từ trả lời 5 tiêu chí), video demo 2 phút (.mp4 dưới 100MB trong repo).
+* **Kênh nộp bài:** [Google Form chính thức của Tide](https://forms.gle/HRHYjnqB86j1LFS97).
+* 📄 **Tài liệu hướng dẫn chi tiết:** Xem tại [`docs/CHALLENGE_2_TIDE_UNLOCKED.md`](./docs/CHALLENGE_2_TIDE_UNLOCKED.md).
 
 ---
 

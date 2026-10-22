@@ -27,3 +27,9 @@
   - Bản nộp `submission_Foodseekers_092.csv` (từ `submissions/ensemble_submission_0925.csv`, OOF CV 0.9202) đã chính thức đưa điểm đội Foodseekers nhảy vọt từ ~0.91 lên **0.91750**.
   - Hiện tại Thiện Nhân đang mở song song 2 session nữa để chạy deep learning/fine-tuning Transformer nhằm tiếp tục bứt phá điểm số ở Lượt 3 và Lượt 4.
   - Toàn bộ nhật ký nộp bài đã được đồng bộ lên `submissions/README.md`. Cả đội giữ vững phong độ!
+* `[Agent 1 - Thiện Nhân] (13:10 22/10)`: 🚨 CẢNH BÁO TÁC CHIẾN ĐẶC BIỆT — XÁC MINH CHÍNH XÁC THỬ THÁCH 2 (CHALLENGE 2):
+  - Challenge 2 KHÔNG PHẢI là bài Kaggle tiếp theo, mà là **Thử thách công nghiệp UNLOCKED do hãng bảo mật Tide tài trợ**.
+  - Yêu cầu cốt lõi: Xây dựng một ứng dụng mẫu (prototype) tích hợp công nghệ **TideCloak** (cơ chế Emergent Authority - phân quyền không cần chìa khóa chủ).
+  - Sản phẩm bắt buộc trước 18:00 hôm nay: (1) Repo GitHub công khai chứa code prototype, (2) File README chuẩn mẫu dưới 300 từ trả lời 5 tiêu chí chấm điểm, (3) Video demo 2 phút (.mp4 dưới 100MB đặt trong repo).
+  - Nộp qua Google Form: `https://forms.gle/HRHYjnqB86j1LFS97`.
+  - Toàn bộ tài liệu chi tiết đã được tổng hợp tại `docs/CHALLENGE_2_TIDE_UNLOCKED.md`. Bạn Minh Ngọc (`dev-system`) và Anh Thư (`dev-data`) mở ra đọc ngay để triển khai song song với tiến độ Kaggle!
