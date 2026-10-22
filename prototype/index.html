@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UNRELEASED — Zero-Trust Audio Preview Studio (Powered by TideCloak)</title>
+  <title>UNRELEASED — Zero-Trust Creative Preview Studio (Powered by TideCloak)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0b0f19;
-      --panel-bg: rgba(18, 24, 38, 0.75);
+      --bg: #070a13;
+      --panel-bg: rgba(15, 21, 35, 0.78);
       --border: rgba(255, 255, 255, 0.08);
       --primary: #f43f5e;
       --primary-glow: rgba(244, 63, 94, 0.4);
@@ -25,8 +25,8 @@
     body {
       background-color: var(--bg);
       background-image: 
-        radial-gradient(at 15% 15%, rgba(244, 63, 94, 0.12) 0px, transparent 45%),
-        radial-gradient(at 85% 85%, rgba(56, 189, 248, 0.12) 0px, transparent 45%);
+        radial-gradient(at 10% 10%, rgba(244, 63, 94, 0.14) 0px, transparent 45%),
+        radial-gradient(at 90% 90%, rgba(56, 189, 248, 0.12) 0px, transparent 45%);
       color: var(--text);
       font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
       min-height: 100vh;
@@ -237,7 +237,7 @@
       display: flex;
       align-items: center;
       gap: 3px;
-      height: 48px;
+      height: 52px;
       margin: 1.25rem 0;
       padding: 0 0.5rem;
       background: rgba(255,255,255,0.02);
@@ -256,8 +256,8 @@
     }
     @keyframes jump {
       0% { height: 15%; }
-      50% { height: 85%; }
-      100% { height: 35%; }
+      50% { height: 90%; }
+      100% { height: 30%; }
     }
 
     .btn {
@@ -314,6 +314,30 @@
       border-radius: 0 10px 10px 0;
       margin: 1.25rem 0;
       font-size: 0.88rem;
+    }
+
+    /* Comparison Table Component */
+    .compare-section {
+      margin-top: 2rem;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.5rem;
+    }
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      margin-top: 0.75rem;
+    }
+    .compare-table th, .compare-table td {
+      border: 1px solid var(--border);
+      padding: 0.75rem 1rem;
+      text-align: left;
+    }
+    .compare-table th {
+      background: rgba(255,255,255,0.04);
+      color: var(--accent);
     }
 
     .hidden { display: none !important; }
@@ -417,6 +441,37 @@
         <div class="info-callout">
           💡 <strong>Why TideCloak is Essential:</strong> On conventional platforms (Dropbox, Google Drive, SoundCloud Private), platform admins and storage servers hold the master decryption key. If a rogue employee leaks the file or AWS credentials are compromised, the unreleased album leaks worldwide. With TideCloak, <strong>no master key exists anywhere</strong>—Alice's tracks remain unbreakable ciphertext.
         </div>
+
+        <!-- Architectural Contrast Table for Judges -->
+        <div class="compare-section">
+          <h3 style="font-size: 1rem; color: #fff; margin-bottom: 0.5rem;">⚖️ Architectural Comparison: Why Conventional Sharing Fails</h3>
+          <table class="compare-table">
+            <thead>
+              <tr>
+                <th>Security Feature</th>
+                <th>Conventional Sharing (Dropbox, SoundCloud, Byta)</th>
+                <th>UNRELEASED with TideCloak Emergent Authority</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Master Key Location</strong></td>
+                <td style="color: var(--primary);">Stored in Cloud Vault / Server DB (God-Mode Risk)</td>
+                <td style="color: var(--emerald); font-weight: 600;">ZERO Keys Stored (Emerged Just-In-Time)</td>
+              </tr>
+              <tr>
+                <td><strong>Rogue Employee / Insider Breach</strong></td>
+                <td style="color: var(--primary);">Catastrophic (Admin can dump and leak all tracks)</td>
+                <td style="color: var(--emerald); font-weight: 600;">Immune (Server is an Oblivious Proxy)</td>
+              </tr>
+              <tr>
+                <td><strong>Revocation Latency</strong></td>
+                <td>Cached token or downloaded local files</td>
+                <td style="color: var(--emerald); font-weight: 600;">Instant Quorum Termination (Audio stream cuts off)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <!-- 2. REVIEWER PLAYER -->
@@ -449,10 +504,10 @@
 
             <div style="display: flex; gap: 1rem; align-items: center;">
               <button class="btn btn-primary" onclick="togglePlay()" id="btn-play">
-                ▶ Play Decrypted Stream
+                ▶ Play Decrypted Stream (Live Audio)
               </button>
               <span style="font-size: 0.8rem; color: var(--text-muted);">
-                Audio is decrypted directly inside Minh's secure browser sandbox. No file is cached to disk.
+                Audio is synthesized & decrypted directly in memory via Web Audio API. Zero local disk caching.
               </span>
             </div>
           </div>
@@ -462,7 +517,7 @@
             <p style="font-size: 0.9rem; color: #cbd5e1; margin-bottom: 0.5rem;">
               <strong>Error 403: EntitlementRevoked.</strong>
             </p>
-            <p style="font-size: 0.85rem; color: var(--text-muted);"><br>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">
               Alice Nguyen has revoked reviewer entitlement for this session. Because authority is emergent, no cached token or backend manipulation can reconstruct the decryption key.
             </p>
           </div>
@@ -539,7 +594,27 @@
     let isEntitlementActive = true;
     let isPlaying = false;
     let playInterval = null;
+    let synthInterval = null;
     let currentSeconds = 0;
+    let audioCtx = null;
+
+    // Web Audio Synthesizer for live realistic chords
+    function playSynthTone(freq, duration) {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+      gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + duration);
+    }
+
+    const melodyNotes = [261.63, 329.63, 392.00, 523.25, 440.00, 392.00, 329.63];
+    let noteIdx = 0;
 
     const wf = document.getElementById('waveform');
     for (let i = 0; i < 70; i++) {
@@ -595,7 +670,7 @@
         quorumPulse.style.background = 'var(--primary)';
         quorumPulse.style.boxShadow = '0 0 14px var(--primary)';
         quorumTitle.innerText = 'Tide Fabric Quorum: POLICY ENFORCED (DENIED)';
-        if (isPlaying) togglePlay();
+        if (isPlaying) stopPlayback();
       }
       renderReviewerPlayer();
     }
@@ -618,16 +693,36 @@
       }
     }
 
+    function stopPlayback() {
+      const btn = document.getElementById('btn-play');
+      const bars = document.querySelectorAll('.bar');
+      isPlaying = false;
+      btn.innerText = '▶ Play Decrypted Stream (Live Audio)';
+      btn.style.background = 'var(--primary)';
+      bars.forEach(b => b.classList.remove('playing'));
+      clearInterval(playInterval);
+      clearInterval(synthInterval);
+    }
+
     function togglePlay() {
       const btn = document.getElementById('btn-play');
       const bars = document.querySelectorAll('.bar');
       const timeDisplay = document.getElementById('time-display');
+
+      if (!isEntitlementActive) return;
 
       isPlaying = !isPlaying;
       if (isPlaying) {
         btn.innerText = '⏸ Pause Stream';
         btn.style.background = 'var(--accent)';
         bars.forEach(b => b.classList.add('playing'));
+
+        playSynthTone(melodyNotes[noteIdx], 0.6);
+        synthInterval = setInterval(() => {
+          noteIdx = (noteIdx + 1) % melodyNotes.length;
+          playSynthTone(melodyNotes[noteIdx], 0.6);
+        }, 500);
+
         playInterval = setInterval(() => {
           currentSeconds++;
           const m = Math.floor(currentSeconds / 60);
@@ -635,10 +730,7 @@
           timeDisplay.innerText = `${m}:${s < 10 ? '0' : ''}${s} / 3:42`;
         }, 1000);
       } else {
-        btn.innerText = '▶ Play Decrypted Stream';
-        btn.style.background = 'var(--primary)';
-        bars.forEach(b => b.classList.remove('playing'));
-        clearInterval(playInterval);
+        stopPlayback();
       }
     }
 
