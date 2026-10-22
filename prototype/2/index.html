@@ -181,6 +181,33 @@ video{width:100%;max-height:480px;border-radius:14px;border:1px solid var(--line
     </div>
 
     <!-- Chọn bài hát trong danh sách -->
+    
+    <!-- CHỌN HOẶC NHẬP TÀI KHOẢN NGHỆ SĨ -->
+    <div class="card" style="margin-bottom:20px;padding:20px;border-color:rgba(212,255,63,.2)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:10px">
+        <div>
+          <span style="font-size:13px;font-weight:700;color:var(--fg);display:flex;align-items:center;gap:6px">
+            <span>🎨</span> Kết Nối Tới Két Sắt Của Nghệ Sĩ:
+          </span>
+          <p style="font-size:12px;color:var(--muted);margin-top:2px">
+            Chọn hoặc nhập username của Nghệ Sĩ để yêu cầu Quorum cấp khóa giải mã tài liệu của người đó
+          </p>
+        </div>
+        <span class="badge badge-ok mono" id="connected-artist-badge">Đang kết nối: alice_artist</span>
+      </div>
+
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <select id="quick-artist-select" class="form-input" style="flex:1;min-width:200px;font-size:13px;padding:8px 12px" onchange="switchArtist(this.value)">
+          <option value="alice_artist">alice_artist (Nghệ sĩ Alice Nguyễn)</option>
+          <option value="endy_producer">endy_producer (Nhà sản xuất Endy)</option>
+        </select>
+        <div style="display:flex;gap:6px;align-items:center;flex:1;min-width:220px">
+          <input type="text" id="custom-artist-input" class="form-input" style="font-size:13px;padding:8px 12px" placeholder="Nhập username nghệ sĩ khác...">
+          <button class="btn btn-accent btn-sm" onclick="applyCustomArtist()">Kết Nối</button>
+        </div>
+      </div>
+    </div>
+    
     <div class="track-picker" id="reviewer-track-picker"></div>
 
     <!-- KHUNG PHÁT KHI CÓ QUYỀN -->
@@ -197,7 +224,12 @@ video{width:100%;max-height:480px;border-radius:14px;border:1px solid var(--line
 
       <!-- Video player nếu là video -->
       <div id="video-container" class="hidden" style="margin-bottom:20px">
-        <video id="html5-video" controls></video>
+        <div style="position:relative;user-select:none;-webkit-user-select:none;" oncontextmenu="return false;">
+          <video id="html5-video" controls controlsList="nodownload nofullscreen noplaybackrate" disablePictureInPicture oncontextmenu="return false;" style="pointer-events:auto;"></video>
+          <div style="position:absolute;top:10px;right:10px;background:rgba(0,0,0,0.65);border:1px solid rgba(255,255,255,0.15);padding:4px 10px;border-radius:6px;font-size:11px;color:var(--accent);pointer-events:none;" class="mono">
+            🔒 Tide In-Memory Stream · CẤM TẢI VỀ
+          </div>
+        </div>
       </div>
 
       <!-- Audio player visualizer -->
@@ -263,6 +295,27 @@ function getStoredTracks(){
   const d=localStorage.getItem('tide_tracks_v2');
   if(d){try{return JSON.parse(d)}catch(e){}}
   return [];
+}
+
+
+let selectedArtist = 'alice_artist';
+
+function switchArtist(artistName){
+  selectedArtist = artistName.trim().toLowerCase();
+  document.getElementById('connected-artist-badge').textContent = `Đang kết nối: ${selectedArtist}`;
+  const customInput = document.getElementById('custom-artist-input');
+  if(customInput) customInput.value = selectedArtist;
+  appendExecutionLog(`[TIDE QUORUM] Chuyển kết nối tới Két Sắt của Nghệ Sĩ: ${selectedArtist}`, true);
+  activeTrackId = null;
+  stopAudio();
+  renderTracksPicker();
+  syncPlaybackState();
+}
+
+function applyCustomArtist(){
+  const val = document.getElementById('custom-artist-input').value.trim();
+  if(!val){ alert('Vui lòng nhập username của nghệ sĩ!'); return; }
+  switchArtist(val);
 }
 
 let activeTrackId = null;
@@ -390,7 +443,29 @@ function renderTracksPicker(){
   }
   const currentUser=localStorage.getItem('tide_logged_reviewer');
 
-  tracks.forEach(t=>{
+  
+  // Cập nhật danh sách nghệ sĩ trong dropdown nếu có thêm nghệ sĩ mới
+  const artistSelect = document.getElementById('quick-artist-select');
+  if(artistSelect){
+    const uniqueArtists = Array.from(new Set(tracks.map(x => x.artistUsername || 'alice_artist')));
+    if(!uniqueArtists.includes('alice_artist')) uniqueArtists.unshift('alice_artist');
+    artistSelect.innerHTML = uniqueArtists.map(a => `<option value="${a}" ${a===selectedArtist?'selected':''}>${a} (${a==='alice_artist'?'Nghệ sĩ Alice':'Nghệ sĩ '+a})</option>`).join('');
+  }
+
+  // Lọc chỉ các track thuộc về nghệ sĩ đang được chọn
+  const filteredTracks = tracks.filter(x => (x.artistUsername || 'alice_artist').toLowerCase() === selectedArtist.toLowerCase());
+
+  if(filteredTracks.length === 0){
+    picker.innerHTML = `<div style="font-size:13px;color:var(--muted);padding:8px" class="mono">Chưa có tác phẩm nào từ nghệ sĩ "${selectedArtist}".</div>`;
+    syncPlaybackState();
+    return;
+  }
+
+  if(!activeTrackId || !filteredTracks.some(x=>x.id===activeTrackId)){
+    activeTrackId = filteredTracks[0].id;
+  }
+
+  filteredTracks.forEach(t=>{
     const isAllowed=t.allowedUsers.includes(currentUser);
     const btn=document.createElement('button');
     btn.className='picker-btn '+(t.id===activeTrackId?'active':'');

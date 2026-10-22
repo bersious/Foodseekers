@@ -201,9 +201,9 @@ function getStoredTracks(){
   const d=localStorage.getItem('tide_tracks_v2');
   if(d){try{return JSON.parse(d)}catch(e){}}
   const def=[
-    {id:'track_01',name:'Lead_Single_Master_v4.flac',type:'audio/flac',size:'42.8 MB',hash:'b79a4e912f...',allowedUsers:['minh_mastering']},
-    {id:'track_02',name:'Vocal_Stems_Studio_Dry.wav',type:'audio/wav',size:'68.1 MB',hash:'82f10ac349...',allowedUsers:[]},
-    {id:'track_03',name:'Behind_The_Scenes_Snippet.mp4',type:'video/mp4',size:'115.4 MB',hash:'11ce9d40b2...',allowedUsers:[]}
+    {id:'track_01',name:'Lead_Single_Master_v4.flac',type:'audio/flac',size:'42.8 MB',hash:'b79a4e912f...',artistUsername:'alice_artist',allowedUsers:['minh_mastering']},
+    {id:'track_02',name:'Vocal_Stems_Studio_Dry.wav',type:'audio/wav',size:'68.1 MB',hash:'82f10ac349...',artistUsername:'alice_artist',allowedUsers:[]},
+    {id:'track_03',name:'Behind_The_Scenes_Snippet.mp4',type:'video/mp4',size:'115.4 MB',hash:'11ce9d40b2...',artistUsername:'alice_artist',allowedUsers:[]}
   ];
   localStorage.setItem('tide_tracks_v2',JSON.stringify(def));
   return def;
@@ -424,12 +424,14 @@ async function handleFileUpload(e){
   const sizeMb=(file.size/(1024*1024)).toFixed(1)+' MB';
 
   const tracks=getStoredTracks();
+  const currentArtist = localStorage.getItem('tide_logged_artist') || 'alice_artist';
   tracks.unshift({
     id:id,
     name:file.name,
     type:file.type||'audio/mp3',
     size:sizeMb,
     hash:hashPart,
+    artistUsername: currentArtist,
     allowedUsers:[]
   });
   saveTracks(tracks);
