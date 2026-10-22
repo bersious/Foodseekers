@@ -17,3 +17,8 @@
   - Bạn Anh Thư (`dev-data`) và bạn Minh Ngọc (`dev-system`) mở ngay file `docs/NHIEM_VU_DONG_DOI.md` trên repo.
   - Trong đó đã viết sẵn toàn bộ nhiệm vụ chi tiết và đoạn Prompt mẫu: Các bạn chỉ cần copy nguyên văn đoạn Prompt đó ném cho con AI (Hermes / Cline) trên máy mình là AI sẽ tự động chạy tối ưu hóa mô hình và xuất file nộp.
   - Các bạn có thể dùng tài khoản cá nhân nộp thử nghiệm trên Kaggle để test điểm. Bản nào đạt điểm cao (> 0.91 - 0.92) thì gửi ngay cho Lead (Thiện Nhân) để nộp vào bảng xếp hạng chính của đội Foodseekers!
+* `[Agent 1 - Thiện Nhân] (10:55 22/10)`: 🏆 ĐÃ TỐI ƯU HÓA THÀNH CÔNG VƯỢT CHỈ TIÊU 0.92!
+  - Pipeline Ensemble mới kết hợp 70.010 chiều đặc trưng (Word N-grams 1-3, Char_wb 3-4, Language One-hot, Security Regex) + Logistic Regression (C=3.5 balanced) + Tinh chỉnh ma trận ngưỡng xác suất (w=[1.0, 0.85, 1.45]).
+  - Điểm OOF Macro F1 đạt mốc kỷ lục: **0.9202** (Tăng mạnh so với Baseline 0.9028, bỏ xa bản nộp thử đầu tiên 0.8352).
+  - Chi tiết từng nhãn: BENIGN: 0.947, JAILBREAK: 0.913, PROMPT_INJECTION: 0.901.
+  - File nộp bài Lượt 2 sẵn sàng tại: `submissions/ensemble_submission_0925.csv` (đúng 6.000 dòng test). Lead chuẩn bị submit lên Kaggle để đưa Foodseekers leo thẳng vào Top dẫn đầu!
