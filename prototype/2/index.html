@@ -402,6 +402,22 @@ video{width:100%;max-height:460px;border-radius:14px;border:1px solid var(--line
 </footer>
 
 <script>
+
+// Tự động dọn sạch các file mẫu cũ nếu còn lưu trong cache trình duyệt
+(function purgeLegacySampleTracks2(){
+  try{
+    const raw = localStorage.getItem('tide_tracks_v2');
+    if(raw){
+      const parsed = JSON.parse(raw);
+      const cleaned = parsed.filter(t => !t.id.startsWith('track_0'));
+      if(cleaned.length !== parsed.length){
+        localStorage.setItem('tide_tracks_v2', JSON.stringify(cleaned));
+      }
+    }
+  }catch(e){}
+})();
+
+
 const API_VAULT_URL = '/api/rmit-vault';
 let isSyncingWithCloud = false;
 let cloudStateCache = null;
@@ -621,8 +637,22 @@ function renderArtistChips(){
 
   container.innerHTML = '';
 
+  // Thêm chip "Tất cả nghệ sĩ" để xem toàn bộ file đã upload
+  const allChip = document.createElement('div');
+  const isAll = selectedArtist === 'ALL';
+  allChip.className = `artist-chip ${isAll ? 'active' : ''}`;
+  allChip.onclick = () => switchArtist('ALL');
+  allChip.innerHTML = `
+    <div class="chip-avatar" style="background:var(--fg);color:#0a0b0e">🌟</div>
+    <div class="chip-meta">
+      <div class="chip-name">Tất cả tác phẩm</div>
+      <div class="chip-genre mono">${tracks.length} bài đã tải lên</div>
+    </div>
+  `;
+  container.appendChild(allChip);
+
   artists.forEach(a => {
-    const songCount = tracks.filter(t => (t.artistUsername||'alice_artist').toLowerCase() === a.username.toLowerCase()).length;
+    const songCount = tracks.filter(t => (t.artistUsername||'').toLowerCase() === a.username.toLowerCase()).length;
     const isCur = a.username.toLowerCase() === selectedArtist.toLowerCase();
 
     const chip = document.createElement('div');
@@ -684,7 +714,9 @@ function renderAlbumGrid(){
   if(!container) return;
   container.innerHTML = '';
 
-  const artistTracks = tracks.filter(x => (x.artistUsername||'alice_artist').toLowerCase() === selectedArtist.toLowerCase());
+  const artistTracks = selectedArtist === 'ALL' 
+    ? tracks 
+    : tracks.filter(x => (x.artistUsername||'').toLowerCase() === selectedArtist.toLowerCase());
   document.getElementById('tracks-count-label').textContent = `${artistTracks.length} bài hát`;
 
   if(!artistTracks.length){

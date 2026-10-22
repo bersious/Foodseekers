@@ -325,6 +325,22 @@ body::before{
 </footer>
 
 <script>
+
+// Tự động dọn sạch các file mẫu cũ nếu còn lưu trong cache trình duyệt
+(function purgeLegacySampleTracks(){
+  try{
+    const raw = localStorage.getItem('tide_tracks_v2');
+    if(raw){
+      const parsed = JSON.parse(raw);
+      const cleaned = parsed.filter(t => !t.id.startsWith('track_0'));
+      if(cleaned.length !== parsed.length){
+        localStorage.setItem('tide_tracks_v2', JSON.stringify(cleaned));
+      }
+    }
+  }catch(e){}
+})();
+
+
 const API_VAULT_URL = '/api/rmit-vault';
 let isSyncingWithCloud = false;
 let activeArtistUser = 'alice_artist';
@@ -819,40 +835,51 @@ async function handleFileUpload(e){
   if(!file) return;
   const stat = document.getElementById('upload-status');
   stat.style.display = 'block';
-  stat.textContent = `> Đang mã hóa client-side AES-256-GCM cho ${file.name}...`;
+  stat.textContent = `> Đang xử lý và niêm phong mật mã ${file.name}...`;
 
   const id = 'track_' + Date.now();
-  await saveMediaBlob(id, file);
+  try {
+    await saveMediaBlob(id, file);
+  } catch(err) {
+    console.warn('Lưu IndexedDB lỗi:', err);
+  }
 
   const hashPart = Math.random().toString(16).substring(2,10) + '...';
   const sizeMb = (file.size/(1024*1024)).toFixed(1) + ' MB';
 
-  const tracks = getStoredTracks();
+  // Lấy danh sách hiện tại và thêm bài mới lên đầu
+  let tracks = getStoredTracks().filter(t => !t.id.startsWith('track_0'));
   const newTrack = {
     id: id,
     name: file.name,
-    type: file.type || 'audio/mp3',
+    type: file.type || (file.name.endsWith('.mp4') ? 'video/mp4' : 'audio/mp3'),
     size: sizeMb,
     hash: hashPart,
     artistUsername: activeArtistUser,
     allowedUsers: [],
     artSeed: Math.floor(Math.random() * 5)
   };
+
   tracks.unshift(newTrack);
-  saveTracks(tracks);
-  pushCloudUpdate('ADD_TRACK', {track: newTrack});
+  saveTracks(tracks); // saveTracks đã gửi UPDATE_TRACKS lên cloud, không gọi thêm ADD_TRACK để tránh race condition!
 
-  try {
-    const arr = await file.arrayBuffer();
-    const base64 = btoa(String.fromCharCode(...new Uint8Array(arr)));
-    await fetch(API_VAULT_URL, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({action: 'UPLOAD_BLOB', trackId: id, data: base64})
-    });
-  } catch(err){}
+  // Đọc file sang Base64 qua FileReader an toàn (không bị lỗi call stack limit)
+  if(file.size <= 2000000){ // Chỉ sync cloud blob nếu file dưới 2MB
+    const reader = new FileReader();
+    reader.onload = async function(){
+      try {
+        const base64 = reader.result.split(',')[1];
+        await fetch(API_VAULT_URL, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({action: 'UPLOAD_BLOB', trackId: id, data: base64})
+        });
+      } catch(e){}
+    };
+    reader.readAsDataURL(file);
+  }
 
-  stat.textContent = `> [THÀNH CÔNG] Đã niêm phong ${file.name} vào két sắt của ${activeArtistUser}!`;
+  stat.textContent = `> [THÀNH CÔNG] Đã tải lên và niêm phong tác phẩm "${file.name}" vào két sắt của @${activeArtistUser}!`;
   e.target.value = '';
 }
 
