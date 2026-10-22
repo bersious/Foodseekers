@@ -164,7 +164,7 @@ body::before{
       <span id="artist-name-display" class="mono">alice_artist</span>
       <button class="btn-logout" onclick="logoutArtist()">Đăng xuất</button>
     </div>
-    <span class="pill-tide">☁️ Cloud Database: SYNCED</span>
+    <span class="pill-tide">Cloud Database Synced</span>
   </div>
 </header>
 
@@ -183,7 +183,7 @@ body::before{
       <div class="auth-sub">Nhập tên đăng nhập và mật khẩu để mở két sắt tác phẩm</div>
 
       <div class="form-group">
-        <label class="form-label">Tên Đăng Nhập (Username)</label>
+        <label class="form-label">Tên Đăng Nhập</label>
         <input type="text" id="artist-login-user" class="form-input" placeholder="Ví dụ: alice_artist, endy_producer...">
       </div>
       <div class="form-group">
@@ -203,7 +203,7 @@ body::before{
         <input type="text" id="reg-artist-name" class="form-input" placeholder="Ví dụ: Sơn Tùng M-TP, Vũ, Chillies...">
       </div>
       <div class="form-group">
-        <label class="form-label">Username (Viết liền, không dấu)</label>
+        <label class="form-label">Username</label>
         <input type="text" id="reg-artist-user" class="form-input" placeholder="Ví dụ: sontung_mtp, vu_acoustic...">
       </div>
       <div class="form-group">
@@ -215,7 +215,7 @@ body::before{
         <input type="password" id="reg-artist-pass" class="form-input" placeholder="Nhập mật khẩu khởi tạo (123)">
         <div style="font-size:11px;color:var(--dim);margin-top:4px" class="mono">Gợi ý: Mật khẩu khởi tạo là <strong>123</strong></div>
       </div>
-      <button class="btn btn-accent" style="width:100%;justify-content:center" onclick="registerArtist()">🚀 Tạo Profile & Đăng Nhập Ngay</button>
+      <button class="btn btn-accent" style="width:100%;justify-content:center" onclick="registerArtist()">Tạo hồ sơ và đăng nhập</button>
     </div>
   </div>
 
@@ -259,9 +259,9 @@ body::before{
     <!-- Upload zone -->
     <div class="card">
       <div class="upload-zone" onclick="document.getElementById('file-input').click()">
-        <div style="font-size:36px;margin-bottom:8px">⚡</div>
+        <div style="font-size:20px;font-weight:700;color:var(--accent);margin-bottom:6px" class="mono">UPLOAD</div>
         <div style="font-size:16px;font-weight:700">Tải Lên Bản Thu Âm Nhạc hoặc Video Mới</div>
-        <div style="font-size:12px;color:var(--muted);margin-top:4px">Hỗ trợ MP3, WAV, FLAC, MP4, WEBM (Tự động gắn vào profile của nghệ sĩ đang chọn)</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px">Hỗ trợ MP3, WAV, FLAC, MP4, WEBM</div>
         <input type="file" id="file-input" style="display:none" accept="audio/*,video/*" onchange="handleFileUpload(event)">
       </div>
       <div id="upload-status" style="margin-top:12px;font-size:12px;color:var(--accent);display:none" class="mono"></div>
@@ -271,7 +271,7 @@ body::before{
     <div class="card" style="border-color:var(--danger-dim)">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
         <h2 style="font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px">
-          <span style="color:var(--danger)">🔔</span> Đơn Xin Quyền Nghe Thử Đang Chờ Duyệt
+          Yêu cầu xin quyền nghe thử đang chờ duyệt
         </h2>
         <span class="badge badge-warn mono" id="req-count">0 đơn chờ</span>
       </div>
@@ -283,13 +283,13 @@ body::before{
     <div id="artist-preview-box" class="card hidden" style="border-color:var(--accent);background:linear-gradient(145deg,#151c16,#0e130f);margin-bottom:20px">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
         <div style="display:flex;align-items:center;gap:10px">
-          <span style="font-size:18px">🎧</span>
+          <span style="font-size:18px"></span>
           <div>
             <div style="font-size:14px;font-weight:700" id="artist-preview-name">Tên tác phẩm</div>
             <div style="font-size:11px;color:var(--muted)" class="mono" id="artist-preview-sub">Đang phát kiểm âm trực tiếp từ bộ nhớ RAM</div>
           </div>
         </div>
-        <button class="btn btn-ghost btn-sm" onclick="closeArtistPreview()" style="color:var(--muted)">✕ Tắt Trình Phát</button>
+        <button class="btn btn-ghost btn-sm" onclick="closeArtistPreview()" style="color:var(--muted)"> Tắt Trình Phát</button>
       </div>
 
       <!-- Khung video nếu là video -->
@@ -613,7 +613,7 @@ async function playArtistMedia(trackId){
       videoEl.src = URL.createObjectURL(blob);
       videoEl.play().catch(e=>console.log(e));
     } else {
-      sub.textContent = 'Tác phẩm mẫu (Chưa có tệp video thực tế tải lên)';
+      sub.textContent = 'Tác phẩm mẫu · Tệp mẫu chưa có video tải lên';
     }
   } else {
     videoWrap.classList.add('hidden');
@@ -623,7 +623,7 @@ async function playArtistMedia(trackId){
       audioEl.src = URL.createObjectURL(blob);
       audioEl.play().catch(e=>console.log(e));
     } else {
-      sub.textContent = 'Đang phát giai điệu tổng hợp Web Audio API (Bản demo mẫu)';
+      sub.textContent = 'Đang phát giai điệu tổng hợp Web Audio API · Bản demo mẫu';
       playSynthTone(synthNotes[artistNoteIdx]);
       artistSynthTimer = setInterval(()=>{
         artistNoteIdx = (artistNoteIdx + 1) % synthNotes.length;
@@ -676,11 +676,11 @@ function renderArtistTracks(){
 
     let allowedChips = '';
     if(!t.allowedUsers || t.allowedUsers.length === 0){
-      allowedChips = '<span style="font-size:12px;color:var(--danger)">🔒 Chưa cấp quyền cho bất kỳ ai (Bảo mật tuyệt đối)</span>';
+      allowedChips = '<span style="font-size:12px;color:var(--danger)"> Chưa cấp quyền cho bất kỳ ai</span>';
     } else {
       t.allowedUsers.forEach(u=>{
         const userObj = users.find(x => x.username === u) || {name:u, username:u};
-        allowedChips += `<span class="user-chip"><span>👤 ${userObj.name||userObj.username}</span><button class="btn btn-ghost btn-sm" onclick="revokeUser('${t.id}','${u}')" style="padding:1px 6px;color:var(--danger)">Thu hồi</button></span>`;
+        allowedChips += `<span class="user-chip"><span> ${userObj.name||userObj.username}</span><button class="btn btn-ghost btn-sm" onclick="revokeUser('${t.id}','${u}')" style="padding:1px 6px;color:var(--danger)">Thu hồi</button></span>`;
       });
     }
 
@@ -699,7 +699,7 @@ function renderArtistTracks(){
         <div style="display:flex;align-items:center;gap:12px;min-width:0">
           <div class="track-art" style="background:${artBg}">${artLetter}</div>
           <div style="min-width:0">
-            <div class="track-title">${isVideo?'🎬 ':'🎵 '}${t.name}</div>
+            <div class="track-title">${isVideo?' ':' '}${t.name}</div>
             <div class="track-info mono">${t.size} · SHA256: ${t.hash} · ${isVideo?'Video Master':'Audio Master'}</div>
           </div>
         </div>
@@ -708,16 +708,16 @@ function renderArtistTracks(){
 
       <!-- Cài đặt giới hạn thời gian nghe thử của Nghệ sĩ -->
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;background:rgba(255,255,255,0.03);padding:8px 14px;border-radius:10px;border:1px solid var(--line);flex-wrap:wrap">
-        <span style="font-size:12px;color:var(--accent);font-weight:700">⏱️ Giới Hạn Thời Gian Xem / Nghe Thử:</span>
+        <span style="font-size:12px;color:var(--accent);font-weight:700"> Giới Hạn Thời Gian Xem / Nghe Thử:</span>
         <select class="form-input" style="width:auto;padding:5px 10px;font-size:12px;margin:0" onchange="setTrackLimit('${t.id}', this.value)">
-          <option value="0" ${(!t.previewLimitSeconds || t.previewLimitSeconds==0)?'selected':''}>🎵 Toàn bộ bài hát (Full 100%)</option>
-          <option value="10" ${t.previewLimitSeconds==10?'selected':''}>⏱️ 10 giây đầu (Teaser ngắn)</option>
-          <option value="15" ${t.previewLimitSeconds==15?'selected':''}>⏱️ 15 giây đầu (Snippet)</option>
-          <option value="30" ${t.previewLimitSeconds==30?'selected':''}>⏱️ 30 giây đầu (Sample 30s)</option>
-          <option value="60" ${t.previewLimitSeconds==60?'selected':''}>⏱️ 60 giây đầu (1 phút Demo)</option>
+          <option value="0" ${(!t.previewLimitSeconds || t.previewLimitSeconds==0)?'selected':''}> Toàn bộ bài hát</option>
+          <option value="10" ${t.previewLimitSeconds==10?'selected':''}> 10 giây đầu</option>
+          <option value="15" ${t.previewLimitSeconds==15?'selected':''}> 15 giây đầu</option>
+          <option value="30" ${t.previewLimitSeconds==30?'selected':''}> 30 giây đầu</option>
+          <option value="60" ${t.previewLimitSeconds==60?'selected':''}> 60 giây đầu</option>
         </select>
         <span class="mono" style="font-size:11px;color:${t.previewLimitSeconds>0?'var(--warn)':'var(--dim)'}">
-          ${t.previewLimitSeconds>0 ? `(Đang giới hạn người nghe chỉ được nghe ${t.previewLimitSeconds}s đầu)` : '(Người nghe được nghe toàn bộ bài)'}
+          ${t.previewLimitSeconds>0 ? `(Đang giới hạn người nghe chỉ được nghe ${t.previewLimitSeconds}s đầu)` : '· Toàn thời lượng'}
         </span>
       </div>
 
@@ -728,7 +728,7 @@ function renderArtistTracks(){
 
       <div style="display:flex;gap:10px;align-items:center;background:var(--surface-2);padding:10px 14px;border-radius:10px">
         <select id="select-user-${t.id}" class="form-input" style="flex:1;padding:8px 12px;font-size:13px">${options}</select>
-        <button class="btn btn-accent btn-sm" onclick="grantUser('${t.id}')">⚡ Cấp Quyền Truy Cập</button>
+        <button class="btn btn-accent btn-sm" onclick="grantUser('${t.id}')">Cấp quyền truy cập</button>
       </div>
     `;
     box.appendChild(card);
@@ -748,7 +748,7 @@ function renderRequests(){
   box.innerHTML = '';
 
   if(!pending.length){
-    box.innerHTML = '<div style="font-size:13px;color:var(--muted);padding:16px" class="mono">✓ Không có đơn xin quyền nào đang chờ duyệt cho nghệ sĩ này.</div>';
+    box.innerHTML = '<div style="font-size:13px;color:var(--muted);padding:16px" class="mono"> Không có đơn xin quyền nào đang chờ duyệt cho nghệ sĩ này.</div>';
     count.textContent = '0 đơn chờ';
     return;
   }
@@ -761,12 +761,12 @@ function renderRequests(){
     card.className = 'req-card';
     card.innerHTML = `
       <div>
-        <div style="font-size:13px;font-weight:700">👤 <strong>${r.username}</strong> xin quyền nghe: <span style="color:var(--accent)">${trackTitle}</span></div>
+        <div style="font-size:13px;font-weight:700"> <strong>${r.username}</strong> xin quyền nghe: <span style="color:var(--accent)">${trackTitle}</span></div>
         <div class="mono" style="font-size:11px;color:var(--muted);margin-top:2px">Thời gian: ${new Date(r.createdAt||Date.now()).toLocaleTimeString()}</div>
       </div>
       <div style="display:flex;gap:8px">
-        <button class="btn btn-ok btn-sm" onclick="resolveRequest('${r.id}','APPROVE')">✓ Duyệt Cấp Quyền</button>
-        <button class="btn btn-danger btn-sm" onclick="resolveRequest('${r.id}','DENY')">✕ Từ Chối</button>
+        <button class="btn btn-ok btn-sm" onclick="resolveRequest('${r.id}','APPROVE')"> Duyệt Cấp Quyền</button>
+        <button class="btn btn-danger btn-sm" onclick="resolveRequest('${r.id}','DENY')"> Từ Chối</button>
       </div>
     `;
     box.appendChild(card);

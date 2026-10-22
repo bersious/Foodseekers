@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SONORA · Phòng nghe thử riêng tư (TideCloak BYOiD)</title>
+<title>SONORA · Phòng nghe thử riêng tư · TideCloak BYOiD</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -62,7 +62,7 @@ body::before{
   background:linear-gradient(110deg,rgba(184,243,107,.15),rgba(32,40,33,.85) 50%,rgba(22,28,23,.96));
 }
 .music-hero::after{
-  content:"♫";position:absolute;right:30px;top:-30px;
+  content:"";position:absolute;right:30px;top:-30px;
   color:rgba(255,255,255,.05);font-size:180px;line-height:1;pointer-events:none;
 }
 .music-kicker{color:var(--accent);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
@@ -230,7 +230,7 @@ video{width:100%;max-height:460px;border-radius:14px;border:1px solid var(--line
       <span id="reviewer-name-display" class="mono">minh_mastering</span>
       <button class="btn-logout" onclick="logoutReviewer()">Đăng xuất</button>
     </div>
-    <span class="pill-tide"><span class="sync-pulse"></span> Cloud Sync: ACTIVE</span>
+    <span class="pill-tide"><span class="sync-pulse"></span> Cloud Sync Active</span>
   </div>
 </header>
 
@@ -250,7 +250,7 @@ video{width:100%;max-height:460px;border-radius:14px;border:1px solid var(--line
       <div class="auth-sub">Nhập tên đăng nhập và mật khẩu để vào phòng nghe thử</div>
 
       <div class="form-group">
-        <label class="form-label">Tên Đăng Nhập (Username)</label>
+        <label class="form-label">Tên Đăng Nhập</label>
         <input type="text" id="reviewer-login-user" class="form-input" placeholder="Ví dụ: minh_mastering, thu_producer, nhânn...">
       </div>
       <div class="form-group">
@@ -270,7 +270,7 @@ video{width:100%;max-height:460px;border-radius:14px;border:1px solid var(--line
         <input type="text" id="reg-name" class="form-input" placeholder="Ví dụ: Hoàng (Audio Engineer)">
       </div>
       <div class="form-group">
-        <label class="form-label">Tên Đăng Nhập (Username viết liền)</label>
+        <label class="form-label">Tên Đăng Nhập</label>
         <input type="text" id="reg-user" class="form-input" placeholder="hoang_audio">
       </div>
       <div class="form-group">
@@ -292,7 +292,7 @@ video{width:100%;max-height:460px;border-radius:14px;border:1px solid var(--line
       <p>
         Xin chào <strong id="logged-user-title" style="color:var(--accent)">minh_mastering</strong>.
         Tất cả tác phẩm được bảo vệ bằng mã hóa client-side không có chìa khóa chủ.
-        Bài hát nào chưa được cấp quyền, bạn có thể nhấn <strong>"⚡ Xin Quyền Nghe"</strong> để gửi yêu cầu tới Nghệ Sĩ duyệt ở Trang 1.
+        Bài hát nào chưa được cấp quyền, bạn có thể nhấn <strong>"Xin quyền nghe"</strong> để gửi yêu cầu tới Nghệ Sĩ duyệt ở Trang 1.
       </p>
     </section>
 
@@ -301,7 +301,7 @@ video{width:100%;max-height:460px;border-radius:14px;border:1px solid var(--line
       <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
         <div>
           <span style="font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px">
-            <span>🎨</span> Chọn Két Sắt Nghệ Sĩ Bạn Muốn Nghe Thử:
+            <span></span> Chọn Két Sắt Nghệ Sĩ Bạn Muốn Nghe Thử:
           </span>
           <span style="font-size:12px;color:var(--muted)">Nhấp chọn nghệ sĩ bên dưới để xem toàn bộ danh mục bài hát</span>
         </div>
@@ -341,14 +341,14 @@ video{width:100%;max-height:460px;border-radius:14px;border:1px solid var(--line
       <!-- Video Player (nếu là video và có quyền) -->
       <div id="video-container" class="video-wrap hidden" oncontextmenu="return false;">
         <video id="html5-video" controls controlsList="nodownload nofullscreen noplaybackrate" disablePictureInPicture></video>
-        <div class="video-badge mono">🔒 Tide In-Memory Stream · CẤM TẢI VỀ</div>
+        <div class="video-badge mono">Tide In-Memory Stream · Chống tải về</div>
       </div>
 
       <!-- Audio Visualizer (nếu là audio và có quyền) -->
       <div id="audio-container" class="hidden">
         <div class="visualizer" id="viz"></div>
         <div class="play-controls">
-          <button class="play-btn" id="play-btn" onclick="togglePlay()">▶</button>
+          <button class="play-btn" id="play-btn" onclick="togglePlay()"></button>
           <div class="timebar">
             <div class="track-line"><div class="fill" id="fill"></div></div>
             <div class="times mono"><span id="cur">0:00</span><span id="dur">3:42</span></div>
@@ -358,7 +358,7 @@ video{width:100%;max-height:460px;border-radius:14px;border:1px solid var(--line
 
       <!-- BẢNG XIN QUYỀN NẾU TÁC PHẨM CHƯA ĐƯỢC CẤP PHÉP -->
       <div id="locked-request-panel" class="locked-panel hidden">
-        <div class="locked-icon">🔒</div>
+        <div class="locked-icon mono" style="font-size:20px;color:var(--warn)">PROTECTED</div>
         <div class="locked-title" id="locked-track-title">Tác phẩm này đang bị khóa</div>
         <div class="locked-desc" id="locked-track-desc">
           Theo Chính Sách Bảo Mật TideCloak, danh tính của bạn chưa có quyền hạn tự sinh (Emergent Entitlement) để giải mã tệp tin này.
@@ -366,7 +366,7 @@ video{width:100%;max-height:460px;border-radius:14px;border:1px solid var(--line
         </div>
         <div id="locked-action-area">
           <button class="btn btn-accent" id="btn-request-access" onclick="requestAccessCurrentTrack()" style="font-size:14px;padding:12px 24px">
-            ⚡ Gửi Yêu Cầu Xin Quyền Nghe Thử Tới Nghệ Sĩ
+            Gửi yêu cầu xin quyền nghe thử
           </button>
         </div>
       </div>
@@ -375,13 +375,13 @@ video{width:100%;max-height:460px;border-radius:14px;border:1px solid var(--line
       <!-- THÔNG BÁO HẾT THỜI GIAN NGHE THỬ GIỚI HẠN -->
       <div id="preview-limit-alert" class="hidden" style="background:var(--warn-dim);border:1px solid rgba(255,184,77,.35);border-radius:12px;padding:16px;margin-top:16px;text-align:center">
         <div style="font-size:14px;font-weight:700;color:var(--warn);margin-bottom:4px" id="limit-alert-title">
-          ⏱️ ĐÃ HẾT THỜI LƯỢNG NGHE THỬ
+          Hết thời lượng nghe thử
         </div>
         <div style="font-size:12px;color:var(--muted);margin-bottom:12px" id="limit-alert-desc">
           Nghệ sĩ giới hạn bản xem thử này. Khóa giải mã phiên đã tạm ngắt theo chính sách TideCloak.
         </div>
         <button class="btn btn-accent btn-sm" onclick="requestAccessCurrentTrack()">
-          🔑 Gửi Yêu Cầu Xin Cấp Quyền Nghe Full Toàn Bộ Bài
+          Yêu cầu mở khóa toàn bộ bài hát
         </button>
       </div>
 
@@ -392,7 +392,7 @@ video{width:100%;max-height:460px;border-radius:14px;border:1px solid var(--line
     <div class="card">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
         <h3 style="font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px">
-          <span style="color:var(--accent)">⚡</span> Nhật Ký Thực Thi Quyền Hạn TideCloak Quorum (Execution Log)
+          Nhật ký thực thi quyền hạn TideCloak Quorum
         </h3>
         <span class="mono" style="font-size:11px;color:var(--dim)">Auto Realtime Sync</span>
       </div>
@@ -620,7 +620,7 @@ function checkAuth(){
   }
 }
 
-// ==================== CLEAN ARTIST SELECTION (CHỌN CHỨ KHÔNG GÕ) ====================
+// ==================== CLEAN ARTIST SELECTION ====================
 function renderArtistChips(){
   const artists = getStoredArtists();
   const tracks = getStoredTracks();
@@ -636,7 +636,7 @@ function renderArtistChips(){
   allChip.className = `artist-chip ${isAll ? 'active' : ''}`;
   allChip.onclick = () => switchArtist('ALL');
   allChip.innerHTML = `
-    <div class="chip-avatar" style="background:var(--fg);color:#0a0b0e">🌟</div>
+    <div class="chip-avatar" style="background:var(--fg);color:#0a0b0e"></div>
     <div class="chip-meta">
       <div class="chip-name">Tất cả tác phẩm</div>
       <div class="chip-genre mono">${tracks.length} bài đã tải lên</div>
@@ -737,25 +737,25 @@ function renderAlbumGrid(){
     let actionBtn = '';
 
     if(isAllowed){
-      statusBadge = '<span class="badge badge-ok">✓ ĐÃ CÓ QUYỀN</span>';
-      actionBtn = `<button class="btn btn-accent btn-sm" onclick="playTrackDirect('${t.id}')">▶ Phát Ngay</button>`;
+      statusBadge = '<span class="badge badge-ok">Đã cấp quyền</span>';
+      actionBtn = `<button class="btn btn-accent btn-sm" onclick="playTrackDirect('${t.id}')">Phát ngay</button>`;
     } else if(pendingReq){
-      statusBadge = '<span class="badge badge-warn">⏳ ĐANG CHỜ DUYỆT</span>';
-      actionBtn = `<button class="btn btn-warn btn-sm" style="cursor:default" onclick="event.stopPropagation()">⏳ Đang Chờ Duyệt</button>`;
+      statusBadge = '<span class="badge badge-warn">Đang chờ duyệt</span>';
+      actionBtn = `<button class="btn btn-warn btn-sm" style="cursor:default" onclick="event.stopPropagation()"> Đang Chờ Duyệt</button>`;
     } else {
-      statusBadge = '<span class="badge badge-danger">🔒 BỊ KHÓA</span>';
-      actionBtn = `<button class="btn btn-accent btn-sm" onclick="requestAccessForTrack('${t.id}')">⚡ Xin Quyền Nghe</button>`;
+      statusBadge = '<span class="badge badge-danger">Chưa cấp quyền</span>';
+      actionBtn = `<button class="btn btn-accent btn-sm" onclick="requestAccessForTrack('${t.id}')">Xin quyền nghe</button>`;
     }
 
     const artBg = artGradient(t.artSeed||0);
-    const artIcon = isVideo ? '🎬' : '🎵';
+    const artIcon = isVideo ? '' : '';
 
     card.innerHTML = `
       <div class="card-top">
         <div class="album-art" style="background:${artBg}">${artIcon}</div>
         <div class="card-meta">
           <div class="card-title">${t.name}</div>
-          <div class="card-sub mono">${t.size} · ${isVideo?'Video Master':'Audio Master'}${t.previewLimitSeconds>0?` · <span style="color:var(--warn)">⏱️ ${t.previewLimitSeconds}s đầu</span>`:""}</div>
+          <div class="card-sub mono">${t.size} · ${isVideo?'Video Master':'Audio Master'}${t.previewLimitSeconds>0?` · <span style="color:var(--warn)"> ${t.previewLimitSeconds}s đầu</span>`:""}</div>
         </div>
       </div>
       <div class="card-bottom">
@@ -851,7 +851,7 @@ async function syncActiveTrackView(){
   if(isAllowed){
     npStatus.textContent = '● Quyền hạn tự sinh hợp lệ (Tide Emergent Authority) · RAM Playback';
     npStatus.style.color = 'var(--accent)';
-    npBadge.innerHTML = '<span class="badge badge-ok">✓ ĐÃ ĐƯỢC DUYỆT</span>';
+    npBadge.innerHTML = '<span class="badge badge-ok">Đã được duyệt</span>';
     lockedPanel.classList.add('hidden');
 
     if(isVideo){
@@ -892,22 +892,22 @@ async function syncActiveTrackView(){
     document.getElementById('locked-track-title').textContent = `Tác phẩm "${track.name}" đang bị khóa`;
 
     if(pendingReq){
-      npStatus.textContent = '⏳ Đã gửi đơn xin quyền — Đang chờ Nghệ Sĩ duyệt ở Trang 1';
+      npStatus.textContent = ' Đã gửi đơn xin quyền — Đang chờ Nghệ Sĩ duyệt ở Trang 1';
       npStatus.style.color = 'var(--warn)';
-      npBadge.innerHTML = '<span class="badge badge-warn">⏳ CHỜ DUYỆT</span>';
+      npBadge.innerHTML = '<span class="badge badge-warn">Chờ duyệt</span>';
       document.getElementById('locked-action-area').innerHTML = `
         <div style="background:var(--surface-2);border:1px solid rgba(255,184,77,.3);padding:14px;border-radius:12px;font-size:13px;color:var(--warn)" class="mono">
-          ⏳ Yêu cầu xin quyền đã được gửi thành công!<br>
+           Yêu cầu xin quyền đã được gửi thành công!<br>
           Nghệ Sĩ mở Trang 1 bấm nút <strong>"Duyệt"</strong> thì bài hát này sẽ tự động phát ngay tại đây.
         </div>
       `;
     } else {
-      npStatus.textContent = '🔒 Chưa có quyền giải mã · Nhấn nút xin quyền bên dưới';
+      npStatus.textContent = ' Chưa có quyền giải mã · Nhấn nút xin quyền bên dưới';
       npStatus.style.color = 'var(--danger)';
-      npBadge.innerHTML = '<span class="badge badge-danger">🔒 BỊ KHÓA</span>';
+      npBadge.innerHTML = '<span class="badge badge-danger">Chưa cấp quyền</span>';
       document.getElementById('locked-action-area').innerHTML = `
         <button class="btn btn-accent" onclick="requestAccessCurrentTrack()" style="font-size:14px;padding:12px 26px">
-          ⚡ Gửi Yêu Cầu Xin Quyền Nghe Thử Tới Nghệ Sĩ
+          Gửi yêu cầu xin quyền nghe thử
         </button>
       `;
     }
@@ -935,7 +935,7 @@ function handlePreviewLimitExpired(track){
   const desc = document.getElementById('limit-alert-desc');
   if(alertBox){
     alertBox.classList.remove('hidden');
-    title.textContent = `⏱️ ĐÃ HẾT ${track.previewLimitSeconds} GIÂY NGHE THỬ GIỚI HẠN`;
+    title.textContent = ` ĐÃ HẾT ${track.previewLimitSeconds} GIÂY NGHE THỬ GIỚI HẠN`;
     desc.textContent = `Nghệ sĩ ${track.artistUsername} thiết lập chính sách chỉ cho phép nghe thử ${track.previewLimitSeconds} giây đầu. Chìa khóa phiên TideCloak JIT đã tự động hủy.`;
   }
   appendLog(`[HẾT HẠN PREVIEW] Chạm mốc giới hạn ${track.previewLimitSeconds}s. Luồng giải mã đã tự động ngắt theo chính sách Quorum.`, 'var(--warn)');
@@ -943,7 +943,7 @@ function handlePreviewLimitExpired(track){
 
 function stopAudio(){
   isPlaying=false;
-  document.getElementById('play-btn').textContent='▶';
+  document.getElementById('play-btn').textContent='';
   document.getElementById('disc').classList.remove('spin');
   bars.forEach(b=>{b.classList.remove('on');b.style.height='10%'});
   clearInterval(timerInterval);clearInterval(synthInterval);
@@ -966,7 +966,7 @@ function togglePlay(){
 
   if(isPlaying){
     const pAlert = document.getElementById('preview-limit-alert'); if(pAlert) pAlert.classList.add('hidden');
-    playBtn.textContent='⏸';
+    playBtn.textContent='';
     disc.classList.add('spin');
     appendLog(`[PLAYBACK] Bắt đầu luồng giải mã in-memory cho "${track.name}"`, 'var(--accent)');
 
