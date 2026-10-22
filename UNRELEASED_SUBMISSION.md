@@ -4,7 +4,7 @@
 
 > **RMIT Hackathon 2026 · Challenge 2 (UNLOCKED by Tide)** — Team Foodseekers (UIT)
 >
-> 🌐 **Live Web App:** [https://bersious.io.vn/rmit](https://bersious.io.vn/rmit)
+> 🌐 **Live Web App:** [https://bersious.io.vn/rmit](https://bersious.io.vn/rmit) · *(Dự phòng: [https://bersious-web.vercel.app/rmit](https://bersious-web.vercel.app/rmit))*
 > 💻 **Local Interactive Demo:** open [`prototype/index.html`](./prototype/index.html) in any browser (zero install).
 > 🎥 **Two-minute demo video:** [`demo/unreleased-demo.mp4`](./demo/).
 

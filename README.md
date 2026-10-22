@@ -18,7 +18,7 @@ Cuộc thi **RMIT Hackathon 2026** gồm 2 thử thách diễn ra song song (H�
 * **Đề tài lựa chọn:** **Dự án "UNRELEASED"** (Ý tưởng số 5 — Không gian cộng tác âm nhạc và tác phẩm sáng tạo không cần trao quyền kiểm soát cho máy chủ lưu trữ).
 * **Nhiệm vụ:** Xây dựng một ứng dụng mẫu (working prototype) tích hợp **TideCloak** và cơ chế **Emergent Authority** (quyền hạn tự sinh, không có quản trị viên đám mây hay máy chủ nào nắm giữ chìa khóa chủ / master key để giải mã file nhạc demo của nghệ sĩ đơn phương).
 * **Sản phẩm nộp:** Kho lưu trữ GitHub công khai có mã nguồn prototype (`prototype/index.html`), README chuẩn mẫu (≤300 từ trả lời 5 tiêu chí), video demo 2 phút (.mp4 dưới 100MB trong repo).
-* **Bản trực tuyến (Live Demo):** [https://bersious.io.vn/rmit](https://bersious.io.vn/rmit)
+* **Bản trực tuyến (Live Demo):** [https://bersious.io.vn/rmit](https://bersious.io.vn/rmit) *(Dự phòng: [https://bersious-web.vercel.app/rmit](https://bersious-web.vercel.app/rmit))*
 * **Kênh nộp bài:** [Google Form chính thức của Tide](https://forms.gle/HRHYjnqB86j1LFS97).
 * 📄 **Tài liệu nộp bài chính thức:** Xem tại [`UNRELEASED_SUBMISSION.md`](./UNRELEASED_SUBMISSION.md) và kịch bản video tại [`docs/UNRELEASED_TIDE_RESEARCH_AND_WINNING_PLAYBOOK.md`](./docs/UNRELEASED_TIDE_RESEARCH_AND_WINNING_PLAYBOOK.md).
 
