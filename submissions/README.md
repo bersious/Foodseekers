@@ -6,7 +6,7 @@
 
 | Lượt | Thời gian | Mô hình & Kỹ thuật | Điểm CV nội bộ (Macro F1) | Điểm Public LB (Kaggle) | Người nộp | Ghi chú & Đánh giá |
 | :---: | :---: | :--- | :---: | :---: | :---: | :--- |
-| **01** | Sáng 22/10 | Baseline TF-IDF + Logistic Regression (Balanced) | *chờ điền* | *chờ điền* | Thiện Nhân | Ăn điểm Challenge 1, kiểm tra format id,label |
+| **01** | 10:15 22/10 | Baseline TF-IDF (35k n-grams) + Logistic Regression (Balanced + Threshold 1.25) | **0.9028** | *đang nộp* | Thiện Nhân | Ăn điểm Challenge 1, 6.000 dòng chuẩn format id,label |
 | **02** | Sáng 22/10 | DeBERTa v3 Prompt Injection v2 | *chờ điền* | *chờ điền* | Thiện Nhân | Chuyên biệt hóa nhãn 7% PROMPT_INJECTION |
 | **03** | Trưa 22/10 | XLM-RoBERTa base (Multilingual) | *chờ điền* | *chờ điền* | Thiện Nhân | Đánh giá năng lực đa ngữ pt/fr/it/en |
 | **04** | Chiều 22/10 | XLM-RoBERTa large (Kaggle GPU) | *chờ điền* | *chờ điền* | Thiện Nhân | Mô hình sâu mạnh nhất |
