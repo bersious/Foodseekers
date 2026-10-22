@@ -96,7 +96,7 @@ body::before{content:'';position:fixed;inset:0;z-index:-2;background:radial-grad
       <span id="artist-name-display" class="mono">alice_artist</span>
       <button class="btn btn-ghost btn-sm" onclick="logoutArtist()" style="margin-left:6px;padding:2px 8px">Thoát</button>
     </div>
-    <span class="pill-tide">TideCloak Quorum</span>
+    <span class="pill-tide" title="Đồng bộ thời gian thực qua Upstash Redis">☁️ Cloud Database: SYNCED</span>
   </div>
 </header>
 
@@ -181,6 +181,63 @@ body::before{content:'';position:fixed;inset:0;z-index:-2;background:radial-grad
 </footer>
 
 <script>
+
+// ==================== TIDE GLOBAL CLOUD DATABASE SYNC ====================
+const API_VAULT_URL = '/api/rmit-vault';
+let isSyncingWithCloud = false;
+
+async function fetchCloudState() {
+  if (isSyncingWithCloud) return;
+  try {
+    const res = await fetch(API_VAULT_URL);
+    if (!res.ok) return;
+    const json = await res.json();
+    if (json.ok && json.data) {
+      const cloudData = json.data;
+      const localTracks = localStorage.getItem('tide_tracks_v2');
+      const cloudTracksStr = JSON.stringify(cloudData.tracks || []);
+      const cloudUsersStr = JSON.stringify(cloudData.users || []);
+
+      let hasChanged = false;
+      if (localTracks !== cloudTracksStr) {
+        localStorage.setItem('tide_tracks_v2', cloudTracksStr);
+        hasChanged = true;
+      }
+      if (localStorage.getItem('tide_users') !== cloudUsersStr) {
+        localStorage.setItem('tide_users', cloudUsersStr);
+        hasChanged = true;
+      }
+
+      if (hasChanged && typeof onCloudSync === 'function') {
+        onCloudSync();
+      }
+    }
+  } catch (err) {
+    // Offline / fallback to localStorage
+  }
+}
+
+async function pushCloudUpdate(action, payload = {}) {
+  isSyncingWithCloud = true;
+  try {
+    await fetch(API_VAULT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action, ...payload })
+    });
+  } catch (e) {
+    console.warn('Cloud sync error:', e);
+  } finally {
+    isSyncingWithCloud = false;
+  }
+}
+
+// Bắt đầu vòng lặp polling 2.5s để đồng bộ từ các máy tính khác
+setInterval(fetchCloudState, 2500);
+fetchCloudState();
+
+function onCloudSync(){ getStoredUsers(); renderArtistTracks(); updatePolicyViewer(); }
+
 const DB_NAME='tide_vault_db', STORE_NAME='media_blobs';
 function openDB(){return new Promise((res,rej)=>{const r=indexedDB.open(DB_NAME,1);r.onupgradeneeded=e=>{if(!e.target.result.objectStoreNames.contains(STORE_NAME))e.target.result.createObjectStore(STORE_NAME)};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});}
 async function saveMediaBlob(id,blob){const db=await openDB();return new Promise((res,rej)=>{const tx=db.transaction(STORE_NAME,'readwrite');tx.objectStore(STORE_NAME).put(blob,id);tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error)});}

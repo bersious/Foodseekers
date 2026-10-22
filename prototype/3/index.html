@@ -88,7 +88,7 @@ body::before{content:'';position:fixed;inset:0;z-index:-2;background:radial-grad
     <span class="brand-dot"></span>
     <div>UNRELEASED<small>Hạ Tầng Đám Mây S3 (Oblivious Proxy)</small></div>
   </a>
-  <span class="pill-tide">Zero-Custody Cloud</span>
+  <span class="pill-tide">☁️ Cloud Database: SYNCED</span>
 </header>
 
 <main class="container">
@@ -127,6 +127,63 @@ body::before{content:'';position:fixed;inset:0;z-index:-2;background:radial-grad
 </footer>
 
 <script>
+
+// ==================== TIDE GLOBAL CLOUD DATABASE SYNC ====================
+const API_VAULT_URL = '/api/rmit-vault';
+let isSyncingWithCloud = false;
+
+async function fetchCloudState() {
+  if (isSyncingWithCloud) return;
+  try {
+    const res = await fetch(API_VAULT_URL);
+    if (!res.ok) return;
+    const json = await res.json();
+    if (json.ok && json.data) {
+      const cloudData = json.data;
+      const localTracks = localStorage.getItem('tide_tracks_v2');
+      const cloudTracksStr = JSON.stringify(cloudData.tracks || []);
+      const cloudUsersStr = JSON.stringify(cloudData.users || []);
+
+      let hasChanged = false;
+      if (localTracks !== cloudTracksStr) {
+        localStorage.setItem('tide_tracks_v2', cloudTracksStr);
+        hasChanged = true;
+      }
+      if (localStorage.getItem('tide_users') !== cloudUsersStr) {
+        localStorage.setItem('tide_users', cloudUsersStr);
+        hasChanged = true;
+      }
+
+      if (hasChanged && typeof onCloudSync === 'function') {
+        onCloudSync();
+      }
+    }
+  } catch (err) {
+    // Offline / fallback to localStorage
+  }
+}
+
+async function pushCloudUpdate(action, payload = {}) {
+  isSyncingWithCloud = true;
+  try {
+    await fetch(API_VAULT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action, ...payload })
+    });
+  } catch (e) {
+    console.warn('Cloud sync error:', e);
+  } finally {
+    isSyncingWithCloud = false;
+  }
+}
+
+// Bắt đầu vòng lặp polling 2.5s để đồng bộ từ các máy tính khác
+setInterval(fetchCloudState, 2500);
+fetchCloudState();
+
+function onCloudSync(){ renderS3(); }
+
 function getStoredTracks(){
   const d=localStorage.getItem('tide_tracks_v2');
   if(d){try{return JSON.parse(d)}catch(e){}}
