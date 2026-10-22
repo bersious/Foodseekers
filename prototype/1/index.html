@@ -361,7 +361,7 @@ async function fetchCloudState() {
         autoEl.setAttribute('aria-checked', !!cloud.settings?.autoApprove);
       }
 
-      updateArtistLoginSelect();
+      
       renderArtistSwitcher();
       renderArtistTracks();
       renderRequests();
@@ -428,13 +428,7 @@ function switchArtistAuthTab(tab){
   document.getElementById('artist-form-register').classList.toggle('hidden', tab!=='register');
 }
 
-function updateArtistLoginSelect(){
-  const artists = getStoredArtists();
-  const select = document.getElementById('quick-artist-login-select');
-  if(select && artists.length){
-    select.innerHTML = artists.map(a => `<option value="${a.username}">${a.name} (@${a.username})</option>`).join('');
-  }
-}
+
 
 function loginArtist(){
   const u = document.getElementById('artist-login-user').value.trim();
@@ -499,7 +493,7 @@ function checkArtistAuth(){
   const userInfo = document.getElementById('artist-user-info');
   const nameDisp = document.getElementById('artist-name-display');
 
-  updateArtistLoginSelect();
+  
 
   if(u){
     authView.classList.add('hidden');

@@ -444,7 +444,7 @@ async function fetchCloudState() {
       localStorage.setItem('tide_requests_v2', JSON.stringify(cloudStateCache.requests || []));
       localStorage.setItem('tide_artists', JSON.stringify(cloudStateCache.artists || []));
 
-      renderUserSelect();
+      
       renderArtistChips();
       renderAlbumGrid();
       syncActiveTrackView();
@@ -466,7 +466,7 @@ async function pushCloudAction(action, payload = {}) {
         cloudStateCache = json.data;
         localStorage.setItem('tide_tracks_v2', JSON.stringify(cloudStateCache.tracks || []));
         localStorage.setItem('tide_requests_v2', JSON.stringify(cloudStateCache.requests || []));
-        renderUserSelect();
+        
         renderAlbumGrid();
         syncActiveTrackView();
       }
@@ -543,23 +543,7 @@ for(let i=0;i<56;i++){const b=document.createElement('div');b.className='bar';vi
 const bars=[...document.querySelectorAll('.bar')];
 
 
-function renderUserSelect(){
-  const users = getStoredUsers();
-  const select = document.getElementById('quick-user-select');
-  const input = document.getElementById('reviewer-login-user');
-  if(!select) return;
 
-  if(!users || !users.length){
-    select.innerHTML = '<option value="">(Đang tải danh sách từ Cloud...)</option>';
-    return;
-  }
-
-  const currentVal = input ? input.value : '';
-  select.innerHTML = users.map(u => `<option value="${u.username}" ${u.username===currentVal?'selected':''}>👤 ${u.name||u.username} (@${u.username})</option>`).join('');
-  if(!currentVal && users.length && input){
-    input.value = users[0].username;
-  }
-}
 
 function switchAuthTab(tab){
   document.getElementById('tab-login').classList.toggle('active',tab==='login');
