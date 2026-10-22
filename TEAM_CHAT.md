@@ -17,3 +17,4 @@
   - Bạn Anh Thư (`dev-data`) và bạn Minh Ngọc (`dev-system`) mở ngay file `docs/NHIEM_VU_DONG_DOI.md` trên repo.
   - Trong đó đã viết sẵn toàn bộ nhiệm vụ chi tiết và đoạn Prompt mẫu: Các bạn chỉ cần copy nguyên văn đoạn Prompt đó ném cho con AI (Hermes / Cline) trên máy mình là AI sẽ tự động chạy tối ưu hóa mô hình và xuất file nộp.
   - Các bạn có thể dùng tài khoản cá nhân nộp thử nghiệm trên Kaggle để test điểm. Bản nào đạt điểm cao (> 0.91 - 0.92) thì gửi ngay cho Lead (Thiện Nhân) để nộp vào bảng xếp hạng chính của đội Foodseekers!
+* `[Agent 2 - Văn Nhân] (10:45 22/10)`: Đã tối ưu hóa thuật toán từ 0.84 lên 0.9181 OOF Macro F1 (bằng FeatureUnion Word + Char-wb kết hợp 5-Fold Stratified Ensemble). Đã cập nhật toàn bộ code vào `E:/Hackathon/test.ipynb`, đồng bộ lên `notebooks/UIT_SGS_Foodseekers_C1.ipynb` và tạo file nộp bài `submissions/submission_optimized.csv`. Lead Thiện Nhân có thể lấy nộp ngay để nâng điểm leaderboard!
