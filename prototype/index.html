@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CareVault — Patient-Governed Health Passport (Powered by TideCloak)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090d16;
+      --card-bg: rgba(22, 30, 49, 0.7);
+      --border: rgba(255, 255, 255, 0.08);
+      --primary: #38bdf8;
+      --primary-hover: #0ea5e9;
+      --accent: #a855f7;
+      --emerald: #10b981;
+      --rose: #f43f5e;
+      --amber: #f59e0b;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      background-image: 
+        radial-gradient(at 10% 10%, rgba(56, 189, 248, 0.12) 0px, transparent 50%),
+        radial-gradient(at 90% 90%, rgba(168, 85, 247, 0.12) 0px, transparent 50%);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+    header {
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .logo-badge {
+      background: linear-gradient(135deg, #38bdf8, #a855f7);
+      padding: 0.5rem 0.75rem;
+      border-radius: 10px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .logo-title h1 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .logo-title p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .tide-tag {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      color: var(--primary);
+      font-weight: 600;
+    }
+    .role-switcher {
+      display: flex;
+      gap: 0.5rem;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 0.25rem;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+    .role-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .role-btn.active {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .role-btn.patient.active { border-left: 3px solid var(--emerald); }
+    .role-btn.doctor.active { border-left: 3px solid var(--primary); }
+    .role-btn.admin.active { border-left: 3px solid var(--rose); }
+
+    main {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Architecture Banner */
+    .arch-banner {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.25rem 1.75rem;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.5rem;
+      backdrop-filter: blur(8px);
+    }
+    .arch-status {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .indicator-pulse {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--emerald);
+      box-shadow: 0 0 12px var(--emerald);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.2); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    .views-container {
+      display: grid;
+      gap: 1.5rem;
+    }
+    .view-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .card-title h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    .card-title p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* Patient Portal */
+    .consent-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1.5rem;
+    }
+    .record-box {
+      background: rgba(0,0,0,0.25);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+    }
+    .record-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
+    .record-title {
+      font-weight: 600;
+      color: var(--text);
+    }
+    .badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+    }
+    .badge-encrypted {
+      background: rgba(168, 85, 247, 0.15);
+      color: var(--accent);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+    }
+    .badge-granted {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--emerald);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+    .badge-revoked {
+      background: rgba(244, 63, 94, 0.15);
+      color: var(--rose);
+      border: 1px solid rgba(244, 63, 94, 0.3);
+    }
+
+    .cipher-preview {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      background: rgba(0,0,0,0.4);
+      padding: 0.85rem;
+      border-radius: 8px;
+      color: #94a3b8;
+      word-break: break-all;
+      border: 1px dashed rgba(255,255,255,0.1);
+      margin: 0.75rem 0;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.65rem 1.25rem;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: #04121e;
+    }
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.4);
+    }
+    .btn-rose {
+      background: var(--rose);
+      color: #fff;
+    }
+    .btn-rose:hover {
+      background: #e11d48;
+      box-shadow: 0 0 16px rgba(244, 63, 94, 0.4);
+    }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .btn-outline:hover {
+      background: rgba(255,255,255,0.05);
+    }
+
+    /* Doctor Portal */
+    .decryption-result {
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-top: 1rem;
+    }
+    .decryption-blocked {
+      background: rgba(244, 63, 94, 0.08);
+      border: 1px solid rgba(244, 63, 94, 0.25);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    /* Admin View */
+    .raw-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      margin-top: 1rem;
+    }
+    .raw-table th, .raw-table td {
+      border: 1px solid var(--border);
+      padding: 0.75rem;
+      text-align: left;
+    }
+    .raw-table th {
+      background: rgba(255,255,255,0.03);
+      color: var(--text-muted);
+    }
+
+    .callout-box {
+      border-left: 4px solid var(--primary);
+      background: rgba(56, 189, 248, 0.06);
+      padding: 1rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1rem 0;
+      font-size: 0.88rem;
+    }
+    .callout-box.warning {
+      border-left-color: var(--rose);
+      background: rgba(244, 63, 94, 0.06);
+    }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo-container">
+      <div class="logo-badge">🛡️ CAREVAULT</div>
+      <div class="logo-title">
+        <h1>CareVault</h1>
+        <p>Patient-Governed Health Passport · Challenge 2 (Tide × RMIT 2026)</p>
+      </div>
+    </div>
+    
+    <div class="role-switcher">
+      <button class="role-btn patient active" onclick="switchRole('patient')">👤 Patient Alice</button>
+      <button class="role-btn doctor" onclick="switchRole('doctor')">🩺 Dr. Minh (Consultant)</button>
+      <button class="role-btn admin" onclick="switchRole('admin')">⚠️ Cloud DB Admin</button>
+    </div>
+
+    <div class="tide-tag">
+      <span>●</span> Powered by TideCloak Emergent Authority
+    </div>
+  </header>
+
+  <main>
+
+    <!-- Architecture Live Status -->
+    <div class="arch-banner">
+      <div class="arch-status">
+        <div class="indicator-pulse" id="quorum-pulse"></div>
+        <div>
+          <strong id="quorum-label">Tide Fabric Quorum: ACTIVE & OBLIVIOUS</strong>
+          <p style="font-size: 0.8rem; color: var(--text-muted);">Decentralized verification nodes online. Zero master keys stored in application server.</p>
+        </div>
+      </div>
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--primary);">
+        Emergent Key Status: <span id="key-state-badge" style="color: var(--emerald); font-weight: 600;">CONSENT_ACTIVE</span>
+      </div>
+    </div>
+
+    <div class="views-container">
+
+      <!-- ================= 1. PATIENT PORTAL ================= -->
+      <section id="patient-view" class="view-card">
+        <div class="card-header">
+          <div class="card-title">
+            <h2>Patient Sovereignty Dashboard</h2>
+            <p>Welcome back, Alice. You own complete cryptographic authority over your medical assets.</p>
+          </div>
+          <div>
+            <span class="badge badge-granted" id="policy-badge">POLICY: ACTIVE PERMISSION TO DR. MINH</span>
+          </div>
+        </div>
+
+        <div class="consent-grid">
+          <div>
+            <div class="record-box">
+              <div class="record-header">
+                <span class="record-title">📄 Brain MRI Scan & Neurological Diagnosis (Hospital A)</span>
+                <span class="badge badge-encrypted">E2EE LOCKED</span>
+              </div>
+              <p style="font-size: 0.85rem; color: var(--text-muted);">Record Hash: 0x7fa289c1... | Created: 22 Oct 2026</p>
+              
+              <div class="cipher-preview" id="patient-cipher">
+                CIPHERTEXT: 9e8a71f0bb3d4c5198e3b2a8d11c0f437a89e4c19... [Encrypted with TideCloak session-bound ephemeral key]
+              </div>
+
+              <div class="callout-box">
+                💡 <strong>Why TideCloak matters:</strong> The hospital database holds only the ciphertext above. Neither the IT staff nor the database administrators hold a master key to read it.
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="record-box" style="height: 100%;">
+              <h3 style="font-size: 1rem; margin-bottom: 0.75rem;">Access Delegation Policy</h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+                Delegated Clinician: <strong>Dr. Minh (RMIT Health Hub)</strong><br>
+                Scope: <em>Second opinion consultation</em>
+              </p>
+
+              <div id="consent-actions">
+                <button class="btn btn-rose" style="width: 100%;" onclick="revokeConsent()" id="btn-revoke">
+                  🚫 Revoke Dr. Minh's Access
+                </button>
+                <button class="btn btn-primary hidden" style="width: 100%;" onclick="grantConsent()" id="btn-grant">
+                  ✅ Re-Grant Diagnostic Access
+                </button>
+              </div>
+
+              <p id="consent-status-note" style="font-size: 0.75rem; color: var(--emerald); margin-top: 0.75rem; text-align: center;">
+                ● Policy active in Tide Fabric Quorum.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 2. DOCTOR PORTAL ================= -->
+      <section id="doctor-view" class="view-card hidden">
+        <div class="card-header">
+          <div class="card-title">
+            <h2>Clinician Diagnostic Workspace</h2>
+            <p>Dr. Minh · Authenticated via TideCloak BYOiD (Verified Clinician Credential)</p>
+          </div>
+          <div>
+            <button class="btn btn-outline" onclick="attemptDoctorDecryption()">🔄 Request Just-In-Time Decryption</button>
+          </div>
+        </div>
+
+        <div id="doctor-active-content">
+          <div class="decryption-result" id="decryption-success">
+            <h3 style="color: var(--emerald); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+              <span>✓</span> Emergent Authority Generated Just-In-Time
+            </h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+              TideCloak Quorum verified Alice's active policy and Dr. Minh's identity token. The decryption key emerged exclusively in Dr. Minh's memory space.
+            </p>
+
+            <div style="background: rgba(0,0,0,0.3); padding: 1.25rem; border-radius: 8px;">
+              <h4 style="font-size: 0.95rem; margin-bottom: 0.5rem; color: #fff;">📋 Patient Diagnostic Record (Decrypted Plaintext):</h4>
+              <p><strong>Patient Name:</strong> Alice Nguyen (DOB: 14/05/2004)</p>
+              <p><strong>Primary Diagnosis:</strong> Early-stage benign acoustic neuroma, left vestibular nerve (1.2 cm).</p>
+              <p><strong>Recommended Treatment:</strong> Stereotactic radiosurgery consultation at RMIT Neurological Centre.</p>
+              <p><strong>Clinical Notes:</strong> Patient tolerates conservative monitoring well; no facial nerve involvement.</p>
+            </div>
+          </div>
+
+          <div class="decryption-blocked hidden" id="decryption-failure">
+            <h3 style="color: var(--rose); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+              <span>✕</span> Decryption Refused by Tide Fabric Quorum
+            </h3>
+            <p style="font-size: 0.9rem; color: #cbd5e1; margin-bottom: 0.75rem;">
+              <strong>Error 403: ConsentPolicyTerminated.</strong>
+            </p>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">
+              Alice Nguyen has revoked diagnostic authorization. Because authority is emergent rather than stored in a database permission table, no cached token or backend exploit can reconstruct the decryption key.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 3. SYSTEM ADMIN VIEW ================= -->
+      <section id="admin-view" class="view-card hidden">
+        <div class="card-header">
+          <div class="card-title">
+            <h2>Cloud Infrastructure & Database View</h2>
+            <p>Root Server Operator · Simulating a Compromised Administrator / Internal Attacker</p>
+          </div>
+          <div>
+            <span class="badge badge-revoked">OBLIVIOUS PROXY — NO MASTER KEYS</span>
+          </div>
+        </div>
+
+        <div class="callout-box warning">
+          ⚠️ <strong>RMIT Hackathon Demonstration:</strong> In a legacy architecture (Auth0 / PostgreSQL / AWS RDS), a root database administrator can run <code>SELECT * FROM records;</code> to dump all patients' data in plaintext. Below is what an attacker sees in CareVault:
+        </div>
+
+        <table class="raw-table">
+          <thead>
+            <tr>
+              <th>record_id</th>
+              <th>patient_id</th>
+              <th>delegated_to</th>
+              <th>encrypted_payload (Raw DB Storage)</th>
+              <th>master_key_status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>rec_09182</td>
+              <td>usr_alice_48</td>
+              <td>doc_minh_02</td>
+              <td style="color: var(--accent);">9e8a71f0bb3d4c5198e3b2a8d11c0f437a89e4c19fa7b...</td>
+              <td style="color: var(--rose); font-weight: 700;">NONE (Keys Never Exist)</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="margin-top: 1.5rem; display: flex; gap: 1rem; align-items: center;">
+          <button class="btn btn-rose" onclick="attemptAdminDump()">🚨 Attempt Root Master Decryption</button>
+          <span id="admin-dump-result" style="font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: var(--text-muted);"></span>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <script>
+    let isConsentActive = true;
+
+    function switchRole(role) {
+      document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+      document.querySelector(`.role-btn.${role}`).classList.add('active');
+
+      document.getElementById('patient-view').classList.add('hidden');
+      document.getElementById('doctor-view').classList.add('hidden');
+      document.getElementById('admin-view').classList.add('hidden');
+
+      document.getElementById(`${role}-view`).classList.remove('hidden');
+
+      if (role === 'doctor') {
+        attemptDoctorDecryption();
+      }
+    }
+
+    function revokeConsent() {
+      isConsentActive = false;
+      updateUI();
+    }
+
+    function grantConsent() {
+      isConsentActive = true;
+      updateUI();
+    }
+
+    function updateUI() {
+      const policyBadge = document.getElementById('policy-badge');
+      const btnRevoke = document.getElementById('btn-revoke');
+      const btnGrant = document.getElementById('btn-grant');
+      const statusNote = document.getElementById('consent-status-note');
+      const keyBadge = document.getElementById('key-state-badge');
+      const pulse = document.getElementById('quorum-pulse');
+
+      if (isConsentActive) {
+        policyBadge.className = 'badge badge-granted';
+        policyBadge.innerText = 'POLICY: ACTIVE PERMISSION TO DR. MINH';
+        btnRevoke.classList.remove('hidden');
+        btnGrant.classList.add('hidden');
+        statusNote.innerText = '● Policy active in Tide Fabric Quorum.';
+        statusNote.style.color = 'var(--emerald)';
+        keyBadge.innerText = 'CONSENT_ACTIVE';
+        keyBadge.style.color = 'var(--emerald)';
+        pulse.style.background = 'var(--emerald)';
+        pulse.style.boxShadow = '0 0 12px var(--emerald)';
+      } else {
+        policyBadge.className = 'badge badge-revoked';
+        policyBadge.innerText = 'POLICY: REVOKED (ACCESS TERMINATED)';
+        btnRevoke.classList.add('hidden');
+        btnGrant.classList.remove('hidden');
+        statusNote.innerText = '✕ Revoked. Tide Quorum mathematically refuses authority.';
+        statusNote.style.color = 'var(--rose)';
+        keyBadge.innerText = 'CONSENT_REVOKED';
+        keyBadge.style.color = 'var(--rose)';
+        pulse.style.background = 'var(--rose)';
+        pulse.style.boxShadow = '0 0 12px var(--rose)';
+      }
+    }
+
+    function attemptDoctorDecryption() {
+      const successBox = document.getElementById('decryption-success');
+      const failureBox = document.getElementById('decryption-failure');
+
+      if (isConsentActive) {
+        successBox.classList.remove('hidden');
+        failureBox.classList.add('hidden');
+      } else {
+        successBox.classList.add('hidden');
+        failureBox.classList.remove('hidden');
+      }
+    }
+
+    function attemptAdminDump() {
+      const res = document.getElementById('admin-dump-result');
+      res.innerText = 'Connecting to Tide Fabric... ERROR: Unilateral master key does not exist. Oblivious proxy cannot decrypt.';
+      res.style.color = 'var(--rose)';
+    }
+  </script>
+</body>
+</html>
