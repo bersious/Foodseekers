@@ -259,7 +259,8 @@ video{width:100%;max-height:460px;border-radius:14px;border:1px solid var(--line
       </div>
       <div class="form-group">
         <label class="form-label">Mật Khẩu Xác Thực</label>
-        <input type="password" id="reviewer-login-pass" class="form-input" placeholder="••••••••">
+        <input type="password" id="reviewer-login-pass" class="form-input" placeholder="Nhập mật khẩu (123)">
+        <div style="font-size:11px;color:var(--dim);margin-top:4px" class="mono">Gợi ý: Mật khẩu xác thực cho tất cả tài khoản là <strong>123</strong></div>
       </div>
       <button class="btn btn-accent" style="width:100%;justify-content:center" onclick="loginReviewer()">Đăng Nhập Vào Phiên Nghe</button>
     </div>
@@ -279,7 +280,8 @@ video{width:100%;max-height:460px;border-radius:14px;border:1px solid var(--line
       </div>
       <div class="form-group">
         <label class="form-label">Mật Khẩu Khởi Tạo</label>
-        <input type="password" id="reg-pass" class="form-input" placeholder="••••••••">
+        <input type="password" id="reg-pass" class="form-input" placeholder="Nhập mật khẩu khởi tạo (123)">
+        <div style="font-size:11px;color:var(--dim);margin-top:4px" class="mono">Gợi ý: Mật khẩu khởi tạo là <strong>123</strong></div>
       </div>
       <button class="btn btn-accent" style="width:100%;justify-content:center" onclick="registerReviewer()">Khởi Tạo Danh Tính Mật Mã</button>
     </div>
@@ -417,6 +419,7 @@ async function fetchCloudState() {
       localStorage.setItem('tide_requests_v2', JSON.stringify(cloudStateCache.requests || []));
       localStorage.setItem('tide_artists', JSON.stringify(cloudStateCache.artists || []));
 
+      renderUserSelect();
       renderArtistChips();
       renderAlbumGrid();
       syncActiveTrackView();
@@ -438,6 +441,7 @@ async function pushCloudAction(action, payload = {}) {
         cloudStateCache = json.data;
         localStorage.setItem('tide_tracks_v2', JSON.stringify(cloudStateCache.tracks || []));
         localStorage.setItem('tide_requests_v2', JSON.stringify(cloudStateCache.requests || []));
+        renderUserSelect();
         renderAlbumGrid();
         syncActiveTrackView();
       }
@@ -449,7 +453,7 @@ async function pushCloudAction(action, payload = {}) {
   }
 }
 
-setInterval(fetchCloudState, 2000);
+setInterval(fetchCloudState, 1500);
 fetchCloudState();
 
 const DB_NAME='tide_vault_db', STORE_NAME='media_blobs';
@@ -512,6 +516,25 @@ const notes = [261.63, 329.63, 392, 523.25, 440, 392, 329.63, 293.66];
 const viz=document.getElementById('viz');
 for(let i=0;i<56;i++){const b=document.createElement('div');b.className='bar';viz.appendChild(b)}
 const bars=[...document.querySelectorAll('.bar')];
+
+
+function renderUserSelect(){
+  const users = getStoredUsers();
+  const select = document.getElementById('quick-user-select');
+  const input = document.getElementById('reviewer-login-user');
+  if(!select) return;
+
+  if(!users || !users.length){
+    select.innerHTML = '<option value="">(Đang tải danh sách từ Cloud...)</option>';
+    return;
+  }
+
+  const currentVal = input ? input.value : '';
+  select.innerHTML = users.map(u => `<option value="${u.username}" ${u.username===currentVal?'selected':''}>👤 ${u.name||u.username} (@${u.username})</option>`).join('');
+  if(!currentVal && users.length && input){
+    input.value = users[0].username;
+  }
+}
 
 function switchAuthTab(tab){
   document.getElementById('tab-login').classList.toggle('active',tab==='login');

@@ -190,7 +190,8 @@ body::before{
       </div>
       <div class="form-group">
         <label class="form-label">Mật Khẩu Xác Thực</label>
-        <input type="password" id="artist-login-pass" class="form-input" placeholder="••••••••">
+        <input type="password" id="artist-login-pass" class="form-input" placeholder="Nhập mật khẩu (123)">
+        <div style="font-size:11px;color:var(--dim);margin-top:4px" class="mono">Gợi ý: Mật khẩu xác thực cho tất cả nghệ sĩ là <strong>123</strong></div>
       </div>
       <button class="btn btn-accent" style="width:100%;justify-content:center" onclick="loginArtist()">Đăng Nhập Vào Két Sắt</button>
     </div>
@@ -214,7 +215,8 @@ body::before{
       </div>
       <div class="form-group">
         <label class="form-label">Mật Khẩu Khởi Tạo</label>
-        <input type="password" id="reg-artist-pass" class="form-input" placeholder="••••••••">
+        <input type="password" id="reg-artist-pass" class="form-input" placeholder="Nhập mật khẩu khởi tạo (123)">
+        <div style="font-size:11px;color:var(--dim);margin-top:4px" class="mono">Gợi ý: Mật khẩu khởi tạo là <strong>123</strong></div>
       </div>
       <button class="btn btn-accent" style="width:100%;justify-content:center" onclick="registerArtist()">🚀 Tạo Profile & Đăng Nhập Ngay</button>
     </div>
@@ -368,7 +370,7 @@ async function pushCloudUpdate(action, payload = {}) {
   }
 }
 
-setInterval(fetchCloudState, 2000);
+setInterval(fetchCloudState, 1500);
 fetchCloudState();
 
 const DB_NAME='tide_vault_db', STORE_NAME='media_blobs';
