@@ -1077,7 +1077,15 @@ function togglePlay(){
   const currentUser=localStorage.getItem('tide_logged_reviewer');
   const tracks=getStoredTracks();
   const track=tracks.find(x=>x.id===activeTrackId);
-  if(!track || !track.allowedUsers.includes(currentUser)) return;
+  if(!track){
+    alert('Vui lòng chọn một bài hát từ danh sách phía trên!');
+    return;
+  }
+  const isAllowed = Array.isArray(track.allowedUsers) && track.allowedUsers.includes(currentUser);
+  if(!isAllowed){
+    alert(`Tác phẩm "${track.name}" đang bị khóa đối với tài khoản của bạn! Nhấn nút "Xin quyền nghe" để yêu cầu Nghệ Sĩ mở khóa.`);
+    return;
+  }
 
   isPlaying=!isPlaying;
   const playBtn=document.getElementById('play-btn');
