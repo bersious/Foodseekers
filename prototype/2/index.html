@@ -525,6 +525,7 @@ function loginReviewer(){
   const p=document.getElementById('reviewer-login-pass').value.trim();
   if(!u){alert('Vui lòng nhập username!');return;}
   if(!p){alert('Vui lòng nhập mật khẩu xác thực!');return;}
+  if(p !== '123'){alert('Mật khẩu không đúng! Vui lòng nhập mật khẩu là 123');return;}
   localStorage.setItem('tide_logged_reviewer',u);
   pushCloudAction('SET_SESSION', {role:'reviewer', username:u});
   checkAuth();
@@ -536,6 +537,7 @@ function registerReviewer(){
   const p=document.getElementById('reg-pass').value.trim();
   if(!name || !u){alert('Vui lòng điền đủ họ tên và username!');return;}
   if(!p){alert('Vui lòng nhập mật khẩu khởi tạo!');return;}
+  if(p !== '123'){alert('Vui lòng đặt mật khẩu khởi tạo là 123!');return;}
 
   const users=getStoredUsers();
   if(users.some(x=>x.username===u)){alert('Username này đã tồn tại!');return;}
@@ -809,8 +811,10 @@ async function syncActiveTrackView(){
       audioCont.classList.add('hidden');
       disc.classList.add('hidden');
       const blob = await getMediaBlob(track.id);
+      const vid = document.getElementById('html5-video');
       if(blob){
-        document.getElementById('html5-video').src = URL.createObjectURL(blob);
+        vid.src = URL.createObjectURL(blob);
+        vid.play().catch(e=>console.log('Video autoplay:', e));
       }
     } else {
       videoCont.classList.add('hidden');

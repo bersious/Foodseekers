@@ -39,12 +39,36 @@ body::before{
 .brand small{display:block;font-size:11px;color:var(--muted);font-weight:400}
 .topbar-right{display:flex;align-items:center;gap:14px}
 .pill-tide{font-size:11px;font-weight:600;color:#0a0b0e;background:var(--accent);padding:6px 12px;border-radius:999px}
+.user-badge{
+  display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);
+  padding:6px 14px;border-radius:10px;font-size:12px;
+}
+.user-dot{width:7px;height:7px;border-radius:50%;background:var(--ok)}
+.btn-logout{
+  background:transparent;border:1px solid var(--line);color:var(--muted);padding:3px 8px;
+  border-radius:6px;font-size:11px;cursor:pointer;font-family:inherit;margin-left:6px;
+}
+.btn-logout:hover{color:var(--danger);border-color:var(--danger)}
 
 .container{max-width:1080px;margin:32px auto 80px;padding:0 24px}
 .card{
   background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
   padding:26px;margin-bottom:24px;backdrop-filter:blur(14px);position:relative;
 }
+
+/* Auth box */
+.auth-box{
+  max-width:440px;margin:60px auto;background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius);padding:36px;backdrop-filter:blur(16px);
+}
+.auth-title{font-size:24px;font-weight:700;margin-bottom:6px}
+.auth-sub{font-size:13px;color:var(--muted);margin-bottom:22px}
+.auth-tabs{display:flex;gap:6px;background:var(--bg);padding:4px;border-radius:10px;margin-bottom:20px;border:1px solid var(--line)}
+.auth-tab{
+  flex:1;text-align:center;padding:8px;font-size:12px;font-weight:600;color:var(--muted);
+  background:transparent;border:none;border-radius:8px;cursor:pointer;
+}
+.auth-tab.active{background:var(--surface-2);color:var(--fg)}
 
 /* Forms */
 .form-group{margin-bottom:16px}
@@ -135,104 +159,160 @@ body::before{
     <div>UNRELEASED<small>Nghệ Sĩ / Studio Két Sắt Mật Mã</small></div>
   </a>
   <div class="topbar-right">
+    <div id="artist-user-info" class="user-badge hidden">
+      <span class="user-dot"></span>
+      <span id="artist-name-display" class="mono">alice_artist</span>
+      <button class="btn-logout" onclick="logoutArtist()">Đăng xuất</button>
+    </div>
     <span class="pill-tide">☁️ Cloud Database: SYNCED</span>
   </div>
 </header>
 
 <main class="container">
 
-  <!-- ================= THANH CHỌN & QUẢN LÝ HỒ SƠ NGHỆ SĨ ================= -->
-  <div class="artist-nav-bar">
-    <div class="artist-info-group">
-      <div class="artist-avatar" id="current-artist-avatar">A</div>
-      <div>
-        <div style="font-size:16px;font-weight:700" id="current-artist-name">Alice Nguyễn</div>
-        <div style="font-size:12px;color:var(--muted)" class="mono">
-          @<span id="current-artist-user">alice_artist</span> · <span id="current-artist-genre">Indie Pop / Electronic</span>
+  <!-- ================= 1. FORM ĐĂNG NHẬP / TẠO PROFILE NGHỆ SĨ ================= -->
+  <div id="artist-auth-view" class="auth-box">
+    <div class="auth-tabs">
+      <button id="tab-artist-login" class="auth-tab active" onclick="switchArtistAuthTab('login')">Đăng Nhập Nghệ Sĩ</button>
+      <button id="tab-artist-register" class="auth-tab" onclick="switchArtistAuthTab('register')">Tạo Profile Mới</button>
+    </div>
+
+    <!-- Tab Đăng nhập -->
+    <div id="artist-form-login">
+      <div class="auth-title">Đăng Nhập Nghệ Sĩ</div>
+      <div class="auth-sub">Chọn hồ sơ nghệ sĩ hoặc nhập username của bạn (Mật khẩu: 123)</div>
+
+      <div class="form-group">
+        <label class="form-label">Chọn Nghệ Sĩ Hoặc Nhập Username</label>
+        <select id="quick-artist-login-select" class="form-input" style="margin-bottom:8px" onchange="document.getElementById('artist-login-user').value=this.value">
+        </select>
+        <input type="text" id="artist-login-user" class="form-input" value="alice_artist" placeholder="alice_artist">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Mật Khẩu Xác Thực</label>
+        <input type="password" id="artist-login-pass" class="form-input" placeholder="••••••••">
+      </div>
+      <button class="btn btn-accent" style="width:100%;justify-content:center" onclick="loginArtist()">Đăng Nhập Vào Két Sắt</button>
+    </div>
+
+    <!-- Tab Tạo Profile Mới -->
+    <div id="artist-form-register" class="hidden">
+      <div class="auth-title">Khởi Tạo Profile Nghệ Sĩ Mới</div>
+      <div class="auth-sub">Đăng ký nghệ danh và tạo két sắt lưu trữ tác phẩm riêng</div>
+
+      <div class="form-group">
+        <label class="form-label">Tên Nghệ Sĩ / Nghệ Danh</label>
+        <input type="text" id="reg-artist-name" class="form-input" placeholder="Ví dụ: Sơn Tùng M-TP, Vũ, Chillies...">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Username (Viết liền, không dấu)</label>
+        <input type="text" id="reg-artist-user" class="form-input" placeholder="Ví dụ: sontung_mtp, vu_acoustic...">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Dòng Nhạc Sở Trường</label>
+        <input type="text" id="reg-artist-genre" class="form-input" placeholder="Ví dụ: R&B / Pop, Indie Rock...">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Mật Khẩu Khởi Tạo</label>
+        <input type="password" id="reg-artist-pass" class="form-input" placeholder="••••••••">
+      </div>
+      <button class="btn btn-accent" style="width:100%;justify-content:center" onclick="registerArtist()">🚀 Tạo Profile & Đăng Nhập Ngay</button>
+    </div>
+  </div>
+
+  <!-- ================= 2. GIAO DIỆN CHÍNH SAU KHI ĐĂNG NHẬP ================= -->
+  <div id="artist-main-view" class="hidden">
+
+    <!-- THANH HIỂN THỊ PROFILE NGHỆ SĨ & ĐỔI PROFILE -->
+    <div class="artist-nav-bar">
+      <div class="artist-info-group">
+        <div class="artist-avatar" id="current-artist-avatar">A</div>
+        <div>
+          <div style="font-size:16px;font-weight:700" id="current-artist-name">Alice Nguyễn</div>
+          <div style="font-size:12px;color:var(--muted)" class="mono">
+            @<span id="current-artist-user">alice_artist</span> · <span id="current-artist-genre">Indie Pop / Electronic</span>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-      <label style="font-size:12px;color:var(--muted)">Đổi Nghệ Sĩ:</label>
-      <select id="artist-switcher-select" class="form-input" style="width:200px;padding:7px 10px;font-size:13px" onchange="switchActiveArtist(this.value)">
-      </select>
-      <button class="btn btn-accent btn-sm" onclick="toggleCreateArtistModal()">+ Tạo Profile Nghệ Sĩ Mới</button>
-    </div>
-  </div>
-
-  <!-- MODAL / FORM TẠO PROFILE NGHỆ SĨ MỚI -->
-  <div id="create-artist-card" class="card hidden" style="border-color:var(--accent);margin-bottom:24px">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-      <h3 style="font-size:16px;font-weight:700">🎨 Khởi Tạo Hồ Sơ Nghệ Sĩ Mới</h3>
-      <button class="btn btn-ghost btn-sm" onclick="toggleCreateArtistModal()">✕ Đóng</button>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
-      <div class="form-group" style="margin:0">
-        <label class="form-label">Tên Nghệ Sĩ / Nghệ Danh</label>
-        <input type="text" id="new-artist-name" class="form-input" placeholder="Ví dụ: Sơn Tùng M-TP, Vũ, Chillies...">
-      </div>
-      <div class="form-group" style="margin:0">
-        <label class="form-label">Username (Viết liền, không dấu)</label>
-        <input type="text" id="new-artist-user" class="form-input" placeholder="Ví dụ: sontung_mtp, vu_acoustic...">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <label style="font-size:12px;color:var(--muted)">Đổi Nghệ Sĩ:</label>
+        <select id="artist-switcher-select" class="form-input" style="width:200px;padding:7px 10px;font-size:13px" onchange="switchActiveArtist(this.value)">
+        </select>
+        <button class="btn btn-accent btn-sm" onclick="showCreateArtistModal()">+ Tạo Profile Mới</button>
       </div>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 2fr;gap:14px;margin-bottom:16px">
-      <div class="form-group" style="margin:0">
-        <label class="form-label">Dòng Nhạc Sở Trường</label>
-        <input type="text" id="new-artist-genre" class="form-input" placeholder="Ví dụ: R&B / Pop, Indie Rock...">
+
+    <!-- Header & Tự động duyệt -->
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:24px;gap:16px;flex-wrap:wrap">
+      <div>
+        <h1 style="font-size:26px;font-weight:700">Két Sắt Tác Phẩm Master</h1>
+        <p style="color:var(--muted);font-size:13px">Mã hóa đầu cuối client-side · Ủy quyền Quorum cho từng người nghe</p>
       </div>
-      <div class="form-group" style="margin:0">
-        <label class="form-label">Tiểu Sử / Giới Thiệu Ngắn</label>
-        <input type="text" id="new-artist-bio" class="form-input" placeholder="Ví dụ: Nghệ sĩ độc lập chuẩn bị ra mắt album mùa hè...">
+      <div style="display:flex;align-items:center;gap:10px;font-size:12px;color:var(--muted)">
+        <span>Tự động duyệt xin quyền: </span>
+        <label class="toggle-switch" id="auto-toggle" onclick="toggleAutoApprove()" role="switch" aria-checked="false">
+          <span class="toggle-knob"></span>
+        </label>
       </div>
     </div>
-    <button class="btn btn-accent" onclick="createNewArtistProfile()">🚀 Tạo Profile & Chuyển Sang Nghệ Sĩ Này</button>
-  </div>
 
-  <!-- Header & Tự động duyệt -->
-  <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:24px;gap:16px;flex-wrap:wrap">
-    <div>
-      <h1 style="font-size:26px;font-weight:700">Két Sắt Tác Phẩm Master</h1>
-      <p style="color:var(--muted);font-size:13px">Mã hóa đầu cuối client-side · Ủy quyền Quorum cho từng người nghe</p>
+    <!-- Upload zone -->
+    <div class="card">
+      <div class="upload-zone" onclick="document.getElementById('file-input').click()">
+        <div style="font-size:36px;margin-bottom:8px">⚡</div>
+        <div style="font-size:16px;font-weight:700">Tải Lên Bản Thu Âm Nhạc hoặc Video Mới</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px">Hỗ trợ MP3, WAV, FLAC, MP4, WEBM (Tự động gắn vào profile của nghệ sĩ đang chọn)</div>
+        <input type="file" id="file-input" style="display:none" accept="audio/*,video/*" onchange="handleFileUpload(event)">
+      </div>
+      <div id="upload-status" style="margin-top:12px;font-size:12px;color:var(--accent);display:none" class="mono"></div>
     </div>
-    <div style="display:flex;align-items:center;gap:10px;font-size:12px;color:var(--muted)">
-      <span>Tự động duyệt xin quyền: </span>
-      <label class="toggle-switch" id="auto-toggle" onclick="toggleAutoApprove()" role="switch" aria-checked="false">
-        <span class="toggle-knob"></span>
-      </label>
-    </div>
-  </div>
 
-  <!-- Upload zone -->
-  <div class="card">
-    <div class="upload-zone" onclick="document.getElementById('file-input').click()">
-      <div style="font-size:36px;margin-bottom:8px">⚡</div>
-      <div style="font-size:16px;font-weight:700">Tải Lên Bản Thu Âm Nhạc hoặc Video Mới</div>
-      <div style="font-size:12px;color:var(--muted);margin-top:4px">Hỗ trợ MP3, WAV, FLAC, MP4, WEBM (Tự động gắn vào profile của nghệ sĩ đang chọn)</div>
-      <input type="file" id="file-input" style="display:none" accept="audio/*,video/*" onchange="handleFileUpload(event)">
+    <!-- Permission requests (Xin quyền từ bên người nghe) -->
+    <div class="card" style="border-color:var(--danger-dim)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <h2 style="font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px">
+          <span style="color:var(--danger)">🔔</span> Đơn Xin Quyền Nghe Thử Đang Chờ Duyệt
+        </h2>
+        <span class="badge badge-warn mono" id="req-count">0 đơn chờ</span>
+      </div>
+      <div id="requests-list"></div>
     </div>
-    <div id="upload-status" style="margin-top:12px;font-size:12px;color:var(--accent);display:none" class="mono"></div>
-  </div>
 
-  <!-- Permission requests (Xin quyền từ bên người nghe) -->
-  <div class="card" style="border-color:var(--danger-dim)">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-      <h2 style="font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px">
-        <span style="color:var(--danger)">🔔</span> Đơn Xin Quyền Nghe Thử Đang Chờ Duyệt
-      </h2>
-      <span class="badge badge-warn mono" id="req-count">0 đơn chờ</span>
-    </div>
-    <div id="requests-list"></div>
-  </div>
+    
+    <!-- TRÌNH PHÁT KIỂM ÂM & XEM VIDEO CỦA NGHỆ SĨ -->
+    <div id="artist-preview-box" class="card hidden" style="border-color:var(--accent);background:linear-gradient(145deg,#151c16,#0e130f);margin-bottom:20px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="font-size:18px">🎧</span>
+          <div>
+            <div style="font-size:14px;font-weight:700" id="artist-preview-name">Tên tác phẩm</div>
+            <div style="font-size:11px;color:var(--muted)" class="mono" id="artist-preview-sub">Đang phát kiểm âm trực tiếp từ bộ nhớ RAM</div>
+          </div>
+        </div>
+        <button class="btn btn-ghost btn-sm" onclick="closeArtistPreview()" style="color:var(--muted)">✕ Tắt Trình Phát</button>
+      </div>
 
-  <!-- Tracks List -->
-  <div class="card">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
-      <h2 style="font-size:18px;font-weight:700">Tác Phẩm Trong Két Sắt Của <span id="vault-artist-name-label" style="color:var(--accent)">Alice Nguyễn</span></h2>
-      <span class="mono" style="font-size:11px;color:var(--dim)">Zero Master Key on Host</span>
+      <!-- Khung video nếu là video -->
+      <div id="artist-video-wrap" class="hidden" style="margin-bottom:10px">
+        <video id="artist-preview-video" controls style="width:100%;max-height:420px;border-radius:12px;background:#000;display:block"></video>
+      </div>
+
+      <!-- Khung audio nếu là audio -->
+      <div id="artist-audio-wrap" class="hidden">
+        <audio id="artist-preview-audio" controls style="width:100%;border-radius:8px;outline:none"></audio>
+      </div>
     </div>
-    <div id="artist-tracks-container"></div>
+
+    <!-- Tracks List -->
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+        <h2 style="font-size:18px;font-weight:700">Tác Phẩm Trong Két Sắt Của <span id="vault-artist-name-label" style="color:var(--accent)">Alice Nguyễn</span></h2>
+        <span class="mono" style="font-size:11px;color:var(--dim)">Zero Master Key on Host</span>
+      </div>
+      <div id="artist-tracks-container"></div>
+    </div>
+
   </div>
 
 </main>
@@ -245,7 +325,6 @@ body::before{
 <script>
 const API_VAULT_URL = '/api/rmit-vault';
 let isSyncingWithCloud = false;
-
 let activeArtistUser = 'alice_artist';
 
 async function fetchCloudState() {
@@ -267,6 +346,7 @@ async function fetchCloudState() {
         autoEl.setAttribute('aria-checked', !!cloud.settings?.autoApprove);
       }
 
+      updateArtistLoginSelect();
       renderArtistSwitcher();
       renderArtistTracks();
       renderRequests();
@@ -325,22 +405,42 @@ function saveTracks(tracks){
   pushCloudUpdate('UPDATE_TRACKS', {tracks: tracks});
 }
 
-// ==================== ARTIST PROFILE LOGIC ====================
-function toggleCreateArtistModal(){
-  const el = document.getElementById('create-artist-card');
-  el.classList.toggle('hidden');
+// ==================== ARTIST AUTH & PROFILE LOGIC ====================
+function switchArtistAuthTab(tab){
+  document.getElementById('tab-artist-login').classList.toggle('active', tab==='login');
+  document.getElementById('tab-artist-register').classList.toggle('active', tab==='register');
+  document.getElementById('artist-form-login').classList.toggle('hidden', tab!=='login');
+  document.getElementById('artist-form-register').classList.toggle('hidden', tab!=='register');
 }
 
-function createNewArtistProfile(){
-  const name = document.getElementById('new-artist-name').value.trim();
-  const user = document.getElementById('new-artist-user').value.trim().toLowerCase();
-  const genre = document.getElementById('new-artist-genre').value.trim() || 'Âm nhạc đương đại';
-  const bio = document.getElementById('new-artist-bio').value.trim() || 'Nghệ sĩ độc lập';
-
-  if(!name || !user){
-    alert('Vui lòng điền tên nghệ sĩ và username!');
-    return;
+function updateArtistLoginSelect(){
+  const artists = getStoredArtists();
+  const select = document.getElementById('quick-artist-login-select');
+  if(select && artists.length){
+    select.innerHTML = artists.map(a => `<option value="${a.username}">${a.name} (@${a.username})</option>`).join('');
   }
+}
+
+function loginArtist(){
+  const u = document.getElementById('artist-login-user').value.trim();
+  const p = document.getElementById('artist-login-pass').value.trim();
+  if(!u){ alert('Vui lòng nhập username của nghệ sĩ!'); return; }
+  if(p !== '123'){ alert('Mật khẩu không đúng! (Vui lòng nhập mật khẩu là 123)'); return; }
+
+  localStorage.setItem('tide_logged_artist', u);
+  activeArtistUser = u;
+  pushCloudUpdate('SET_SESSION', {role:'artist', username:u});
+  checkArtistAuth();
+}
+
+function registerArtist(){
+  const name = document.getElementById('reg-artist-name').value.trim();
+  const user = document.getElementById('reg-artist-user').value.trim().toLowerCase();
+  const genre = document.getElementById('reg-artist-genre').value.trim() || 'Âm nhạc đương đại';
+  const p = document.getElementById('reg-artist-pass').value.trim();
+
+  if(!name || !user){ alert('Vui lòng điền tên nghệ sĩ và username!'); return; }
+  if(p !== '123'){ alert('Vui lòng đặt mật khẩu là 123!'); return; }
 
   const artists = getStoredArtists();
   if(artists.some(a => a.username === user)){
@@ -352,7 +452,7 @@ function createNewArtistProfile(){
     username: user,
     name: name,
     genre: genre,
-    bio: bio,
+    bio: 'Nghệ sĩ độc lập trên hệ thống UNRELEASED',
     artSeed: Math.floor(Math.random() * 5)
   };
 
@@ -360,17 +460,51 @@ function createNewArtistProfile(){
   localStorage.setItem('tide_artists', JSON.stringify(artists));
   pushCloudUpdate('REGISTER_ARTIST', {artist: newArtist});
 
+  localStorage.setItem('tide_logged_artist', user);
   activeArtistUser = user;
-  toggleCreateArtistModal();
-  renderArtistSwitcher();
-  renderArtistTracks();
-  renderRequests();
+  alert(`Đã tạo thành công Profile Nghệ Sĩ: ${name}!`);
+  checkArtistAuth();
+}
 
-  alert(`Đã khởi tạo thành công Profile cho Nghệ Sĩ: ${name}!`);
+function logoutArtist(){
+  localStorage.removeItem('tide_logged_artist');
+  pushCloudUpdate('SET_SESSION', {role:'artist', username:null});
+  checkArtistAuth();
+}
+
+function showCreateArtistModal(){
+  logoutArtist();
+  switchArtistAuthTab('register');
+}
+
+function checkArtistAuth(){
+  const u = localStorage.getItem('tide_logged_artist');
+  const authView = document.getElementById('artist-auth-view');
+  const mainView = document.getElementById('artist-main-view');
+  const userInfo = document.getElementById('artist-user-info');
+  const nameDisp = document.getElementById('artist-name-display');
+
+  updateArtistLoginSelect();
+
+  if(u){
+    authView.classList.add('hidden');
+    mainView.classList.remove('hidden');
+    userInfo.classList.remove('hidden');
+    nameDisp.textContent = u;
+    activeArtistUser = u;
+    renderArtistSwitcher();
+    renderArtistTracks();
+    renderRequests();
+  } else {
+    authView.classList.remove('hidden');
+    mainView.classList.add('hidden');
+    userInfo.classList.add('hidden');
+  }
 }
 
 function switchActiveArtist(username){
   activeArtistUser = username;
+  localStorage.setItem('tide_logged_artist', username);
   renderArtistSwitcher();
   renderArtistTracks();
   renderRequests();
@@ -386,6 +520,7 @@ function renderArtistSwitcher(){
   document.getElementById('current-artist-genre').textContent = current.genre || 'Âm nhạc';
   document.getElementById('current-artist-avatar').textContent = (current.name||'A').charAt(0).toUpperCase();
   document.getElementById('vault-artist-name-label').textContent = current.name;
+  document.getElementById('artist-name-display').textContent = current.username;
 
   const select = document.getElementById('artist-switcher-select');
   if(select){
@@ -394,6 +529,111 @@ function renderArtistSwitcher(){
 }
 
 // ==================== TRACKS & REQUESTS ====================
+
+async function getMediaBlob(id){
+  try {
+    const db=await openDB();
+    const local = await new Promise((res,rej)=>{const tx=db.transaction(STORE_NAME,'readonly');const req=tx.objectStore(STORE_NAME).get(id);req.onsuccess=()=>res(req.result);req.onerror=()=>rej(tx.error)});
+    if (local) return local;
+  } catch(e){}
+
+  try {
+    const res = await fetch(`${API_VAULT_URL}?blob=${id}`);
+    if (res.ok) {
+      const j = await res.json();
+      if (j.ok && j.data) {
+        const byteCharacters = atob(j.data);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], {type: 'audio/mp3'});
+        return blob;
+      }
+    }
+  } catch(e){}
+  return null;
+}
+
+let artistSynthCtx = null, artistSynthTimer = null, artistNoteIdx = 0;
+const synthNotes = [261.63, 329.63, 392, 523.25, 440, 392, 329.63, 293.66];
+
+function playSynthTone(f){
+  try{
+    if(!artistSynthCtx) artistSynthCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if(artistSynthCtx.state==='suspended') artistSynthCtx.resume();
+    const osc = artistSynthCtx.createOscillator(), gain = artistSynthCtx.createGain();
+    osc.type = 'triangle'; osc.frequency.value = f;
+    gain.gain.setValueAtTime(0.06, artistSynthCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, artistSynthCtx.currentTime + 0.5);
+    osc.connect(gain); gain.connect(artistSynthCtx.destination);
+    osc.start(); osc.stop(artistSynthCtx.currentTime + 0.5);
+  }catch(e){}
+}
+
+async function playArtistMedia(trackId){
+  const tracks = getStoredTracks();
+  const track = tracks.find(t => t.id === trackId);
+  if(!track) return;
+
+  const box = document.getElementById('artist-preview-box');
+  const title = document.getElementById('artist-preview-name');
+  const sub = document.getElementById('artist-preview-sub');
+  const videoWrap = document.getElementById('artist-video-wrap');
+  const audioWrap = document.getElementById('artist-audio-wrap');
+  const videoEl = document.getElementById('artist-preview-video');
+  const audioEl = document.getElementById('artist-preview-audio');
+
+  box.classList.remove('hidden');
+  title.textContent = track.name;
+  const isVideo = track.type.startsWith('video');
+
+  // Stop previous
+  videoEl.pause();
+  audioEl.pause();
+  clearInterval(artistSynthTimer);
+
+  const blob = await getMediaBlob(track.id);
+
+  if(isVideo){
+    videoWrap.classList.remove('hidden');
+    audioWrap.classList.add('hidden');
+    sub.textContent = 'Đang phát video master client-side';
+    if(blob){
+      videoEl.src = URL.createObjectURL(blob);
+      videoEl.play().catch(e=>console.log(e));
+    } else {
+      sub.textContent = 'Tác phẩm mẫu (Chưa có tệp video thực tế tải lên)';
+    }
+  } else {
+    videoWrap.classList.add('hidden');
+    audioWrap.classList.remove('hidden');
+    if(blob){
+      sub.textContent = 'Đang phát âm thanh gốc đã tải lên';
+      audioEl.src = URL.createObjectURL(blob);
+      audioEl.play().catch(e=>console.log(e));
+    } else {
+      sub.textContent = 'Đang phát giai điệu tổng hợp Web Audio API (Bản demo mẫu)';
+      playSynthTone(synthNotes[artistNoteIdx]);
+      artistSynthTimer = setInterval(()=>{
+        artistNoteIdx = (artistNoteIdx + 1) % synthNotes.length;
+        playSynthTone(synthNotes[artistNoteIdx]);
+      }, 300);
+    }
+  }
+}
+
+function closeArtistPreview(){
+  const box = document.getElementById('artist-preview-box');
+  const videoEl = document.getElementById('artist-preview-video');
+  const audioEl = document.getElementById('artist-preview-audio');
+  videoEl.pause();
+  audioEl.pause();
+  clearInterval(artistSynthTimer);
+  box.classList.add('hidden');
+}
+
 function artGradient(seed){
   const gradients = [
     'linear-gradient(145deg,#37443a,#1b211b 65%,#293625)',
@@ -409,6 +649,7 @@ function renderArtistTracks(){
   const tracks = getStoredTracks();
   const users = getStoredUsers();
   const box = document.getElementById('artist-tracks-container');
+  if(!box) return;
   box.innerHTML = '';
 
   const myTracks = tracks.filter(t => (t.artistUsername||'alice_artist').toLowerCase() === activeArtistUser.toLowerCase());
@@ -425,7 +666,7 @@ function renderArtistTracks(){
     card.style.borderLeft = `6px solid ${isVideo?'var(--danger)':'var(--accent)'}`;
 
     let allowedChips = '';
-    if(t.allowedUsers.length === 0){
+    if(!t.allowedUsers || t.allowedUsers.length === 0){
       allowedChips = '<span style="font-size:12px;color:var(--danger)">🔒 Chưa cấp quyền cho bất kỳ ai (Bảo mật tuyệt đối)</span>';
     } else {
       t.allowedUsers.forEach(u=>{
@@ -436,7 +677,7 @@ function renderArtistTracks(){
 
     let options = '<option value="">-- Chọn danh tính người nghe để cấp quyền --</option>';
     users.forEach(u=>{
-      if(!t.allowedUsers.includes(u.username)){
+      if(!t.allowedUsers || !t.allowedUsers.includes(u.username)){
         options += `<option value="${u.username}">${u.name||u.username} (${u.username})</option>`;
       }
     });
@@ -479,6 +720,7 @@ function renderRequests(){
   const pending = requests.filter(r => r.status === 'PENDING' && myTrackIds.includes(r.trackId));
   const box = document.getElementById('requests-list');
   const count = document.getElementById('req-count');
+  if(!box) return;
   box.innerHTML = '';
 
   if(!pending.length){
@@ -507,14 +749,14 @@ function renderRequests(){
   });
 }
 
-// ==================== USER ACTIONS ====================
 function grantUser(trackId){
   const select = document.getElementById(`select-user-${trackId}`);
   const u = select.value;
   if(!u){alert('Vui lòng chọn người nghe!');return;}
   const tracks = getStoredTracks();
   const t = tracks.find(x => x.id === trackId);
-  if(t && !t.allowedUsers.includes(u)){
+  if(t && (!t.allowedUsers || !t.allowedUsers.includes(u))){
+    if(!t.allowedUsers) t.allowedUsers = [];
     t.allowedUsers.push(u);
     saveTracks(tracks);
     pushCloudUpdate('GRANT_ACCESS', {trackId, username:u});
@@ -524,7 +766,7 @@ function grantUser(trackId){
 function revokeUser(trackId, username){
   const tracks = getStoredTracks();
   const t = tracks.find(x => x.id === trackId);
-  if(t){
+  if(t && t.allowedUsers){
     t.allowedUsers = t.allowedUsers.filter(x => x !== username);
     saveTracks(tracks);
     pushCloudUpdate('REVOKE_ACCESS', {trackId, username});
@@ -546,13 +788,14 @@ function resolveRequest(requestId, decision){
   const tracks = getStoredTracks();
   const track = tracks.find(t => t.id === req.trackId);
   if(decision === 'APPROVE'){
-    if(track && !track.allowedUsers.includes(req.username)){
-      track.allowedUsers.push(req.username);
+    if(track){
+      if(!track.allowedUsers) track.allowedUsers = [];
+      if(!track.allowedUsers.includes(req.username)) track.allowedUsers.push(req.username);
       saveTracks(tracks);
     }
     req.status = 'APPROVED';
   } else {
-    if(track) track.allowedUsers = track.allowedUsers.filter(u => u !== req.username);
+    if(track && track.allowedUsers) track.allowedUsers = track.allowedUsers.filter(u => u !== req.username);
     req.status = 'DENIED';
     saveTracks(tracks);
   }
@@ -611,10 +854,8 @@ async function handleFileUpload(e){
   e.target.value = '';
 }
 
-// Initial render
-renderArtistSwitcher();
-renderArtistTracks();
-renderRequests();
+// Check initial auth state
+checkArtistAuth();
 </script>
 </body>
 </html>
