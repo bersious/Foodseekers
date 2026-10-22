@@ -3,10 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Người Nghe Thử · UNRELEASED (Tide BYOiD Identity)</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<title>SONORA · Phòng nghe thử riêng tư</title>
 <style>
 
 :root{
@@ -18,9 +15,9 @@
   --ok:#3ee88f;--ok-dim:rgba(62,232,143,.12);--radius:16px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--fg);font-family:'Space Grotesk',sans-serif;line-height:1.5;min-height:100vh}
+body{background:var(--bg);color:var(--fg);font-family:Calibri,"Segoe UI",sans-serif;line-height:1.5;min-height:100vh}
 body::before{content:'';position:fixed;inset:0;z-index:-2;background:radial-gradient(900px 500px at 80% -5%,rgba(212,255,63,.07),transparent 60%)}
-.mono{font-family:'JetBrains Mono',monospace}
+.mono{font-family:Calibri,"Segoe UI",sans-serif}
 
 /* Topbar sạch sẽ - KHÔNG CÒN 3 NÚT CHUYỂN CHẾ ĐỘ */
 .topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:16px 32px;backdrop-filter:blur(20px);background:rgba(7,8,12,.8);border-bottom:1px solid var(--line)}
@@ -94,6 +91,88 @@ body::before{content:'';position:fixed;inset:0;z-index:-2;background:radial-grad
 .picker-btn:hover{color:var(--fg);border-color:var(--line-strong)}
 .picker-btn.active{background:var(--surface-2);color:var(--accent);border-color:var(--accent)}
 video{width:100%;max-height:480px;border-radius:14px;border:1px solid var(--line);background:#000;display:block}
+
+/* Music-library refresh */
+:root{
+  --bg:#101310;--surface:#191d19;--surface-2:#252b25;--line:rgba(255,255,255,.09);
+  --line-strong:rgba(255,255,255,.18);--fg:#f7f8f5;--muted:#a1a99f;--dim:#788075;
+  --accent:#b8f36b;--accent-dim:rgba(184,243,107,.14);--ok:#b8f36b;--ok-dim:rgba(184,243,107,.12);
+  --radius:18px;
+}
+body{background:linear-gradient(145deg,#141a15 0,#101310 45%,#0b0d0b 100%);padding-bottom:32px}
+body::before{background:radial-gradient(780px 420px at 76% 0,rgba(184,243,107,.10),transparent 65%)}
+.topbar{padding:13px max(24px,calc((100vw - 1200px)/2));background:rgba(13,16,13,.88);border-color:var(--line)}
+.brand{font-size:15px;letter-spacing:.07em}
+.brand-dot{width:13px;height:13px}
+.pill-tide{border-radius:7px;background:var(--surface-2);color:var(--accent);letter-spacing:.03em}
+.container{max-width:1200px;margin:28px auto 70px;padding:0 26px}
+.card,.auth-box{background:linear-gradient(145deg,rgba(32,38,32,.94),rgba(23,27,23,.96));border-color:var(--line);box-shadow:0 16px 45px rgba(0,0,0,.15)}
+.card{padding:24px}
+.auth-box{margin:54px auto;padding:34px}
+.auth-tabs{background:#111511}
+.auth-tab.active{background:var(--surface-2);color:var(--accent)}
+.form-input{background:#111511;border-radius:999px}
+.form-group .form-input:not(select){border-radius:10px}
+.btn{border-radius:999px}
+.btn-accent{background:var(--accent)}
+.badge-ok{color:var(--accent);background:var(--accent-dim);border-color:rgba(184,243,107,.25)}
+.track-picker{gap:9px;padding:4px 1px 13px}
+.picker-btn{border-radius:999px;background:var(--surface-2);color:var(--fg)}
+.picker-btn.active{background:var(--accent);color:#11160c;border-color:var(--accent)}
+.visualizer{height:112px;border-radius:12px;background:linear-gradient(180deg,rgba(184,243,107,.04),transparent)}
+.bar.on{background:linear-gradient(180deg,var(--accent),rgba(184,243,107,.25))}
+.play-btn{background:var(--accent);box-shadow:0 4px 18px rgba(184,243,107,.2)}
+.track-line{height:5px;background:rgba(255,255,255,.13)}
+.fill{background:var(--accent)}
+.footer{max-width:1200px;border-color:var(--line)}
+.music-hero{position:relative;overflow:hidden;margin-bottom:23px;padding:27px 30px;border:1px solid rgba(184,243,107,.16);border-radius:20px;background:linear-gradient(110deg,rgba(184,243,107,.17),rgba(34,45,33,.88) 50%,rgba(25,29,25,.96))}
+.music-hero::after{content:"♫";position:absolute;right:34px;top:-34px;color:rgba(255,255,255,.06);font-size:190px;line-height:1;pointer-events:none}
+.music-hero>*{position:relative;z-index:1}
+.music-kicker{color:var(--accent);font-size:11px;font-weight:700;letter-spacing:.13em;text-transform:uppercase}
+.music-hero h1{margin:7px 0;font-size:clamp(25px,4vw,38px);letter-spacing:-.045em}
+.music-hero p{max-width:630px;color:#c4cbbf;font-size:13px}
+.music-toolbar{display:flex;align-items:center;gap:10px;margin:18px 0 20px}
+.music-search-wrap{position:relative;flex:1;max-width:440px}
+.music-search-wrap::before{content:"⌕";position:absolute;left:15px;top:6px;color:var(--muted);font-size:21px}
+#track-search{width:100%;padding-left:42px;border:1px solid transparent;background:#252a25}
+#track-search:focus{border-color:var(--accent)}
+.filter-chip{padding:9px 15px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--muted);font-size:12px;font-weight:600}
+.filter-chip:hover,.filter-chip.active{border-color:var(--accent);background:var(--accent-dim);color:var(--accent)}
+.section-heading{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:22px 0 12px}
+.section-heading h2{font-size:18px;letter-spacing:-.02em}
+.section-heading span{color:var(--muted);font-size:11px}
+.album-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:12px;margin-bottom:22px}
+.album-card{position:relative;min-width:0;padding:12px;border:1px solid transparent;border-radius:13px;background:rgba(255,255,255,.035);transition:background .18s,transform .18s}
+.album-card:hover{transform:translateY(-2px);background:rgba(255,255,255,.075)}
+.album-art{position:relative;display:grid;place-items:center;aspect-ratio:1;border-radius:9px;background:linear-gradient(145deg,#37443a,#1b211b 65%,#293625);color:var(--accent);font-size:39px;box-shadow:inset 0 0 35px rgba(0,0,0,.2)}
+.album-card:nth-child(4n+2) .album-art{background:linear-gradient(145deg,#51413c,#28201f 70%,#674c3d)}
+.album-card:nth-child(4n+3) .album-art{background:linear-gradient(145deg,#3c4653,#1c252c 70%,#394957)}
+.album-card:nth-child(4n) .album-art{background:linear-gradient(145deg,#554f35,#24251b 70%,#4c4630)}
+.album-art .card-play{position:absolute;right:9px;bottom:9px;width:37px;height:37px;display:grid;place-items:center;border:0;border-radius:50%;background:var(--accent);color:#11160c;font-size:15px;box-shadow:0 5px 15px #0007;opacity:0;transform:translateY(5px);transition:.18s}
+.album-card:hover .card-play,.album-card:focus-within .card-play{opacity:1;transform:translateY(0)}
+.album-card h3{overflow:hidden;margin:11px 0 3px;font-size:13px;text-overflow:ellipsis;white-space:nowrap}
+.album-card p{overflow:hidden;color:var(--muted);font-size:11px;text-overflow:ellipsis;white-space:nowrap}
+.album-card .favorite-button{position:absolute;top:17px;right:17px;width:29px;height:29px;border:0;border-radius:50%;background:rgba(0,0,0,.5);color:white;font-size:16px}
+.album-card .favorite-button.is-favorite{color:var(--accent)}
+.empty-library{grid-column:1/-1;padding:18px;color:var(--muted);font-size:12px}
+.artist-connect{padding:18px!important}
+.now-playing{padding-bottom:15px;border-bottom:1px solid var(--line)}
+.disc{background:repeating-radial-gradient(#111511,#111511 2px,#303830 3px,#111511 4px);border-color:var(--line-strong)}
+.disc::after{background:var(--accent)}
+.transport-controls{display:flex;justify-content:center;align-items:center;gap:13px;margin:0 0 13px}
+.transport-button{min-width:35px;height:35px;padding:0 10px;border:1px solid transparent;border-radius:999px;background:transparent;color:var(--muted);font-size:13px}
+.transport-button:hover,.transport-button.enabled{border-color:var(--line);color:var(--accent)}
+.transport-button.next-prev{font-size:16px;color:var(--fg)}
+.denied-box{border-radius:16px}
+.footer{flex-wrap:wrap;gap:8px}
+@media(max-width:650px){
+  .topbar{padding:12px 16px}.topbar-right{gap:7px}.pill-tide{display:none}
+  .container{margin-top:18px;padding:0 14px}.card{padding:18px}
+  .music-hero{padding:22px 19px}.music-hero::after{right:5px;font-size:145px}
+  .music-toolbar{flex-wrap:wrap}.music-search-wrap{flex-basis:100%;max-width:none}
+  .album-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .section-heading h2{font-size:16px}
+}
 </style>
 </head>
 <body>
@@ -101,7 +180,7 @@ video{width:100%;max-height:480px;border-radius:14px;border:1px solid var(--line
 <header class="topbar">
   <a href="/rmit" class="brand">
     <span class="brand-dot"></span>
-    <div>UNRELEASED<small>Phòng Nghe Thử & Đánh Giá</small></div>
+    <div>SONORA<small>Phòng nghe thử riêng tư</small></div>
   </a>
   <div class="topbar-right">
     <div id="reviewer-user-info" class="user-badge hidden">
@@ -109,7 +188,7 @@ video{width:100%;max-height:480px;border-radius:14px;border:1px solid var(--line
       <span id="reviewer-name-display" class="mono">minh_mastering</span>
       <button class="btn btn-ghost btn-sm" onclick="logoutReviewer()" style="margin-left:6px;padding:2px 8px">Đăng xuất</button>
     </div>
-    <span class="pill-tide" title="Đồng bộ thời gian thực qua Upstash Redis">☁️ Cloud Database: SYNCED</span>
+    <span class="pill-tide">PRIVATE LISTENING</span>
   </div>
 </header>
 
@@ -168,11 +247,23 @@ video{width:100%;max-height:480px;border-radius:14px;border:1px solid var(--line
 
   <!-- GIAO DIỆN NGƯỜI NGHE SAU KHI ĐĂNG NHẬP -->
   <div id="reviewer-main-view" class="hidden">
+    <section class="music-hero">
+      <div class="music-kicker">Your private listening room</div>
+      <h1>Âm nhạc dành riêng cho bạn.</h1>
+      <p>Khám phá bản nghe thử, lưu những bài hát yêu thích và phát các tác phẩm đã được cấp quyền.</p>
+    </section>
+    <div class="music-toolbar">
+      <label class="music-search-wrap"><input id="track-search" class="form-input" type="search" placeholder="Tìm bài hát hoặc nghệ sĩ..." autocomplete="off" aria-label="Tìm bài hát hoặc nghệ sĩ"></label>
+      <button id="filter-all" class="filter-chip active" type="button">Tất cả</button>
+      <button id="filter-favorites" class="filter-chip" type="button">♥ Đã lưu</button>
+    </div>
+    <div class="section-heading"><h2>Gợi ý cho bạn</h2><span id="track-count-label"></span></div>
+    <div class="album-grid" id="album-grid"></div>
     <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:24px">
       <div>
-        <h1 style="font-size:26px;font-weight:700">Phòng Nghe Thử Bảo Mật (In-Memory Playback)</h1>
+        <h1 style="font-size:26px;font-weight:700">Thư viện của bạn</h1>
         <p style="color:var(--muted);font-size:14px">
-          Danh tính hiện tại: <strong id="logged-user-title" style="color:var(--accent)">minh_mastering</strong> · Giải mã trực tiếp trên RAM qua Tide Emergent Authority
+        Đang nghe với tài khoản <strong id="logged-user-title" style="color:var(--accent)">minh_mastering</strong>
         </p>
       </div>
       <span class="badge badge-ok mono" id="entitlement-status-badge">PHIÊN LÀM VIỆC HỢP LỆ</span>
@@ -181,7 +272,7 @@ video{width:100%;max-height:480px;border-radius:14px;border:1px solid var(--line
     <!-- Chọn bài hát trong danh sách -->
     
     <!-- CHỌN HOẶC NHẬP TÀI KHOẢN NGHỆ SĨ -->
-    <div class="card" style="margin-bottom:20px;padding:20px;border-color:rgba(212,255,63,.2)">
+    <div class="card artist-connect" style="margin-bottom:20px;padding:20px;border-color:rgba(212,255,63,.2)">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:10px">
         <div>
           <span style="font-size:13px;font-weight:700;color:var(--fg);display:flex;align-items:center;gap:6px">
@@ -215,7 +306,13 @@ video{width:100%;max-height:480px;border-radius:14px;border:1px solid var(--line
         <div>
           <div style="font-size:18px;font-weight:700" id="np-title">Lead_Single_Master_v4.flac</div>
           <div style="font-size:12px;color:var(--ok);margin-top:4px" class="mono" id="np-status">
-            ● Đã xác thực danh tính với Tide Quorum · Quyền hạn tự sinh hợp lệ
+            ● Sẵn sàng phát bài hát được cấp quyền
+          </div>
+          <div class="transport-controls" aria-label="Điều khiển phát nhạc">
+            <button class="transport-button" id="shuffle-button" type="button" aria-label="Phát ngẫu nhiên" title="Phát ngẫu nhiên">⤨</button>
+            <button class="transport-button next-prev" type="button" data-track-step="-1" aria-label="Bài trước" title="Bài trước">|◀</button>
+            <button class="transport-button enabled" type="button" data-track-step="1" aria-label="Bài tiếp theo" title="Bài tiếp theo">▶|</button>
+            <button class="transport-button" id="repeat-button" type="button" aria-label="Lặp lại" title="Lặp lại">↻</button>
           </div>
         </div>
       </div>
@@ -262,20 +359,20 @@ video{width:100%;max-height:480px;border-radius:14px;border:1px solid var(--line
     <div class="card" style="margin-top:24px">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
         <h3 style="font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px">
-          <span style="color:var(--ok)">⚡</span> Nhật Ký Đánh Giá Quy Tắc Mật Mã (Tide Execution Log)
+          <span style="color:var(--ok)">⚡</span> Hoạt động phiên nghe
         </h3>
-        <span class="mono" style="font-size:11px;color:var(--dim)">Zero Master Key</span>
+        <span class="mono" style="font-size:11px;color:var(--dim)">Cập nhật theo phiên</span>
       </div>
       <div id="tide-execution-log" class="mono" style="background:#050608;border:1px solid var(--line);border-radius:10px;padding:14px;font-size:12px;color:var(--muted);line-height:1.7">
-        > TideCloak SDK initialized. Sẵn sàng đánh giá chính sách phân quyền cho phiên người nghe.
+        > SONORA sẵn sàng. Hoạt động và quyền nghe được hiển thị trong phiên này.
       </div>
     </div>
     
 </main>
 
 <footer class="footer">
-  <span>UNRELEASED · Cổng Người Nghe Thử · Powered by TideCloak</span>
-  <span class="mono">RMIT Hackathon 2026</span>
+  <span>SONORA · Không gian nghe thử riêng tư</span>
+  <span class="mono">Tìm kiếm · Yêu thích · Phát ngẫu nhiên</span>
 </footer>
 
 <script>
@@ -306,13 +403,12 @@ async function fetchCloudState() {
         hasChanged = true;
       }
 
-      if (hasChanged && typeof onCloudSync === 'function') {
-        onCloudSync();
+      if (hasChanged) {
+        renderTracksPicker();
+        syncPlaybackState();
       }
     }
-  } catch (err) {
-    // Offline / fallback to localStorage
-  }
+  } catch (err) {}
 }
 
 async function pushCloudUpdate(action, payload = {}) {
@@ -324,17 +420,14 @@ async function pushCloudUpdate(action, payload = {}) {
       body: JSON.stringify({ action, ...payload })
     });
   } catch (e) {
-    console.warn('Cloud sync error:', e);
   } finally {
     isSyncingWithCloud = false;
   }
 }
 
-// Bắt đầu vòng lặp polling 2.5s để đồng bộ từ các máy tính khác
 setInterval(fetchCloudState, 2500);
 fetchCloudState();
 
-function onCloudSync(){ renderTracksPicker(); syncPlaybackState(); }
 
 const DB_NAME='tide_vault_db', STORE_NAME='media_blobs';
 function openDB(){return new Promise((res,rej)=>{const r=indexedDB.open(DB_NAME,1);r.onupgradeneeded=e=>{if(!e.target.result.objectStoreNames.contains(STORE_NAME))e.target.result.createObjectStore(STORE_NAME)};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});}
@@ -375,6 +468,7 @@ function applyCustomArtist(){
 
 let activeTrackId = null;
 let isPlaying = false, synthInterval = null, timerInterval = null, ctx = null, t = 0, noteIdx = 0;
+let searchTerm = '', favoritesOnly = false, shuffleEnabled = false, repeatEnabled = false;
 const notes = [261.63, 329.63, 392, 523.25, 440, 392, 329.63, 293.66];
 
 const viz=document.getElementById('viz');
@@ -493,9 +587,12 @@ function renderTracksPicker(){
   const tracks=getStoredTracks();
   const picker=document.getElementById('reviewer-track-picker');
   picker.innerHTML='';
-  if(!tracks.length) return;
-  if(!activeTrackId || !tracks.some(x=>x.id===activeTrackId)){
-    activeTrackId=tracks[0].id;
+  if(!tracks.length){
+    activeTrackId=null;
+    stopAudio();
+    renderAlbumCards([]);
+    syncPlaybackState();
+    return;
   }
   const currentUser=localStorage.getItem('tide_logged_reviewer');
 
@@ -509,10 +606,24 @@ function renderTracksPicker(){
   }
 
   // Lọc chỉ các track thuộc về nghệ sĩ đang được chọn
-  const filteredTracks = tracks.filter(x => (x.artistUsername || 'alice_artist').toLowerCase() === selectedArtist.toLowerCase());
+  const artistTracks = tracks.filter(x => (x.artistUsername || 'alice_artist').toLowerCase() === selectedArtist.toLowerCase());
+  const savedFavorites = getFavoriteIds(currentUser);
+  const filteredTracks = artistTracks.filter(x => {
+    const matchesSearch = !searchTerm || `${x.name} ${x.artistUsername || ''}`.toLowerCase().includes(searchTerm);
+    const matchesFavorite = !favoritesOnly || savedFavorites.includes(x.id);
+    return matchesSearch && matchesFavorite;
+  });
 
   if(filteredTracks.length === 0){
-    picker.innerHTML = `<div style="font-size:13px;color:var(--muted);padding:8px" class="mono">Chưa có tác phẩm nào từ nghệ sĩ "${selectedArtist}".</div>`;
+    const empty=document.createElement('div');
+    empty.className='empty-library mono';
+    empty.textContent=artistTracks.length
+      ? 'Không tìm thấy bài hát phù hợp.'
+      : `Chưa có tác phẩm nào từ nghệ sĩ "${selectedArtist}".`;
+    picker.appendChild(empty);
+    activeTrackId=null;
+    stopAudio();
+    renderAlbumCards([]);
     syncPlaybackState();
     return;
   }
@@ -520,6 +631,8 @@ function renderTracksPicker(){
   if(!activeTrackId || !filteredTracks.some(x=>x.id===activeTrackId)){
     activeTrackId = filteredTracks[0].id;
   }
+  renderAlbumCards(filteredTracks);
+  document.getElementById('track-count-label').textContent=`${filteredTracks.length} bài hát`;
 
   filteredTracks.forEach(t=>{
     const isAllowed=t.allowedUsers.includes(currentUser);
@@ -536,18 +649,111 @@ function renderTracksPicker(){
   });
 }
 
+function getFavoriteIds(username){
+  if(!username)return [];
+  try{
+    const saved=JSON.parse(localStorage.getItem(`tide_favorites_${username}`)||'[]');
+    return Array.isArray(saved)?saved:[];
+  }catch(error){
+    console.error('Không thể đọc danh sách bài hát đã lưu:',error);
+    return [];
+  }
+}
+
+function renderAlbumCards(tracks){
+  const grid=document.getElementById('album-grid');
+  if(!grid)return;
+  grid.replaceChildren();
+  const username=localStorage.getItem('tide_logged_reviewer');
+  const favorites=getFavoriteIds(username);
+  document.getElementById('track-count-label').textContent=`${tracks.length} bài hát`;
+  if(!tracks.length){
+    const empty=document.createElement('div');
+    empty.className='empty-library';
+    empty.textContent=favoritesOnly?'Bạn chưa lưu bài hát nào trong danh sách này.':'Chưa có bài hát phù hợp để hiển thị.';
+    grid.appendChild(empty);
+    return;
+  }
+  tracks.forEach(track=>{
+    const allowed=Array.isArray(track.allowedUsers)&&track.allowedUsers.includes(username);
+    const card=document.createElement('article');
+    card.className='album-card';
+    const art=document.createElement('div');
+    art.className='album-art';
+    art.textContent=track.type&&track.type.startsWith('video')?'▣':'♫';
+    const favorite=document.createElement('button');
+    favorite.type='button';
+    favorite.className=`favorite-button${favorites.includes(track.id)?' is-favorite':''}`;
+    favorite.dataset.favorite=track.id;
+    favorite.setAttribute('aria-label',favorites.includes(track.id)?'Bỏ lưu bài hát':'Lưu bài hát');
+    favorite.textContent=favorites.includes(track.id)?'♥':'♡';
+    const play=document.createElement('button');
+    play.type='button';
+    play.className='card-play';
+    play.dataset.albumTrack=track.id;
+    play.setAttribute('aria-label',allowed?'Chọn và phát bài hát':'Bài hát chưa được cấp quyền');
+    play.textContent=allowed?'▶':'🔒';
+    art.append(favorite,play);
+    const title=document.createElement('h3');
+    title.textContent=track.name||'Bài hát chưa có tên';
+    const artist=document.createElement('p');
+    artist.textContent=track.artistUsername||'Nghệ sĩ';
+    card.append(art,title,artist);
+    grid.appendChild(card);
+  });
+}
+
+function stepTrack(direction){
+  const tracks=getStoredTracks();
+  const username=localStorage.getItem('tide_logged_reviewer');
+  const favorites=getFavoriteIds(username);
+  const playlist=tracks.filter(track=>
+    (track.artistUsername||'alice_artist').toLowerCase()===selectedArtist.toLowerCase()&&
+    (!searchTerm||`${track.name} ${track.artistUsername||''}`.toLowerCase().includes(searchTerm))&&
+    (!favoritesOnly||favorites.includes(track.id))&&
+    Array.isArray(track.allowedUsers)&&track.allowedUsers.includes(username)
+  );
+  if(!playlist.length)return;
+  let index=playlist.findIndex(track=>track.id===activeTrackId);
+  if(shuffleEnabled&&playlist.length>1){
+    let next=index;
+    while(next===index)next=Math.floor(Math.random()*playlist.length);
+    index=next;
+  }else{
+    index=(index+direction+playlist.length)%playlist.length;
+  }
+  activeTrackId=playlist[index].id;
+  stopAudio();
+  renderTracksPicker();
+  syncPlaybackState();
+}
+
+function toggleFavorite(trackId){
+  const username=localStorage.getItem('tide_logged_reviewer');
+  if(!username)return;
+  const favorites=getFavoriteIds(username);
+  const updated=favorites.includes(trackId)?favorites.filter(id=>id!==trackId):[...favorites,trackId];
+  localStorage.setItem(`tide_favorites_${username}`,JSON.stringify(updated));
+  renderTracksPicker();
+  syncPlaybackState();
+}
+
 async function syncPlaybackState(){
   const currentUser=localStorage.getItem('tide_logged_reviewer');
   if(!currentUser) return;
 
   const tracks=getStoredTracks();
-  const track=tracks.find(x=>x.id===activeTrackId)||tracks[0];
-  if(!track) return;
-
   const playerBox=document.getElementById('player-box');
   const deniedBox=document.getElementById('denied-box');
   const badge=document.getElementById('entitlement-status-badge');
   const npTitle=document.getElementById('np-title');
+  const track=tracks.find(x=>x.id===activeTrackId);
+  if(!track){
+    stopAudio();
+    playerBox.classList.add('hidden');
+    deniedBox.classList.add('hidden');
+    return;
+  }
   const isAllowed=track.allowedUsers.includes(currentUser);
 
   
@@ -637,6 +843,10 @@ function togglePlay(){
     disc.classList.add('spin');
     if(na && na.src && na.src.startsWith('blob:')){
       na.play().catch(e=>console.log(e));
+      na.onended=()=>{
+        if(repeatEnabled){na.currentTime=0;na.play().catch(e=>console.log(e));}
+        else stepTrack(1);
+      };
       na.ontimeupdate=()=>{
         const cur=Math.floor(na.currentTime), dur=Math.floor(na.duration)||222;
         document.getElementById('cur').textContent=Math.floor(cur/60)+':'+String(cur%60).padStart(2,'0');
@@ -665,6 +875,61 @@ function togglePlay(){
   }
 }
 
+document.getElementById('track-search').addEventListener('input',event=>{
+  searchTerm=event.target.value.trim().toLowerCase();
+  renderTracksPicker();
+  syncPlaybackState();
+});
+document.getElementById('filter-all').addEventListener('click',()=>{
+  favoritesOnly=false;
+  document.getElementById('filter-all').classList.add('active');
+  document.getElementById('filter-favorites').classList.remove('active');
+  renderTracksPicker();
+  syncPlaybackState();
+});
+document.getElementById('filter-favorites').addEventListener('click',()=>{
+  favoritesOnly=true;
+  document.getElementById('filter-favorites').classList.add('active');
+  document.getElementById('filter-all').classList.remove('active');
+  renderTracksPicker();
+  syncPlaybackState();
+});
+document.getElementById('album-grid').addEventListener('click',async event=>{
+  const favoriteButton=event.target.closest('[data-favorite]');
+  if(favoriteButton){
+    toggleFavorite(favoriteButton.dataset.favorite);
+    return;
+  }
+  const playButton=event.target.closest('[data-album-track]');
+  if(!playButton)return;
+  const selected=getStoredTracks().find(track=>track.id===playButton.dataset.albumTrack);
+  if(!selected)return;
+  if(!Array.isArray(selected.allowedUsers)||!selected.allowedUsers.includes(localStorage.getItem('tide_logged_reviewer'))){
+    appendExecutionLog('Bài hát này chưa được cấp quyền cho tài khoản hiện tại.',false,true);
+    return;
+  }
+  activeTrackId=selected.id;
+  stopAudio();
+  renderTracksPicker();
+  await syncPlaybackState();
+  if(selected.type.startsWith('video')){
+    document.getElementById('html5-video').play().catch(error=>console.error('Không thể phát video:',error));
+  }else{
+    togglePlay();
+  }
+});
+document.querySelectorAll('[data-track-step]').forEach(button=>button.addEventListener('click',()=>stepTrack(Number(button.dataset.trackStep))));
+document.getElementById('shuffle-button').addEventListener('click',event=>{
+  shuffleEnabled=!shuffleEnabled;
+  event.currentTarget.classList.toggle('enabled',shuffleEnabled);
+  event.currentTarget.setAttribute('aria-pressed',String(shuffleEnabled));
+});
+document.getElementById('repeat-button').addEventListener('click',event=>{
+  repeatEnabled=!repeatEnabled;
+  event.currentTarget.classList.toggle('enabled',repeatEnabled);
+  event.currentTarget.setAttribute('aria-pressed',String(repeatEnabled));
+});
+
 // Lắng nghe sự kiện thu hồi/cấp quyền từ Trang 1 theo thời gian thực
 window.addEventListener('storage',()=>{renderTracksPicker();syncPlaybackState();});
 try{new BroadcastChannel('tide_channel').onmessage=()=>{renderTracksPicker();syncPlaybackState();}}catch(e){}
@@ -677,7 +942,10 @@ function appendExecutionLog(msg, isSuccess, isError){
   let color = 'var(--muted)';
   if(isSuccess) color = 'var(--ok)';
   if(isError) color = 'var(--danger)';
-  logBox.innerHTML += `<div style="color:${color}">[${time}] ${msg}</div>`;
+  const entry=document.createElement('div');
+  entry.style.color=color;
+  entry.textContent=`[${time}] ${msg}`;
+  logBox.appendChild(entry);
   logBox.scrollTop = logBox.scrollHeight;
 }
 
