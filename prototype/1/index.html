@@ -340,11 +340,19 @@ body::before{
 
 const API_VAULT_URL = '/api/rmit-vault';
 let isSyncingWithCloud = false;
-let activeArtistUser = 'alice_artist';
+let activeArtistUser = localStorage.getItem('tide_logged_artist') || 'alice_artist';
+let lastUserActionTime = 0;
+
+function markUserAction(){
+  lastUserActionTime = Date.now();
+}
 let lastKnownCloudHash1 = '';
 
 async function fetchCloudState() {
   if (isSyncingWithCloud) return;
+  // NẾU NGƯỜI DÙNG VỪA CLICK / THAO TÁC TRONG VÒNG 4 GIÂY: BỎ QUA ĐỂ TRÁNH BỊ UNDO!
+  if (Date.now() - lastUserActionTime < 4000) return;
+
   try {
     const res = await fetch(API_VAULT_URL);
     if (!res.ok) return;
@@ -352,17 +360,13 @@ async function fetchCloudState() {
     if (json.ok && json.data) {
       const cloud = json.data;
 
-      // 1. Chỉ cập nhật ngầm vào localStorage
       localStorage.setItem('tide_tracks_v2', JSON.stringify(cloud.tracks || []));
       localStorage.setItem('tide_users', JSON.stringify(cloud.users || []));
       localStorage.setItem('tide_requests_v2', JSON.stringify(cloud.requests || []));
       localStorage.setItem('tide_artists', JSON.stringify(cloud.artists || []));
 
-      // 2. Chỉ cập nhật đơn xin quyền (nhẹ nhàng, không làm gián đoạn màn hình chính)
+      // Chỉ cập nhật danh sách đơn xin quyền nền
       renderRequests();
-
-      // 3. TUYỆT ĐỐI KHÔNG GỌI renderArtistTracks() HOẶC renderArtistSwitcher() TRONG POLLING!
-      // Việc này giúp DOM đứng yên 100%, người dùng tha hồ chọn dropdown, chỉnh âm lượng mà không bao giờ bị giật hay undo!
     }
   } catch (err) {}
 }
@@ -480,8 +484,14 @@ function logoutArtist(){
 }
 
 function showCreateArtistModal(){
-  logoutArtist();
-  switchArtistAuthTab('register');
+  markUserAction();
+  const el = document.getElementById('create-artist-card');
+  if(el){
+    el.classList.toggle('hidden');
+    if(!el.classList.contains('hidden')){
+      el.scrollIntoView({behavior:'smooth', block:'center'});
+    }
+  }
 }
 
 function checkArtistAuth(){
@@ -510,6 +520,7 @@ function checkArtistAuth(){
 }
 
 function switchActiveArtist(username){
+  markUserAction();
   activeArtistUser = username;
   localStorage.setItem('tide_logged_artist', username);
   renderArtistSwitcher();
@@ -727,7 +738,7 @@ function renderArtistTracks(){
           <option value="duck" ${t.watermarkMode==='duck'?'selected':''}>Chèn tiếng vịt kêu định kỳ</option>
           <option value="voice" ${t.watermarkMode==='voice'?'selected':''}>Giọng nói AI đọc cảnh báo bản quyền</option>
         </select>
-        <span class="mono" style="font-size:11px;color:var(--dim)">
+        <span class="mono" id="wm-label-${t.id}" style="font-size:11px;color:var(--dim)">
           ${t.watermarkMode==='duck' ? '· Chèn tiếng quack định kỳ để làm hỏng bản thu lậu' : (t.watermarkMode==='voice' ? '· Giọng AI đọc tên nghệ sĩ định kỳ' : '· Âm thanh nguyên bản')}
         </span>
       </div>
@@ -742,7 +753,7 @@ function renderArtistTracks(){
           <option value="30" ${t.previewLimitSeconds==30?'selected':''}>30 giây đầu</option>
           <option value="60" ${t.previewLimitSeconds==60?'selected':''}>60 giây đầu</option>
         </select>
-        <span class="mono" style="font-size:11px;color:${t.previewLimitSeconds>0?'var(--warn)':'var(--dim)'}">
+        <span class="mono" id="limit-label-${t.id}" style="font-size:11px;color:${t.previewLimitSeconds>0?'var(--warn)':'var(--dim)'}">
           ${t.previewLimitSeconds>0 ? `· Giới hạn ${t.previewLimitSeconds}s` : '· Toàn thời lượng'}
         </span>
       </div>
@@ -829,12 +840,13 @@ function renderRequests(){
 }
 
 function grantUser(trackId){
+  markUserAction();
   const select = document.getElementById(`select-user-${trackId}`);
   const singleCheckbox = document.getElementById(`single-play-${trackId}`);
   const u = select ? select.value : '';
   const isSinglePlay = singleCheckbox ? singleCheckbox.checked : false;
 
-  if(!u){alert('Vui lòng chọn người nghe!');return;}
+  if(!u){alert('Vui lòng chọn một danh tính người nghe từ danh sách!');return;}
   const tracks = getStoredTracks();
   const t = tracks.find(x => x.id === trackId);
   if(t){
@@ -843,39 +855,56 @@ function grantUser(trackId){
     if(!t.allowedUsers.includes(u)) t.allowedUsers.push(u);
     if(isSinglePlay && !t.singlePlayUsers.includes(u)) t.singlePlayUsers.push(u);
     saveTracks(tracks);
-    pushCloudUpdate('GRANT_ACCESS', {trackId, username:u, isSinglePlay: isSinglePlay});
   }
 }
 
 function revokeUser(trackId, username){
+  markUserAction();
   const tracks = getStoredTracks();
   const t = tracks.find(x => x.id === trackId);
   if(t && t.allowedUsers){
     t.allowedUsers = t.allowedUsers.filter(x => x !== username);
+    if(Array.isArray(t.singlePlayUsers)) t.singlePlayUsers = t.singlePlayUsers.filter(x => x !== username);
     saveTracks(tracks);
-    pushCloudUpdate('REVOKE_ACCESS', {trackId, username});
   }
 }
 
 
 
 function setWatermarkMode(trackId, mode){
+  markUserAction();
   const tracks = getStoredTracks();
   const t = tracks.find(x => x.id === trackId);
   if(t){
     t.watermarkMode = mode || 'none';
-    saveTracks(tracks);
-    pushCloudUpdate('SET_WATERMARK_MODE', {trackId: trackId, mode: mode});
+    localStorage.setItem('tide_tracks_v2', JSON.stringify(tracks));
+    pushCloudUpdate('UPDATE_TRACKS', {tracks: tracks});
+
+    const lbl = document.getElementById(`wm-label-${trackId}`);
+    if(lbl){
+      lbl.textContent = t.watermarkMode === 'duck' 
+        ? '· Chèn tiếng quack định kỳ để làm hỏng bản thu lậu' 
+        : (t.watermarkMode === 'voice' ? '· Giọng AI đọc tên nghệ sĩ định kỳ' : '· Âm thanh nguyên bản');
+    }
   }
 }
 
 function setTrackLimit(trackId, limitSeconds){
+  markUserAction();
   const tracks = getStoredTracks();
   const t = tracks.find(x => x.id === trackId);
   if(t){
     t.previewLimitSeconds = Number(limitSeconds) || 0;
-    saveTracks(tracks);
-    pushCloudUpdate('SET_PREVIEW_LIMIT', {trackId: trackId, limitSeconds: Number(limitSeconds) || 0});
+    localStorage.setItem('tide_tracks_v2', JSON.stringify(tracks));
+    // Gửi 1 bản ghi duy nhất lên cloud, không gửi double post
+    pushCloudUpdate('UPDATE_TRACKS', {tracks: tracks});
+
+    // Cập nhật nhãn text trực tiếp tại chỗ, KHÔNG XÓA DOM BÀI HÁT
+    const lbl = document.getElementById(`limit-label-${trackId}`);
+    if(lbl){
+      lbl.textContent = t.previewLimitSeconds > 0 ? `· Giới hạn ${t.previewLimitSeconds}s` : '· Toàn thời lượng';
+      lbl.style.color = t.previewLimitSeconds > 0 ? 'var(--warn)' : 'var(--dim)';
+    }
   }
 }
 
@@ -888,6 +917,7 @@ function deleteTrack(trackId){
 }
 
 function resolveRequest(requestId, decision){
+  markUserAction();
   const requests = getStoredRequests();
   const req = requests.find(r => r.id === requestId);
   if(!req) return;
@@ -895,13 +925,13 @@ function resolveRequest(requestId, decision){
   const track = tracks.find(t => t.id === req.trackId);
   if(decision === 'APPROVE'){
     if(track){
-      if(!track.allowedUsers) track.allowedUsers = [];
+      if(!Array.isArray(track.allowedUsers)) track.allowedUsers = [];
       if(!track.allowedUsers.includes(req.username)) track.allowedUsers.push(req.username);
       saveTracks(tracks);
     }
     req.status = 'APPROVED';
   } else {
-    if(track && track.allowedUsers) track.allowedUsers = track.allowedUsers.filter(u => u !== req.username);
+    if(track && Array.isArray(track.allowedUsers)) track.allowedUsers = track.allowedUsers.filter(u => u !== req.username);
     req.status = 'DENIED';
     saveTracks(tracks);
   }
