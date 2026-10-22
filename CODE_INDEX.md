@@ -18,6 +18,11 @@
 | 13:25 22/10 | Thiện Nhân | `/docs/CHALLENGE_2_DEEP_RESEARCH.md` | Tài liệu Tide | Báo cáo nghiên cứu | Nghiên cứu sâu về Emergent Authority, Oblivious Proxy, Raziel MCP và các cạm bẫy |
 | 13:30 22/10 | Thiện Nhân | `/docs/CHALLENGE_2_WINNING_STRATEGY.md` | Barem giám khảo | Chiến lược giật giải | Đề án CareVault, kịch bản video demo 2 phút chi tiết từng giây, bản nháp README 300 từ |
 | 13:35 22/10 | Thiện Nhân | `/docs/CHALLENGE_2_AGENT_PLAYBOOK.md` | Phân công nhóm | Kế hoạch 4 tiếng | Phân chia công việc giữa 4 Agent theo từng khung giờ trước 17:30 |
-| 13:40 22/10 | Thiện Nhân | `/prototype/index.html` | Thao tác người dùng | Giao diện web tương tác | Ứng dụng mẫu CareVault hoàn chỉnh chạy trực tiếp trên trình duyệt, sẵn sàng quay video demo 2 phút |
+| 13:40 22/10 | Thiện Nhân | `/prototype/index.html` | Thao tác người dùng | Giao diện web tương tác | Ứng dụng mẫu UNRELEASED hoàn chỉnh với Web Audio synth và so sánh kiến trúc |
+| 13:45 22/10 | Thiện Nhân | `/src/sdk/tidecloak/crypto_engine.js` | Plaintext & 32B Key | Ciphertext AES-GCM | Bộ mã hóa đầu cuối E2EE AES-256-GCM với IV ngẫu nhiên |
+| 13:48 22/10 | Thiện Nhân | `/src/sdk/tidecloak/emergent_authority.js` | Policy & Session Nonce | Khóa giải mã RAM | Mô phỏng Tide Fabric Quorum đánh giá chính sách và sinh khóa Just-in-Time |
+| 13:50 22/10 | Thiện Nhân | `/src/backend/server.js` | HTTP Requests | JSON API & Auth tokens | Máy chủ Oblivious Proxy Node.js độc lập không giữ Master Key |
+| 13:52 22/10 | Thiện Nhân | `/src/security/exploit_simulation.js` | Kịch bản tấn công | Kết quả kiểm thử | Bộ kiểm thử tự động xác thực miễn nhiễm trước tấn công của Admin máy chủ |
+| 13:55 22/10 | Thiện Nhân | `/data/mock_assets/album_manifest.json` | Metadata bài hát | JSON Manifest | Siêu dữ liệu chuẩn FLAC/WAV cho album demo "MIDNIGHT CIPHER" |
 
 *(Khi viết xong module mới, Agent hãy thêm một dòng vào cuối bảng trên và commit đẩy lên nhánh của mình)*

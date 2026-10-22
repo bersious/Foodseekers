@@ -1,0 +1,54 @@
+{
+  "albumTitle": "MIDNIGHT CIPHER",
+  "artist": "Alice Nguyen",
+  "recordLabel": "Independent Sovereignty Records",
+  "releaseYear": 2026,
+  "securityStandard": "TideCloak Zero-Custody Emergent Authority",
+  "totalTracks": 3,
+  "tracks": [
+    {
+      "trackNumber": 1,
+      "title": "01_Lead_Single_Master_v4.flac",
+      "format": "FLAC 24-bit / 48kHz",
+      "duration": "03:42",
+      "encryption": "AES-256-GCM Session Sealed",
+      "s3ObjectKey": "s3://unreleased-vault/track_01.enc",
+      "sha256Digest": "0xb79a4e21a8f903dcb2810a9f821e90214a78c01289dfba918237120398bb1203",
+      "currentSharingState": {
+        "isShared": true,
+        "recipient": "usr_minh_mix",
+        "role": "Mixing & Mastering Consultant",
+        "scope": "In-memory streaming preview only (Download strictly blocked)",
+        "ttlRemaining": "23h 59m"
+      }
+    },
+    {
+      "trackNumber": 2,
+      "title": "02_Vocal_Stems_Dry_Studio.wav",
+      "format": "WAV 32-bit Float / 96kHz",
+      "duration": "04:15",
+      "encryption": "AES-256-GCM Session Sealed",
+      "s3ObjectKey": "s3://unreleased-vault/track_02.enc",
+      "sha256Digest": "0x82f10bca9921e4881023910398bbfa7728103981039128039128039128309182",
+      "currentSharingState": {
+        "isShared": false,
+        "recipient": null,
+        "scope": "Strictly Private Vault"
+      }
+    },
+    {
+      "trackNumber": 3,
+      "title": "03_Unannounced_Feature_Draft.flac",
+      "format": "FLAC 24-bit / 48kHz",
+      "duration": "02:58",
+      "encryption": "AES-256-GCM Session Sealed",
+      "s3ObjectKey": "s3://unreleased-vault/track_03.enc",
+      "sha256Digest": "0x11ce902831092830192830192830192830192830192830192830192830192830",
+      "currentSharingState": {
+        "isShared": false,
+        "recipient": null,
+        "scope": "Confidential Collaboration"
+      }
+    }
+  ]
+}
