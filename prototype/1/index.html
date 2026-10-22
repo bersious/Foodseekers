@@ -154,6 +154,25 @@ body::before{content:'';position:fixed;inset:0;z-index:-2;background:radial-grad
     </div>
   </div>
 
+    <!-- KHUNG QUY TẮC PHÂN QUYỀN TIDECLOAK -->
+    <div class="card" style="margin-top:24px;border-color:rgba(212,255,63,.25)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+        <div>
+          <h2 style="font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px">
+            <span style="color:var(--accent)">📜</span> Quy Tắc Phân Quyền Mật Mã TideCloak (Access Control Policy)
+          </h2>
+          <p style="font-size:12px;color:var(--muted);margin-top:2px">
+            Quy định rõ: <strong>Ai được mở dữ liệu? Trong hoàn cảnh nào?</strong> (Tự động cập nhật vào mạng Quorum)
+          </p>
+        </div>
+        <span class="mono" style="font-size:11px;color:var(--accent)">Engine: TideCloak v2.4</span>
+      </div>
+
+      <div style="background:#050608;border:1px solid var(--line);border-radius:12px;padding:16px;font-size:12px;color:#a5b4fc" class="mono" id="policy-json-viewer">
+        // Đang đồng bộ chính sách bảo mật với mạng Tide Fabric Quorum...
+      </div>
+    </div>
+    
 </main>
 
 <footer class="footer">
@@ -194,6 +213,7 @@ function saveTracks(tracks){
   localStorage.setItem('tide_tracks_v2',JSON.stringify(tracks));
   try{new BroadcastChannel('tide_channel').postMessage({type:'SYNC_DATA'})}catch(e){}
   renderArtistTracks();
+updatePolicyViewer();
 }
 
 function loginArtist(){
@@ -202,12 +222,84 @@ function loginArtist(){
   if(!u){alert('Vui lòng nhập tên tài khoản!');return;}
   if(p!=='123'){alert('Mật khẩu không đúng! (Gợi ý: Mật khẩu là 123)');return;}
   localStorage.setItem('tide_logged_artist',u);
-  checkAuth();
+  
+function updatePolicyViewer(){
+  const tracks = getStoredTracks();
+  const users = getStoredUsers();
+  const policyObj = {
+    tideVersion: "2.4.0-emergent",
+    timestamp: new Date().toISOString(),
+    securityModel: "ZeroMasterKey_EmergentAuthority",
+    vaultOwner: "tide:usr:alice_artist",
+    quorumConsensusRequired: 3,
+    accessRules: tracks.map(t => ({
+      resourceId: t.id,
+      resourceName: t.name,
+      allowedIdentities: t.allowedUsers.map(u => {
+        const uObj = users.find(x => x.username === u);
+        return {
+          username: u,
+          did: uObj ? uObj.did : `tide:usr:${u}`,
+          authorizedAction: "STREAM_DECRYPT_IN_MEMORY",
+          circumstanceConditions: {
+            inMemoryOnly: true,
+            allowLocalDiskSave: false,
+            sessionTtlSeconds: 86400,
+            requireQuorumConsensus: true
+          },
+          status: "ACTIVE"
+        };
+      }),
+      revocationPolicy: "InstantQuorumInvalidation_ZeroLatency"
+    }))
+  };
+  const box = document.getElementById('policy-json-viewer');
+  if(box) box.textContent = JSON.stringify(policyObj, null, 2);
+}
+
+checkAuth();
+updatePolicyViewer();
 }
 
 function logoutArtist(){
   localStorage.removeItem('tide_logged_artist');
-  checkAuth();
+  
+function updatePolicyViewer(){
+  const tracks = getStoredTracks();
+  const users = getStoredUsers();
+  const policyObj = {
+    tideVersion: "2.4.0-emergent",
+    timestamp: new Date().toISOString(),
+    securityModel: "ZeroMasterKey_EmergentAuthority",
+    vaultOwner: "tide:usr:alice_artist",
+    quorumConsensusRequired: 3,
+    accessRules: tracks.map(t => ({
+      resourceId: t.id,
+      resourceName: t.name,
+      allowedIdentities: t.allowedUsers.map(u => {
+        const uObj = users.find(x => x.username === u);
+        return {
+          username: u,
+          did: uObj ? uObj.did : `tide:usr:${u}`,
+          authorizedAction: "STREAM_DECRYPT_IN_MEMORY",
+          circumstanceConditions: {
+            inMemoryOnly: true,
+            allowLocalDiskSave: false,
+            sessionTtlSeconds: 86400,
+            requireQuorumConsensus: true
+          },
+          status: "ACTIVE"
+        };
+      }),
+      revocationPolicy: "InstantQuorumInvalidation_ZeroLatency"
+    }))
+  };
+  const box = document.getElementById('policy-json-viewer');
+  if(box) box.textContent = JSON.stringify(policyObj, null, 2);
+}
+
+checkAuth();
+updatePolicyViewer();
 }
 
 function checkAuth(){
@@ -223,6 +315,7 @@ function checkAuth(){
     userInfo.classList.remove('hidden');
     nameDisp.textContent=u;
     renderArtistTracks();
+updatePolicyViewer();
   }else{
     authView.classList.remove('hidden');
     mainView.classList.add('hidden');
@@ -345,10 +438,48 @@ async function handleFileUpload(e){
   e.target.value='';
 }
 
-window.addEventListener('storage',()=>{getStoredUsers();renderArtistTracks();});
-try{new BroadcastChannel('tide_channel').onmessage=()=>{getStoredUsers();renderArtistTracks();}}catch(e){}
+window.addEventListener('storage',()=>{getStoredUsers();renderArtistTracks();
+updatePolicyViewer();});
+try{new BroadcastChannel('tide_channel').onmessage=()=>{getStoredUsers();renderArtistTracks();
+updatePolicyViewer();}}catch(e){}
+
+
+function updatePolicyViewer(){
+  const tracks = getStoredTracks();
+  const users = getStoredUsers();
+  const policyObj = {
+    tideVersion: "2.4.0-emergent",
+    timestamp: new Date().toISOString(),
+    securityModel: "ZeroMasterKey_EmergentAuthority",
+    vaultOwner: "tide:usr:alice_artist",
+    quorumConsensusRequired: 3,
+    accessRules: tracks.map(t => ({
+      resourceId: t.id,
+      resourceName: t.name,
+      allowedIdentities: t.allowedUsers.map(u => {
+        const uObj = users.find(x => x.username === u);
+        return {
+          username: u,
+          did: uObj ? uObj.did : `tide:usr:${u}`,
+          authorizedAction: "STREAM_DECRYPT_IN_MEMORY",
+          circumstanceConditions: {
+            inMemoryOnly: true,
+            allowLocalDiskSave: false,
+            sessionTtlSeconds: 86400,
+            requireQuorumConsensus: true
+          },
+          status: "ACTIVE"
+        };
+      }),
+      revocationPolicy: "InstantQuorumInvalidation_ZeroLatency"
+    }))
+  };
+  const box = document.getElementById('policy-json-viewer');
+  if(box) box.textContent = JSON.stringify(policyObj, null, 2);
+}
 
 checkAuth();
+updatePolicyViewer();
 </script>
 </body>
 </html>

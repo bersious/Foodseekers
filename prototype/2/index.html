@@ -228,6 +228,19 @@ video{width:100%;max-height:480px;border-radius:14px;border:1px solid var(--line
     </div>
   </div>
 
+    <!-- BẢNG THEO DÕI GIẢI MÃ THỜI GIAN THỰC TIDECLOAK -->
+    <div class="card" style="margin-top:24px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h3 style="font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px">
+          <span style="color:var(--ok)">⚡</span> Nhật Ký Đánh Giá Quy Tắc Mật Mã (Tide Execution Log)
+        </h3>
+        <span class="mono" style="font-size:11px;color:var(--dim)">Zero Master Key</span>
+      </div>
+      <div id="tide-execution-log" class="mono" style="background:#050608;border:1px solid var(--line);border-radius:10px;padding:14px;font-size:12px;color:var(--muted);line-height:1.7">
+        > TideCloak SDK initialized. Sẵn sàng đánh giá chính sách phân quyền cho phiên người nghe.
+      </div>
+    </div>
+    
 </main>
 
 <footer class="footer">
@@ -273,7 +286,19 @@ function loginReviewer(){
   if(!u){alert('Vui lòng nhập username!');return;}
   if(p!=='123'){alert('Mật khẩu không đúng! (Gợi ý: Mật khẩu là 123)');return;}
   localStorage.setItem('tide_logged_reviewer',u);
-  checkAuth();
+  
+function appendExecutionLog(msg, isSuccess, isError){
+  const logBox = document.getElementById('tide-execution-log');
+  if(!logBox) return;
+  const time = new Date().toLocaleTimeString();
+  let color = 'var(--muted)';
+  if(isSuccess) color = 'var(--ok)';
+  if(isError) color = 'var(--danger)';
+  logBox.innerHTML += `<div style="color:${color}">[${time}] ${msg}</div>`;
+  logBox.scrollTop = logBox.scrollHeight;
+}
+
+checkAuth();
 }
 
 function registerReviewer(){
@@ -293,12 +318,36 @@ function registerReviewer(){
 
   localStorage.setItem('tide_logged_reviewer',u);
   alert(`Đã khởi tạo danh tính Tide BYOiD thành công: ${newUser.did}! Nghệ sĩ ở Trang 1 có thể thấy và cấp quyền cho bạn ngay bây giờ.`);
-  checkAuth();
+  
+function appendExecutionLog(msg, isSuccess, isError){
+  const logBox = document.getElementById('tide-execution-log');
+  if(!logBox) return;
+  const time = new Date().toLocaleTimeString();
+  let color = 'var(--muted)';
+  if(isSuccess) color = 'var(--ok)';
+  if(isError) color = 'var(--danger)';
+  logBox.innerHTML += `<div style="color:${color}">[${time}] ${msg}</div>`;
+  logBox.scrollTop = logBox.scrollHeight;
+}
+
+checkAuth();
 }
 
 function logoutReviewer(){
   localStorage.removeItem('tide_logged_reviewer');
-  checkAuth();
+  
+function appendExecutionLog(msg, isSuccess, isError){
+  const logBox = document.getElementById('tide-execution-log');
+  if(!logBox) return;
+  const time = new Date().toLocaleTimeString();
+  let color = 'var(--muted)';
+  if(isSuccess) color = 'var(--ok)';
+  if(isError) color = 'var(--danger)';
+  logBox.innerHTML += `<div style="color:${color}">[${time}] ${msg}</div>`;
+  logBox.scrollTop = logBox.scrollHeight;
+}
+
+checkAuth();
 }
 
 function checkAuth(){
@@ -370,7 +419,14 @@ async function syncPlaybackState(){
   const npTitle=document.getElementById('np-title');
   const isAllowed=track.allowedUsers.includes(currentUser);
 
-  npTitle.textContent=track.name;
+  
+        npTitle.textContent=track.name;
+        if(isAllowed){
+          appendExecutionLog(`[QUORUM MATCH] Danh tính ${currentUser} khớp quy tắc: Cấp khóa phiên in-memory cho ${track.name}`, true);
+        } else {
+          appendExecutionLog(`[QUORUM DENIED] Danh tính ${currentUser} KHÔNG có trong quy tắc cho phép của ${track.name} (Chính sách bị từ chối 403)`, false, true);
+        }
+        
 
   if(!isAllowed){
     stopAudio();
@@ -481,6 +537,18 @@ function togglePlay(){
 // Lắng nghe sự kiện thu hồi/cấp quyền từ Trang 1 theo thời gian thực
 window.addEventListener('storage',()=>{renderTracksPicker();syncPlaybackState();});
 try{new BroadcastChannel('tide_channel').onmessage=()=>{renderTracksPicker();syncPlaybackState();}}catch(e){}
+
+
+function appendExecutionLog(msg, isSuccess, isError){
+  const logBox = document.getElementById('tide-execution-log');
+  if(!logBox) return;
+  const time = new Date().toLocaleTimeString();
+  let color = 'var(--muted)';
+  if(isSuccess) color = 'var(--ok)';
+  if(isError) color = 'var(--danger)';
+  logBox.innerHTML += `<div style="color:${color}">[${time}] ${msg}</div>`;
+  logBox.scrollTop = logBox.scrollHeight;
+}
 
 checkAuth();
 </script>
