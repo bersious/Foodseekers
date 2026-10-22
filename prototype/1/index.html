@@ -707,18 +707,33 @@ function renderArtistTracks(){
         <button class="btn btn-ghost btn-sm" onclick="deleteTrack('${t.id}')" style="color:var(--danger)">Xóa Tác Phẩm</button>
       </div>
 
+      <!-- TRÌNH PHÁT NHẠC MP3 / XEM VIDEO TRỰC TIẾP -->
+      <div style="margin-bottom:14px;background:#050705;border:1px solid var(--line);border-radius:10px;padding:12px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <span style="font-size:11px;font-weight:700;color:var(--accent)" class="mono">
+            ${isVideo ? 'TRÌNH PHÁT VIDEO MASTER' : 'TRÌNH PHÁT ÂM THANH MASTER'}
+          </span>
+          <span style="font-size:10px;color:var(--dim)" class="mono">RAM STREAM</span>
+        </div>
+        ${isVideo ? `
+          <video id="player-${t.id}" controls style="width:100%;max-height:280px;border-radius:8px;background:#000;display:block"></video>
+        ` : `
+          <audio id="player-${t.id}" controls style="width:100%;border-radius:6px;outline:none"></audio>
+        `}
+      </div>
+
       <!-- Cài đặt giới hạn thời gian nghe thử của Nghệ sĩ -->
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;background:rgba(255,255,255,0.03);padding:8px 14px;border-radius:10px;border:1px solid var(--line);flex-wrap:wrap">
-        <span style="font-size:12px;color:var(--accent);font-weight:700"> Giới Hạn Thời Gian Xem / Nghe Thử:</span>
+        <span style="font-size:12px;color:var(--accent);font-weight:700">Giới hạn thời gian nghe thử:</span>
         <select class="form-input" style="width:auto;padding:5px 10px;font-size:12px;margin:0" onchange="setTrackLimit('${t.id}', this.value)">
-          <option value="0" ${(!t.previewLimitSeconds || t.previewLimitSeconds==0)?'selected':''}> Toàn bộ bài hát</option>
-          <option value="10" ${t.previewLimitSeconds==10?'selected':''}> 10 giây đầu</option>
-          <option value="15" ${t.previewLimitSeconds==15?'selected':''}> 15 giây đầu</option>
-          <option value="30" ${t.previewLimitSeconds==30?'selected':''}> 30 giây đầu</option>
-          <option value="60" ${t.previewLimitSeconds==60?'selected':''}> 60 giây đầu</option>
+          <option value="0" ${(!t.previewLimitSeconds || t.previewLimitSeconds==0)?'selected':''}>Toàn bộ bài hát</option>
+          <option value="10" ${t.previewLimitSeconds==10?'selected':''}>10 giây đầu</option>
+          <option value="15" ${t.previewLimitSeconds==15?'selected':''}>15 giây đầu</option>
+          <option value="30" ${t.previewLimitSeconds==30?'selected':''}>30 giây đầu</option>
+          <option value="60" ${t.previewLimitSeconds==60?'selected':''}>60 giây đầu</option>
         </select>
         <span class="mono" style="font-size:11px;color:${t.previewLimitSeconds>0?'var(--warn)':'var(--dim)'}">
-          ${t.previewLimitSeconds>0 ? `(Đang giới hạn người nghe chỉ được nghe ${t.previewLimitSeconds}s đầu)` : '· Toàn thời lượng'}
+          ${t.previewLimitSeconds>0 ? `· Giới hạn ${t.previewLimitSeconds}s` : '· Toàn thời lượng'}
         </span>
       </div>
 
@@ -737,6 +752,17 @@ function renderArtistTracks(){
     `;
     box.appendChild(card);
   });
+
+  // Tự động nạp blob hoặc stream vào các trình phát của từng bài hát
+  myTracks.forEach(async t => {
+    const el = document.getElementById(`player-${t.id}`);
+    if(!el) return;
+    const blob = await getMediaBlob(t.id);
+    if(blob){
+      el.src = URL.createObjectURL(blob);
+    }
+  });
+
 }
 
 function renderRequests(){
@@ -775,6 +801,17 @@ function renderRequests(){
     `;
     box.appendChild(card);
   });
+
+  // Tự động nạp blob hoặc stream vào các trình phát của từng bài hát
+  myTracks.forEach(async t => {
+    const el = document.getElementById(`player-${t.id}`);
+    if(!el) return;
+    const blob = await getMediaBlob(t.id);
+    if(blob){
+      el.src = URL.createObjectURL(blob);
+    }
+  });
+
 }
 
 function grantUser(trackId){
