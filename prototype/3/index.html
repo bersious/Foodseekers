@@ -98,7 +98,24 @@ body::after{
 @media(max-width:768px){
   .metrics-grid{grid-template-columns:repeat(2,1fr)}
   .s3-table{display:block;overflow-x:auto}
-}
+  }
+
+  .btn-reveal-eye{
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.12);
+    border-radius:6px;
+    padding:2px 6px;
+    font-size:12px;
+    cursor:pointer;
+    transition:all 0.2s;
+    color:var(--muted);
+  }
+  .btn-reveal-eye:hover{
+    background:rgba(184,243,107,0.15);
+    border-color:var(--accent);
+    color:var(--accent);
+    transform:scale(1.15);
+  }
 
 /* ==================== MOTION DESIGN SYSTEM ==================== */
 :root{
@@ -794,6 +811,7 @@ function renderS3Inspector(){
     const allowedCount = Array.isArray(t.allowedUsers) ? t.allowedUsers.length : 0;
     const isSingle = Array.isArray(t.singlePlayUsers) && t.singlePlayUsers.length > 0;
     const limitSec = Number(t.previewLimitSeconds) || 0;
+    const artist = (t.artistUsername || t.artistUser || 'artist').replace(/^@/, '');
 
     let policyDesc = 'Chưa cấp quyền';
     if(allowedCount > 0){
@@ -802,16 +820,61 @@ function renderS3Inspector(){
       if(limitSec > 0) policyDesc += ` · ${limitSec}s preview`;
     }
 
+    // Che tên tác phẩm để bảo mật bản quyền trước ngày phát hành
+    const rawName = t.name || 'unreleased_master.mp3';
+    let maskedName = rawName;
+    if(rawName.length > 10){
+      maskedName = rawName.slice(0, 4) + '••••••••' + rawName.slice(-8);
+    } else {
+      maskedName = '••••••••.mp3';
+    }
+
+    // Che Binary Hash
+    const rawHash = (t.hash || 'e3b0c442...').replace('...', '');
+    const maskedHash = (rawHash.slice(0, 6) || 'd8a391') + '••••••••••••';
+
     row.innerHTML = `
-      <td class="s3-td"><span style="color:var(--fg)">s3://vault/${t.name}.enc</span><br><span style="font-size:10px;color:var(--dim)">${t.size} · AES-256-GCM</span></td>
-      <td class="s3-td" style="color:var(--accent)">@${t.artistUsername||'alice_artist'}</td>
-      <td class="s3-td" style="color:#7b6fff">${t.hash.replace('...','')}d8a391e4fc29...</td>
+      <td class="s3-td">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="color:var(--fg);font-family:'JetBrains Mono',monospace">s3://vault/${maskedName}.enc</span>
+          <button class="btn-reveal-eye" onclick="revealMasterPrompt('${artist}', '${t.id}')" title="Yêu cầu xác thực chủ sở hữu để xem tên gốc">
+            👁️
+          </button>
+        </div>
+        <span style="font-size:10px;color:var(--dim)">${t.size} · AES-256-GCM</span>
+      </td>
+      <td class="s3-td" style="color:var(--accent)">@${artist}</td>
+      <td class="s3-td mono" style="color:#7b6fff">
+        <div style="display:flex;align-items:center;gap:6px">
+          <span>${maskedHash}</span>
+          <button class="btn-reveal-eye" onclick="revealMasterPrompt('${artist}', '${t.id}')" title="Xác thực xem toàn bộ mã băm">👁️</button>
+        </div>
+      </td>
       <td class="s3-td"><span class="badge badge-danger">KEY: ∅ (KHÔNG CÓ)</span></td>
       <td class="s3-td"><span class="badge ${allowedCount>0?'badge-ok':'badge-dim'}">${policyDesc}</span></td>
     `;
     row.classList.add('rise');
     tbody.appendChild(row);
   });
+}
+
+// Bấm nút con mắt sẽ yêu cầu đăng nhập tài khoản của chính nhạc sĩ đó
+function revealMasterPrompt(artistUser, trackId){
+  const logged = localStorage.getItem('tide_logged_artist');
+  if(logged && logged.toLowerCase() === artistUser.toLowerCase()){
+    // Đã đăng nhập đúng nhạc sĩ chủ quản
+    const tracks = getStoredTracks();
+    const track = tracks.find(x => x.id === trackId);
+    if(track){
+      alert(`[XÁC THỰC CHỦ SỞ HỮU THÀNH CÔNG]\nNghệ sĩ: @${artistUser}\nTác phẩm đầy đủ: ${track.name}\nHash SHA-256 đầy đủ: ${track.hash || 'd8a391e4fc2901a88b5e027f8a1924bc'}\n\nQuyền xem chỉ dành cho nhạc sĩ chủ quản.`);
+      return;
+    }
+  }
+
+  // Chưa đăng nhập hoặc không phải ca sĩ này
+  if(confirm(`[BẢO MẬT BẢN QUYỀN TRƯỚC PHÁT HÀNH]\nTên tác phẩm và mã băm đang được niêm phong mật mã.\nBạn cần đăng nhập tài khoản chính chủ @${artistUser} tại Cổng Nghệ Sĩ (/rmit/1) để xem tên gốc.\n\nChuyển sang Cổng Nghệ Sĩ ngay bây giờ?`)){
+    window.location.href = '/rmit/1';
+  }
 }
 
 function executeRootExploitSimulation(){
