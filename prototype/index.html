@@ -113,15 +113,154 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background:radial-grad
 .hero h1{font-size:clamp(36px,5.5vw,60px);line-height:1.05;font-weight:700;letter-spacing:-.03em}
 .hero h1 .glow{color:var(--accent)}
 .hero p{max-width:580px;margin:18px auto 0;color:var(--muted);font-size:16px}
-.grid{max-width:1080px;margin:30px auto 80px;padding:0 24px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.gate-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:32px 24px;display:flex;flex-direction:column;justify-content:space-between;transition:.25s ease;text-decoration:none;color:inherit;position:relative;overflow:hidden}
-.gate-card:hover{border-color:var(--line-strong);transform:translateY(-3px);background:var(--surface-2)}
-.gate-card.hero-gate{border-color:rgba(212,255,63,.3);background:linear-gradient(180deg,rgba(212,255,63,.04),transparent)}
-.gate-num{font-size:12px;font-weight:700;color:var(--accent);margin-bottom:12px}
-.gate-icon{font-size:40px;margin-bottom:16px}
-.gate-title{font-size:20px;font-weight:700;margin-bottom:8px}
-.gate-desc{font-size:13px;color:var(--muted);margin-bottom:24px;line-height:1.6}
-.gate-cta{font-size:13px;font-weight:600;color:var(--fg);display:flex;align-items:center;gap:6px}
+.grid{max-width:1080px;margin:30px auto 80px;padding:0 24px;display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.gate-card{
+  background:linear-gradient(145deg, rgba(20,26,38,.85), rgba(11,15,22,.95));
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:20px;
+  padding:32px 26px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  transition:all .32s cubic-bezier(.34,1.56,.64,1);
+  text-decoration:none;
+  color:inherit;
+  position:relative;
+  overflow:hidden;
+  backdrop-filter:blur(18px);
+}
+.gate-card::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  border-radius:20px;
+  padding:1px;
+  background:linear-gradient(135deg, rgba(255,255,255,.15), transparent 60%);
+  -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor;
+  mask-composite:exclude;
+  pointer-events:none;
+}
+.gate-card:hover{
+  transform:translateY(-6px);
+  border-color:rgba(184,243,107,.4);
+  box-shadow:0 20px 40px -15px rgba(0,0,0,.7), 0 0 25px -5px rgba(184,243,107,.25);
+  background:linear-gradient(145deg, rgba(25,33,48,.92), rgba(14,19,28,.98));
+}
+.gate-card.hero-gate{
+  border-color:rgba(184,243,107,.25);
+  background:linear-gradient(145deg, rgba(25,35,26,.88), rgba(10,16,11,.96));
+}
+.gate-card.hero-gate:hover{
+  border-color:rgba(184,243,107,.65);
+  box-shadow:0 20px 40px -15px rgba(0,0,0,.7), 0 0 30px -5px rgba(184,243,107,.35);
+}
+.gate-card.card-reviewer:hover{
+  border-color:rgba(96,165,250,.6);
+  box-shadow:0 20px 40px -15px rgba(0,0,0,.7), 0 0 30px -5px rgba(96,165,250,.3);
+}
+.gate-card.card-s3:hover{
+  border-color:rgba(251,191,36,.6);
+  box-shadow:0 20px 40px -15px rgba(0,0,0,.7), 0 0 30px -5px rgba(251,191,36,.3);
+}
+
+.gate-num{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:11px;
+  font-weight:700;
+  color:var(--accent);
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  margin-bottom:16px;
+  background:rgba(184,243,107,.1);
+  padding:4px 10px;
+  border-radius:999px;
+  border:1px solid rgba(184,243,107,.2);
+  width:fit-content;
+}
+.card-reviewer .gate-num{
+  color:#60a5fa;
+  background:rgba(96,165,250,.1);
+  border-color:rgba(96,165,250,.2);
+}
+.card-s3 .gate-num{
+  color:#fbbf24;
+  background:rgba(251,191,36,.1);
+  border-color:rgba(251,191,36,.2);
+}
+
+.gate-icon-wrap{
+  width:56px;
+  height:56px;
+  border-radius:16px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:28px;
+  margin-bottom:18px;
+  transition:all .3s ease;
+}
+.gate-card:hover .gate-icon-wrap{
+  transform:scale(1.1) rotate(4deg);
+  background:rgba(255,255,255,.08);
+}
+.hero-gate:hover .gate-icon-wrap{
+  border-color:rgba(184,243,107,.4);
+  box-shadow:0 0 16px rgba(184,243,107,.25);
+}
+.card-reviewer:hover .gate-icon-wrap{
+  border-color:rgba(96,165,250,.4);
+  box-shadow:0 0 16px rgba(96,165,250,.25);
+}
+.card-s3:hover .gate-icon-wrap{
+  border-color:rgba(251,191,36,.4);
+  box-shadow:0 0 16px rgba(251,191,36,.25);
+}
+
+.gate-title{font-size:21px;font-weight:700;margin-bottom:10px;letter-spacing:-.01em}
+.gate-desc{font-size:13.5px;color:var(--muted);margin-bottom:28px;line-height:1.65}
+
+.gate-cta{
+  font-size:13px;
+  font-weight:700;
+  font-family:'JetBrains Mono',monospace;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 16px;
+  border-radius:12px;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.1);
+  color:var(--fg);
+  transition:all .25s ease;
+  width:fit-content;
+}
+.gate-card:hover .gate-cta{
+  background:var(--accent);
+  color:#07080c;
+  border-color:transparent;
+  box-shadow:0 4px 16px rgba(184,243,107,.35);
+}
+.card-reviewer:hover .gate-cta{
+  background:#60a5fa;
+  color:#07080c;
+  box-shadow:0 4px 16px rgba(96,165,250,.35);
+}
+.card-s3:hover .gate-cta{
+  background:#fbbf24;
+  color:#07080c;
+  box-shadow:0 4px 16px rgba(251,191,36,.35);
+}
+.gate-cta .arrow{
+  transition:transform .25s ease;
+}
+.gate-card:hover .gate-cta .arrow{
+  transform:translateX(4px);
+}
 @media(max-width:768px){.grid{grid-template-columns:1fr}}
 
 /* ==================== PROFESSIONAL FOOTER ==================== */
@@ -237,6 +376,9 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background:radial-grad
 
   // Từ điển đa ngôn ngữ toàn diện
   const DICT = {
+    "c1-cta": { en: "Launch Artist Studio", vi: "Mở Két Sắt Nghệ Sĩ" },
+    "c2-cta": { en: "Launch Reviewer Room", vi: "Mở Phòng Nghe Thử" },
+    "c3-cta": { en: "Inspect Cloud Host", vi: "Trình Giám Sát S3" },
     // Topbar & Common
     "Nghệ Sĩ / Studio Két Sắt Mật Mã": { en: "Artist / Cryptographic Sovereign Vault", vi: "Nghệ Sĩ / Studio Két Sắt Mật Mã" },
     "Phòng nghe thử riêng tư · TideCloak BYOiD": { en: "Private Review Room · TideCloak BYOiD", vi: "Phòng nghe thử riêng tư · TideCloak BYOiD" },
@@ -448,33 +590,42 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background:radial-grad
   <a href="/rmit/1" class="gate-card hero-gate">
     <div>
       <div class="gate-num mono" data-i18n="c1-num">PORTAL 01 · ARTIST</div>
-      <div class="gate-icon">🎧</div>
+      <div class="gate-icon-wrap">🎧</div>
       <div class="gate-title" data-i18n="c1-title">Két Sắt Nghệ Sĩ</div>
       <div class="gate-desc" data-i18n="c1-desc">Đăng nhập tài khoản nghệ sĩ, tải file nhạc/video lên và phân quyền truy cập đích danh cho từng người nghe qua TideCloak.</div>
     </div>
-    <div class="gate-cta" style="color:var(--accent)" data-i18n="c1-cta">Mở Trang Nghệ Sĩ (/rmit/1) ➔</div>
+    <div class="gate-cta">
+      <span data-i18n="c1-cta">Mở Két Sắt Nghệ Sĩ</span>
+      <span class="arrow">➔</span>
+    </div>
   </a>
 
   <!-- Trang 2 -->
-  <a href="/rmit/2" class="gate-card">
+  <a href="/rmit/2" class="gate-card card-reviewer">
     <div>
       <div class="gate-num mono" data-i18n="c2-num">PORTAL 02 · REVIEWER</div>
-      <div class="gate-icon">🎙</div>
+      <div class="gate-icon-wrap">🎙</div>
       <div class="gate-title" data-i18n="c2-title">Phòng Nghe Thử</div>
       <div class="gate-desc" data-i18n="c2-desc">Đăng nhập hoặc tạo danh tính BYOiD mới. Nghe bản thu giải mã trên RAM nếu được cấp quyền, tự động bị ngắt khi bị thu hồi.</div>
     </div>
-    <div class="gate-cta" data-i18n="c2-cta">Mở Phòng Nghe Thử (/rmit/2) ➔</div>
+    <div class="gate-cta">
+      <span data-i18n="c2-cta">Mở Phòng Nghe Thử</span>
+      <span class="arrow">➔</span>
+    </div>
   </a>
 
   <!-- Trang 3 -->
-  <a href="/rmit/3" class="gate-card">
+  <a href="/rmit/3" class="gate-card card-s3">
     <div>
       <div class="gate-num mono" data-i18n="c3-num">PORTAL 03 · S3 HOST</div>
-      <div class="gate-icon">⚠️</div>
+      <div class="gate-icon-wrap">⚠️</div>
       <div class="gate-title" data-i18n="c3-title">Quản Trị Đám Mây</div>
       <div class="gate-desc" data-i18n="c3-desc">Xem kho dữ liệu nhị phân thô trên S3. Thử đóng vai hacker dùng quyền Root để giải mã và xem kết quả bị Quorum từ chối.</div>
     </div>
-    <div class="gate-cta" data-i18n="c3-cta">Mở Trình Kiểm Tra S3 (/rmit/3) ➔</div>
+    <div class="gate-cta">
+      <span data-i18n="c3-cta">Trình Giám Sát S3</span>
+      <span class="arrow">➔</span>
+    </div>
   </a>
 </div>
 
