@@ -323,13 +323,25 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background:radial-grad
 .tech-diagram{background:rgba(0,0,0,0.4);border:1px dashed var(--line-strong);border-radius:12px;padding:24px;margin-top:20px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);line-height:1.8}
 .tech-diagram strong{color:var(--accent)}
 
-/* Developer Team Card */
-.dev-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:20px}
-.dev-card{background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:18px;display:flex;align-items:center;gap:14px}
-.dev-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,rgba(184,243,107,.2),rgba(16,185,129,.1));display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--accent);font-size:16px;border:1px solid rgba(184,243,107,.3)}
-.dev-meta strong{display:block;font-size:14px;color:var(--fg)}
-.dev-meta span{font-size:11px;color:var(--muted)}
-.dev-meta .role{color:var(--accent);font-size:11px;font-weight:600}
+/* Developer Team Directory - Minimalist & High-Density Pro */
+.dev-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin-top:20px}
+.dev-card{
+  background:rgba(255,255,255,0.02);
+  border:1px solid rgba(255,255,255,0.08);
+  border-left:3px solid var(--accent);
+  border-radius:12px;
+  padding:16px 18px;
+  transition:all .2s ease;
+}
+.dev-card:hover{
+  background:rgba(255,255,255,0.04);
+  border-color:rgba(255,255,255,0.16);
+  border-left-color:var(--accent);
+  transform:translateY(-2px);
+}
+.dev-meta strong{display:block;font-size:14.5px;color:var(--fg);font-weight:600;letter-spacing:-0.01em;margin-bottom:4px}
+.dev-meta .role{display:block;color:var(--accent);font-size:12px;font-weight:600;font-family:'JetBrains Mono',monospace;margin-bottom:6px}
+.dev-meta .github-handle{font-size:11.5px;color:var(--muted);font-family:'JetBrains Mono',monospace}
 
 /* Nút về trang chính bersious. nhỏ gọn tinh tế */
 .bersious-home-btn{
@@ -643,19 +655,19 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background:radial-grad
 
     <div class="info-grid">
       <div class="info-item">
-        <h4><span>🔒</span> Nghe Trực Tiếp Trên RAM</h4>
+        <h4>Bộ Nhớ Đệm RAM Khép Kín</h4>
         <p>Tệp âm thanh được giải mã tức thời trực tiếp trên bộ nhớ RAM qua Web Audio API của trình duyệt. Không bao giờ lưu file tạm (.mp3/.wav) xuống ổ cứng người nghe.</p>
       </div>
       <div class="info-item">
-        <h4><span>⚡</span> Thu Hồi Quyền Trong 0.069ms</h4>
+        <h4>Thu Hồi Quyền Trong 0.069ms</h4>
         <p>Ca sĩ có thể thu hồi quyền nghe thử bất cứ lúc nào. Luồng phát âm thanh của người nghe lập tức bị ngắt tức thì do mạng lưới ngừng cấp khóa giải mã.</p>
       </div>
       <div class="info-item">
-        <h4><span>🛡️</span> Giám Sát Chống Can Thiệp</h4>
+        <h4>Giám Sát Chống Can Thiệp</h4>
         <p>Tích hợp cơ chế phát hiện phần mềm quay màn hình, mở F12 DevTools hoặc nỗ lực trích xuất âm thanh để tự động khóa vĩnh viễn quyền truy cập của người nghe đó.</p>
       </div>
       <div class="info-item">
-        <h4><span>🐥</span> Acoustic Watermark Bảo Vệ</h4>
+        <h4>Watermark Bản Quyền Sóng Âm</h4>
         <p>Chèn âm thanh đánh dấu bản quyền định kỳ (tiếng vịt kêu hoặc giọng đọc cảnh báo) để chống thu âm ngoài loa bằng điện thoại.</p>
       </div>
     </div>
@@ -688,35 +700,31 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background:radial-grad
 
     <div class="dev-cards">
       <div class="dev-card">
-        <div class="dev-avatar">N</div>
         <div class="dev-meta">
           <strong>Nguyễn Thành Thiện Nhân</strong>
           <span class="role">Team Lead & System Architect</span>
-          <span>Handle: @bersious</span>
+          <span class="github-handle">GitHub: @bersious</span>
         </div>
       </div>
-      <div class="dev-card">
-        <div class="dev-avatar" style="color:#60a5fa;border-color:rgba(96,165,250,.4)">V</div>
+      <div class="dev-card" style="border-left-color:#60a5fa">
         <div class="dev-meta">
           <strong>Nguyễn Văn Nhân</strong>
-          <span class="role">Core Pipeline & AI Engine</span>
-          <span>Handle: @NguyenNhan1107</span>
+          <span class="role" style="color:#60a5fa">Core Pipeline & AI Engine</span>
+          <span class="github-handle">GitHub: @NguyenNhan1107</span>
         </div>
       </div>
-      <div class="dev-card">
-        <div class="dev-avatar" style="color:#f472b6;border-color:rgba(244,114,182,.4)">T</div>
+      <div class="dev-card" style="border-left-color:#f472b6">
         <div class="dev-meta">
           <strong>Trần Nguyễn Anh Thư</strong>
-          <span class="role">Data Analyst & QA Testing</span>
-          <span>Handle: @tuna184</span>
+          <span class="role" style="color:#f472b6">Data Analyst & QA Testing</span>
+          <span class="github-handle">GitHub: @tuna184</span>
         </div>
       </div>
-      <div class="dev-card">
-        <div class="dev-avatar" style="color:#fbbf24;border-color:rgba(251,191,36,.4)">M</div>
+      <div class="dev-card" style="border-left-color:#fbbf24">
         <div class="dev-meta">
           <strong>Trần Minh Ngọc</strong>
-          <span class="role">Security & Attestation</span>
-          <span>Handle: @tranminhngoc171-bot</span>
+          <span class="role" style="color:#fbbf24">Security & Attestation</span>
+          <span class="github-handle">GitHub: @tranminhngoc171-bot</span>
         </div>
       </div>
     </div>
