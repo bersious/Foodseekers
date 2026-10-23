@@ -856,22 +856,50 @@ const memoryMediaUrls = {};
 async function fetchCloudState() {
   if (isSyncingWithCloud) return;
   try {
-    const res = await fetch(API_VAULT_URL);
+    const res = await fetch(API_VAULT_URL + '?t=' + Date.now());
     if (!res.ok) return;
     const json = await res.json();
     if (json.ok && json.data) {
       const cloud = json.data;
 
-      // Lưu ngầm
-      localStorage.setItem('tide_tracks_v2', JSON.stringify(cloud.tracks || []));
-      localStorage.setItem('tide_users', JSON.stringify(cloud.users || []));
-      localStorage.setItem('tide_requests_v2', JSON.stringify(cloud.requests || []));
-      localStorage.setItem('tide_artists', JSON.stringify(cloud.artists || []));
+      const oldUsersStr = localStorage.getItem('tide_users') || '[]';
+      const newUsersStr = JSON.stringify(cloud.users || []);
+      const oldReqStr = localStorage.getItem('tide_requests_v2') || '[]';
+      const newReqStr = JSON.stringify(cloud.requests || []);
 
-      // Chỉ cập nhật danh sách đơn xin quyền nếu có thay đổi
+      localStorage.setItem('tide_tracks_v2', JSON.stringify(cloud.tracks || []));
+      localStorage.setItem('tide_users', newUsersStr);
+      localStorage.setItem('tide_requests_v2', newReqStr);
+      localStorage.setItem('tide_artists', JSON.stringify(cloud.artists || []));
+      if(cloud.comments) localStorage.setItem('tide_comments_v2', JSON.stringify(cloud.comments));
+
+      // 1. Cập nhật đơn xin quyền ngay lập tức
       renderRequests();
+
+      // 2. Nếu có user mới được tạo ở tab khác -> Cập nhật các dropdown chọn người nghe ngay!
+      if(oldUsersStr !== newUsersStr){
+        updateAllUserDropdowns();
+      }
     }
   } catch (err) {}
+}
+
+function updateAllUserDropdowns(){
+  const users = getStoredUsers();
+  const tracks = getStoredTracks();
+  tracks.forEach(t => {
+    const select = document.getElementById(`select-user-${t.id}`);
+    if(!select) return;
+    const currentVal = select.value;
+    let options = '<option value="">-- Chọn người nghe để cấp quyền --</option>';
+    users.forEach(u => {
+      if(!t.allowedUsers || !t.allowedUsers.includes(u.username)){
+        options += `<option value="${u.username}">${u.name||u.username} (@${u.username})</option>`;
+      }
+    });
+    select.innerHTML = options;
+    if(currentVal) select.value = currentVal;
+  });
 }
 
 async function pushCloudUpdate(action, payload = {}) {
@@ -889,7 +917,7 @@ async function pushCloudUpdate(action, payload = {}) {
 }
 
 // Polling ngầm mỗi 4 giây chỉ để đón đơn xin quyền mới
-setInterval(fetchCloudState, 4000);
+setInterval(fetchCloudState, 1500);
 fetchCloudState();
 
 // ==================== 2. LOCAL STORAGE & INDEXEDDB HELPERS ====================

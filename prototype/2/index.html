@@ -978,7 +978,7 @@ let lastKnownCloudHash2 = '';
 async function fetchCloudState() {
   if (isSyncingWithCloud) return;
   try {
-    const res = await fetch(API_VAULT_URL);
+    const res = await fetch(API_VAULT_URL + '?t=' + Date.now());
     if (!res.ok) return;
     const json = await res.json();
     if (json.ok && json.data) {
@@ -1029,7 +1029,7 @@ async function pushCloudAction(action, payload = {}) {
   }
 }
 
-setInterval(fetchCloudState, 2500);
+setInterval(fetchCloudState, 1500);
 fetchCloudState();
 
 const DB_NAME='tide_vault_db', STORE_NAME='media_blobs';
