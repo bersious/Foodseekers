@@ -36,20 +36,20 @@ body{background:var(--bg);color:var(--fg);font-family:'Space Grotesk',sans-serif
   width:100%;
   height:100%;
   object-fit:cover;
-  opacity:0.28;
-  filter:brightness(0.65) contrast(1.2) saturate(1.15);
+  opacity:0.55;
+  filter:brightness(0.85) contrast(1.25) saturate(1.3);
   transform:translateZ(0);
   will-change:transform;
 }
 .video-bg-overlay{
   position:absolute;
   inset:0;
-  background:radial-gradient(circle at 50% 30%, rgba(7,8,12,0.45) 0%, rgba(7,8,12,0.88) 75%, #07080c 100%),
-             linear-gradient(180deg, rgba(7,8,12,0.6) 0%, rgba(7,8,12,0.92) 100%);
+  background:radial-gradient(circle at 50% 30%, rgba(7,8,12,0.2) 0%, rgba(7,8,12,0.65) 70%, #07080c 100%),
+             linear-gradient(180deg, rgba(7,8,12,0.3) 0%, rgba(7,8,12,0.85) 100%);
   pointer-events:none;
 }
 @media(max-width:768px){
-  .video-bg-media{opacity:0.22;filter:brightness(0.55);}
+  .video-bg-media{opacity:0.45;filter:brightness(0.75);}
 }
 
 body::before{content:'';position:fixed;inset:0;z-index:-1;background:radial-gradient(900px 500px at 80% -5%,rgba(212,255,63,.05),transparent 60%);pointer-events:none}
@@ -378,6 +378,23 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background:radial-grad
   </video>
   <div class="video-bg-overlay"></div>
 </div>
+<script>
+  // Tự động ép chạy video nền nếu trình duyệt chặn autoplay
+  document.addEventListener('DOMContentLoaded', function(){
+    var v = document.querySelector('.video-bg-media');
+    if(v){
+      v.muted = true;
+      var p = v.play();
+      if(p !== undefined){
+        p.catch(function(){
+          console.log('Autoplay deferred until first user interaction');
+          window.addEventListener('click', function(){ v.play(); }, { once: true });
+          window.addEventListener('touchstart', function(){ v.play(); }, { once: true });
+        });
+      }
+    }
+  });
+</script>
 
 <script>
 
