@@ -19,8 +19,40 @@
   --ok:#3ee88f;--ok-dim:rgba(62,232,143,.12);--radius:16px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--fg);font-family:'Space Grotesk',sans-serif;line-height:1.5;min-height:100vh}
-body::before{content:'';position:fixed;inset:0;z-index:-2;background:radial-gradient(900px 500px at 80% -5%,rgba(212,255,63,.07),transparent 60%)}
+body{background:var(--bg);color:var(--fg);font-family:'Space Grotesk',sans-serif;line-height:1.5;min-height:100vh;position:relative}
+
+/* Video Background Layer - Siêu tối ưu, GPU hardware accelerated, không gây lag */
+.video-bg-container{
+  position:fixed;
+  inset:0;
+  width:100vw;
+  height:100vh;
+  z-index:-2;
+  overflow:hidden;
+  pointer-events:none;
+  background:#07080c;
+}
+.video-bg-media{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  opacity:0.28;
+  filter:brightness(0.65) contrast(1.2) saturate(1.15);
+  transform:translateZ(0);
+  will-change:transform;
+}
+.video-bg-overlay{
+  position:absolute;
+  inset:0;
+  background:radial-gradient(circle at 50% 30%, rgba(7,8,12,0.45) 0%, rgba(7,8,12,0.88) 75%, #07080c 100%),
+             linear-gradient(180deg, rgba(7,8,12,0.6) 0%, rgba(7,8,12,0.92) 100%);
+  pointer-events:none;
+}
+@media(max-width:768px){
+  .video-bg-media{opacity:0.22;filter:brightness(0.55);}
+}
+
+body::before{content:'';position:fixed;inset:0;z-index:-1;background:radial-gradient(900px 500px at 80% -5%,rgba(212,255,63,.05),transparent 60%);pointer-events:none}
 .mono{font-family:'JetBrains Mono',monospace}
 
 /* Topbar sạch sẽ - KHÔNG CÒN 3 NÚT CHUYỂN CHẾ ĐỘ */
@@ -138,6 +170,28 @@ body::before{content:'';position:fixed;inset:0;z-index:-2;background:radial-grad
 }
 
 
+/* Features & Tech Deep Dive Section */
+.info-section{max-width:1080px;margin:0 auto 60px;padding:0 24px}
+.info-box{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:36px;margin-bottom:24px;backdrop-filter:blur(16px)}
+.info-tag{display:inline-block;font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
+.info-title{font-size:24px;font-weight:700;margin-bottom:14px;letter-spacing:-.02em}
+.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:20px}
+.info-item{background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:20px}
+.info-item h4{font-size:16px;font-weight:700;color:var(--fg);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.info-item p{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* Tech Showcase */
+.tech-diagram{background:rgba(0,0,0,0.4);border:1px dashed var(--line-strong);border-radius:12px;padding:24px;margin-top:20px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);line-height:1.8}
+.tech-diagram strong{color:var(--accent)}
+
+/* Developer Team Card */
+.dev-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:20px}
+.dev-card{background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:18px;display:flex;align-items:center;gap:14px}
+.dev-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,rgba(184,243,107,.2),rgba(16,185,129,.1));display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--accent);font-size:16px;border:1px solid rgba(184,243,107,.3)}
+.dev-meta strong{display:block;font-size:14px;color:var(--fg)}
+.dev-meta span{font-size:11px;color:var(--muted)}
+.dev-meta .role{color:var(--accent);font-size:11px;font-weight:600}
+
 /* Nút về trang chính bersious. nhỏ gọn tinh tế */
 .bersious-home-btn{
   display:inline-flex;align-items:center;gap:6px;padding:4px 10px;
@@ -165,6 +219,14 @@ body::before{content:'';position:fixed;inset:0;z-index:-2;background:radial-grad
 </style>
 </head>
 <body>
+
+<!-- Background Video Layer (Cyber Blue Audio Wave Particles) -->
+<div class="video-bg-container">
+  <video class="video-bg-media" autoplay loop muted playsinline preload="auto" poster="/rmit/bg-poster.webp">
+    <source src="/rmit/bg-wave.mp4" type="video/mp4">
+  </video>
+  <div class="video-bg-overlay"></div>
+</div>
 
 <script>
 
@@ -372,43 +434,143 @@ body::before{content:'';position:fixed;inset:0;z-index:-2;background:radial-grad
 
 <section class="hero">
   <div class="kicker"><span class="pulse"></span> RMIT Hackathon 2026 · Challenge 2 · Team Foodseekers</div>
-  <h1>Chia sẻ bản thu<br><span class="glow">không cần tin ai cả.</span></h1>
-  <p>Hệ thống chia sẻ âm nhạc & tác phẩm sáng tạo bảo mật tuyệt đối với công nghệ TideCloak Emergent Authority.</p>
+  <h1 style="font-size:clamp(28px, 4.8vw, 50px);line-height:1.2;margin-bottom:18px">
+    Chia sẻ bản thu của bạn bảo mật bằng công nghệ<br>
+    <span class="glow">"TideCloak Emergent Authority."</span>
+  </h1>
+  <p style="font-size:16px;max-width:720px">
+    Hệ thống két sắt âm nhạc số phân tán đầu tiên tại Việt Nam loại bỏ hoàn toàn chìa khóa chủ máy chủ, trao 100% quyền kiểm soát tác phẩm master cho nghệ sĩ và phòng thu.
+  </p>
 </section>
 
 <div class="grid">
   <!-- Trang 1 -->
   <a href="/rmit/1" class="gate-card hero-gate">
     <div>
-      <div class="gate-num mono">CỔNG 01 · NGHỆ SĨ</div>
+      <div class="gate-num mono" data-i18n="c1-num">PORTAL 01 · ARTIST</div>
       <div class="gate-icon">🎧</div>
-      <div class="gate-title">Két Sắt Nghệ Sĩ</div>
-      <div class="gate-desc">Đăng nhập tài khoản nghệ sĩ, tải file nhạc/video lên và phân quyền truy cập đích danh cho từng người nghe qua TideCloak.</div>
+      <div class="gate-title" data-i18n="c1-title">Két Sắt Nghệ Sĩ</div>
+      <div class="gate-desc" data-i18n="c1-desc">Đăng nhập tài khoản nghệ sĩ, tải file nhạc/video lên và phân quyền truy cập đích danh cho từng người nghe qua TideCloak.</div>
     </div>
-    <div class="gate-cta" style="color:var(--accent)">Mở Trang Nghệ Sĩ (/rmit/1) ➔</div>
+    <div class="gate-cta" style="color:var(--accent)" data-i18n="c1-cta">Mở Trang Nghệ Sĩ (/rmit/1) ➔</div>
   </a>
 
   <!-- Trang 2 -->
   <a href="/rmit/2" class="gate-card">
     <div>
-      <div class="gate-num mono">CỔNG 02 · NGƯỜI NGHE THỬ</div>
+      <div class="gate-num mono" data-i18n="c2-num">PORTAL 02 · REVIEWER</div>
       <div class="gate-icon">🎙</div>
-      <div class="gate-title">Phòng Nghe Thử</div>
-      <div class="gate-desc">Đăng nhập hoặc tạo danh tính BYOiD mới. Nghe bản thu giải mã trên RAM nếu được cấp quyền, tự động bị ngắt khi bị thu hồi.</div>
+      <div class="gate-title" data-i18n="c2-title">Phòng Nghe Thử</div>
+      <div class="gate-desc" data-i18n="c2-desc">Đăng nhập hoặc tạo danh tính BYOiD mới. Nghe bản thu giải mã trên RAM nếu được cấp quyền, tự động bị ngắt khi bị thu hồi.</div>
     </div>
-    <div class="gate-cta">Mở Phòng Nghe Thử (/rmit/2) ➔</div>
+    <div class="gate-cta" data-i18n="c2-cta">Mở Phòng Nghe Thử (/rmit/2) ➔</div>
   </a>
 
   <!-- Trang 3 -->
   <a href="/rmit/3" class="gate-card">
     <div>
-      <div class="gate-num mono">CỔNG 03 · MÁY CHỦ S3</div>
+      <div class="gate-num mono" data-i18n="c3-num">PORTAL 03 · S3 HOST</div>
       <div class="gate-icon">⚠️</div>
-      <div class="gate-title">Quản Trị Đám Mây</div>
-      <div class="gate-desc">Xem kho dữ liệu nhị phân thô trên S3. Thử đóng vai hacker dùng quyền Root để giải mã và xem kết quả bị Quorum từ chối.</div>
+      <div class="gate-title" data-i18n="c3-title">Quản Trị Đám Mây</div>
+      <div class="gate-desc" data-i18n="c3-desc">Xem kho dữ liệu nhị phân thô trên S3. Thử đóng vai hacker dùng quyền Root để giải mã và xem kết quả bị Quorum từ chối.</div>
     </div>
-    <div class="gate-cta">Mở Trình Kiểm Tra S3 (/rmit/3) ➔</div>
+    <div class="gate-cta" data-i18n="c3-cta">Mở Trình Kiểm Tra S3 (/rmit/3) ➔</div>
   </a>
+</div>
+
+<!-- ================= KHỐI GIỚI THIỆU TÍNH NĂNG & CÔNG NGHỆ & NHÀ PHÁT TRIỂN ================= -->
+<div class="info-section">
+  
+  <!-- 1. SONARA LÀ GÌ & DÙNG ĐỂ LÀM GÌ? -->
+  <div class="info-box">
+    <div class="info-tag">01 · TỔNG QUAN GIẢI PHÁP</div>
+    <div class="info-title">SONARA là gì và dùng để làm gì?</div>
+    <p style="color:var(--muted);font-size:14px;line-height:1.7;margin-bottom:20px">
+      Trước khi ra mắt chính thức, các bài hát độc quyền (Unreleased Masters) thường xuyên bị rò rỉ khi gửi cho nhà sản xuất, kỹ sư hòa âm, giám đốc A&R hoặc đài phát thanh qua Google Drive, Dropbox hay SoundCloud Private. 
+      <strong>SONARA</strong> là nền tảng két sắt âm nhạc số <em>Zero-Custody (Không-Ủy-Thác)</em>, cho phép nghệ sĩ chia sẻ bản master chất lượng cao nhất (FLAC 24-bit/48kHz, WAV, 4K Video) để nghe thử mà <strong>không sợ bị tuồn trộm hay trích xuất trái phép</strong>.
+    </p>
+
+    <div class="info-grid">
+      <div class="info-item">
+        <h4><span>🔒</span> Nghe Trực Tiếp Trên RAM</h4>
+        <p>Tệp âm thanh được giải mã tức thời trực tiếp trên bộ nhớ RAM qua Web Audio API của trình duyệt. Không bao giờ lưu file tạm (.mp3/.wav) xuống ổ cứng người nghe.</p>
+      </div>
+      <div class="info-item">
+        <h4><span>⚡</span> Thu Hồi Quyền Trong 0.069ms</h4>
+        <p>Ca sĩ có thể thu hồi quyền nghe thử bất cứ lúc nào. Luồng phát âm thanh của người nghe lập tức bị ngắt tức thì do mạng lưới ngừng cấp khóa giải mã.</p>
+      </div>
+      <div class="info-item">
+        <h4><span>🛡️</span> Giám Sát Chống Can Thiệp</h4>
+        <p>Tích hợp cơ chế phát hiện phần mềm quay màn hình, mở F12 DevTools hoặc nỗ lực trích xuất âm thanh để tự động khóa vĩnh viễn quyền truy cập của người nghe đó.</p>
+      </div>
+      <div class="info-item">
+        <h4><span>🐥</span> Acoustic Watermark Bảo Vệ</h4>
+        <p>Chèn âm thanh đánh dấu bản quyền định kỳ (tiếng vịt kêu hoặc giọng đọc cảnh báo) để chống thu âm ngoài loa bằng điện thoại.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. CÔNG NGHỆ TIDECLOAK & EMERGENT AUTHORITY HOẠT ĐỘNG THẾ NÀO? -->
+  <div class="info-box">
+    <div class="info-tag">02 · ĐỘT PHÁ MẬT MÃ HỌC</div>
+    <div class="info-title">Bản chất công nghệ TideCloak Emergent Authority</div>
+    <p style="color:var(--muted);font-size:14px;line-height:1.7">
+      Ở các dịch vụ đám mây truyền thống, quản trị viên máy chủ hoặc hacker nắm quyền Root AWS luôn có thể lấy trộm chìa khóa giải mã trong Database. 
+      Với công nghệ <strong>TideCloak</strong>, <span style="color:var(--accent);font-weight:600">hoàn toàn KHÔNG TỒN TẠI chìa khóa chủ ở bất kỳ máy chủ nào</span>:
+    </p>
+
+    <div class="tech-diagram">
+      <div>[Ca Sĩ Tải Nhạc] ──► Mã Hóa Đầu Cuối (AES-256-GCM Client-side) ──► Máy Chủ S3 (Chỉ Lưu Khối Nhị Phân Opaque)</div>
+      <div style="color:var(--accent);margin:6px 0">▼ Khi Người Nghe Được Cấp Quyền:</div>
+      <div>Mạng Lưới Tide Fabric Quorum (Các Nút Đồng Thuận Độc Lập) ──► Xác Thực Danh Tính BYOiD ──► Quyền Hạn Tự Sinh (Emergent Key)</div>
+      <div style="color:#3ee88f;margin-top:6px">✓ Khóa giải mã CHỈ TỰ SINH TRÊN RAM người nghe trong tích tắc và TỰ HỦY khi bản nhạc phát xong!</div>
+    </div>
+  </div>
+
+  <!-- 3. ĐỘI NGŨ PHÁT TRIỂN (DEVELOPERS) -->
+  <div class="info-box">
+    <div class="info-tag">03 · NHÀ PHÁT TRIỂN DỰ ÁN</div>
+    <div class="info-title">Đội ngũ kỹ thuật — Team Foodseekers (UIT, VNU-HCM)</div>
+    <p style="color:var(--muted);font-size:14px;line-height:1.7">
+      Dự án SONARA được nghiên cứu và phát triển bởi 4 sinh viên năm 2 ngành Khoa học Máy tính & Trí tuệ Nhân tạo tại <strong>Trường Đại học Công nghệ Thông tin (UIT), ĐHQG-HCM</strong> tham gia tranh tài tại <em>RMIT Hackathon 2026</em>:
+    </p>
+
+    <div class="dev-cards">
+      <div class="dev-card">
+        <div class="dev-avatar">N</div>
+        <div class="dev-meta">
+          <strong>Nguyễn Thành Thiện Nhân</strong>
+          <span class="role">Team Lead & System Architect</span>
+          <span>Handle: @bersious</span>
+        </div>
+      </div>
+      <div class="dev-card">
+        <div class="dev-avatar" style="color:#60a5fa;border-color:rgba(96,165,250,.4)">V</div>
+        <div class="dev-meta">
+          <strong>Nguyễn Văn Nhân</strong>
+          <span class="role">Core Pipeline & AI Engine</span>
+          <span>Handle: @NguyenNhan1107</span>
+        </div>
+      </div>
+      <div class="dev-card">
+        <div class="dev-avatar" style="color:#f472b6;border-color:rgba(244,114,182,.4)">T</div>
+        <div class="dev-meta">
+          <strong>Trần Nguyễn Anh Thư</strong>
+          <span class="role">Data Analyst & QA Testing</span>
+          <span>Handle: @tuna184</span>
+        </div>
+      </div>
+      <div class="dev-card">
+        <div class="dev-avatar" style="color:#fbbf24;border-color:rgba(251,191,36,.4)">M</div>
+        <div class="dev-meta">
+          <strong>Trần Minh Ngọc</strong>
+          <span class="role">Security & Attestation</span>
+          <span>Handle: @tranminhngoc171-bot</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <footer class="footer">
