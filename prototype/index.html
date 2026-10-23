@@ -517,6 +517,79 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background:radial-grad
     "Tích hợp bảo mật TideCloak & Emergent Authority · RMIT Hackathon 2026": { en: "Powered by TideCloak & Emergent Authority · RMIT Hackathon 2026", vi: "Tích hợp bảo mật TideCloak & Emergent Authority · RMIT Hackathon 2026" }
   };
 
+  // Bản dịch các phần mới bổ sung (Sections, Features, Tech, Devs)
+  const I18N_SECTIONS = {
+    "hero-h1-prefix": { en: "Securely share your unreleased masters with", vi: "Chia sẻ bản thu của bạn bảo mật bằng công nghệ" },
+    "hero-sub": {
+      en: "The first decentralized music vault in Vietnam that eliminates server master keys, granting artists 100% sovereign control over master recordings.",
+      vi: "Hệ thống két sắt âm nhạc số phân tán đầu tiên tại Việt Nam loại bỏ hoàn toàn chìa khóa chủ máy chủ, trao 100% quyền kiểm soát tác phẩm master cho nghệ sĩ và phòng thu."
+    },
+    "c1-num": { en: "PORTAL 01 · ARTIST", vi: "CỔNG 01 · NGHỆ SĨ" },
+    "c1-title": { en: "Artist Vault", vi: "Két Sắt Nghệ Sĩ" },
+    "c1-desc": { en: "Log in to artist account, upload lossless masters/videos, and assign selective decryption entitlements via TideCloak.", vi: "Đăng nhập tài khoản nghệ sĩ, tải file nhạc/video lên và phân quyền truy cập đích danh cho từng người nghe qua TideCloak." },
+    "c1-cta": { en: "Launch Artist Studio", vi: "Mở Két Sắt Nghệ Sĩ" },
+
+    "c2-num": { en: "PORTAL 02 · REVIEWER", vi: "CỔNG 02 · NGƯỜI NGHE THỬ" },
+    "c2-title": { en: "Reviewer Room", vi: "Phòng Nghe Thử" },
+    "c2-desc": { en: "Sign in or create a BYOiD identity. Stream in-memory decrypted audio when authorized, with immediate revocation enforcement.", vi: "Đăng nhập hoặc tạo danh tính BYOiD mới. Nghe bản thu giải mã trên RAM nếu được cấp quyền, tự động bị ngắt khi bị thu hồi." },
+    "c2-cta": { en: "Launch Reviewer Room", vi: "Mở Phòng Nghe Thử" },
+
+    "c3-num": { en: "PORTAL 03 · S3 HOST", vi: "CỔNG 03 · MÁY CHỦ S3" },
+    "c3-title": { en: "Cloud Administration", vi: "Quản Trị Đám Mây" },
+    "c3-desc": { en: "Inspect raw encrypted binary objects on S3. Simulate an adversary with Root AWS credentials and verify zero-master-key rejection.", vi: "Xem kho dữ liệu nhị phân thô trên S3. Thử đóng vai hacker dùng quyền Root để giải mã và xem kết quả bị Quorum từ chối." },
+    "c3-cta": { en: "Inspect Cloud Host", vi: "Trình Giám Sát S3" },
+
+    "sec1-tag": { en: "01 · SOLUTION OVERVIEW", vi: "01 · TỔNG QUAN GIẢI PHÁP" },
+    "sec1-title": { en: "What is SONARA and what is it used for?", vi: "SONARA là gì và dùng để làm gì?" },
+    "sec1-desc": {
+      en: "Before an official release, unreleased master recordings are frequently leaked when shared with producers, mix engineers, A&R executives, or radio stations via Google Drive, Dropbox, or private SoundCloud. SONARA is a Zero-Custody digital music vault platform that allows artists to share uncompromised master quality files (FLAC 24-bit/48kHz, WAV, 4K Video) for evaluation without fear of unauthorized extraction or insider leaks.",
+      vi: "Trước khi ra mắt chính thức, các bài hát độc quyền (Unreleased Masters) thường xuyên bị rò rỉ khi gửi cho nhà sản xuất, kỹ sư hòa âm, giám đốc A&R hoặc đài phát thanh qua Google Drive, Dropbox hay SoundCloud Private. SONARA là nền tảng két sắt âm nhạc số Zero-Custody (Không-Ủy-Thác), cho phép nghệ sĩ chia sẻ bản master chất lượng cao nhất (FLAC 24-bit/48kHz, WAV, 4K Video) để nghe thử mà không sợ bị tuồn trộm hay trích xuất trái phép."
+    },
+
+    "feat1-title": { en: "Enclosed RAM Decryption Buffer", vi: "Bộ Nhớ Đệm RAM Khép Kín" },
+    "feat1-desc": {
+      en: "Audio chunks are decrypted ephemerally in-memory via browser Web Audio API. Temporary audio files (.mp3/.wav) are never persisted to disk.",
+      vi: "Tệp âm thanh được giải mã tức thời trực tiếp trên bộ nhớ RAM qua Web Audio API của trình duyệt. Không bao giờ lưu file tạm (.mp3/.wav) xuống ổ cứng người nghe."
+    },
+
+    "feat2-title": { en: "Instant Revocation in 0.069ms", vi: "Thu Hồi Quyền Trong 0.069ms" },
+    "feat2-desc": {
+      en: "Artists can revoke audition access at any moment. The listener's playback stream halts immediately as the decentralized quorum halts ephemeral key issuance.",
+      vi: "Ca sĩ có thể thu hồi quyền nghe thử bất cứ lúc nào. Luồng phát âm thanh của người nghe lập tức bị ngắt tức thì do mạng lưới ngừng cấp khóa giải mã."
+    },
+
+    "feat3-title": { en: "Real-time Tamper Watchdog", vi: "Giám Sát Chống Can Thiệp" },
+    "feat3-desc": {
+      en: "Built-in detection monitors screen recorders, DevTools opening, and unauthorized audio capture attempts, immediately and permanently revoking access.",
+      vi: "Tích hợp cơ chế phát hiện phần mềm quay màn hình, mở F12 DevTools hoặc nỗ lực trích xuất âm thanh để tự động khóa vĩnh viễn quyền truy cập của người nghe đó."
+    },
+
+    "feat4-title": { en: "Acoustic Wave Watermark", vi: "Watermark Bản Quyền Sóng Âm" },
+    "feat4-desc": {
+      en: "Periodically embeds audible acoustic signatures (such as quack cues or audio copyright warnings) to prevent analog microphone recording from speakers.",
+      vi: "Chèn âm thanh đánh dấu bản quyền định kỳ (tiếng vịt kêu hoặc giọng đọc cảnh báo) để chống thu âm ngoài loa bằng điện thoại."
+    },
+
+    "sec2-tag": { en: "02 · CRYPTOGRAPHIC BREAKTHROUGH", vi: "02 · ĐỘT PHÁ MẬT MÃ HỌC" },
+    "sec2-title": { en: "Architecture of TideCloak Emergent Authority", vi: "Bản chất công nghệ TideCloak Emergent Authority" },
+    "sec2-desc": {
+      en: "In legacy cloud architectures, server administrators or root AWS intruders can always retrieve decryption master keys stored in databases. With TideCloak, NO MASTER KEY EXISTS ANYWHERE ON ANY SERVER:",
+      vi: "Ở các dịch vụ đám mây truyền thống, quản trị viên máy chủ hoặc hacker nắm quyền Root AWS luôn có thể lấy trộm chìa khóa giải mã trong Database. Với công nghệ TideCloak, hoàn toàn KHÔNG TỒN TẠI chìa khóa chủ ở bất kỳ máy chủ nào:"
+    },
+
+    "diag-step1": { en: "[Artist Uploads Master] ──► End-to-End Client Encryption (AES-256-GCM) ──► S3 Host (Holds Only Opaque Binary Blobs)", vi: "[Ca Sĩ Tải Nhạc] ──► Mã Hóa Đầu Cuối (AES-256-GCM Client-side) ──► Máy Chủ S3 (Chỉ Lưu Khối Nhị Phân Opaque)" },
+    "diag-step2": { en: "▼ When Authorized Listener Streams:", vi: "▼ Khi Người Nghe Được Cấp Quyền:" },
+    "diag-step3": { en: "Tide Fabric Quorum Network (Independent Consensus Nodes) ──► Attests BYOiD Identity ──► Grants Emergent Authority", vi: "Mạng Lưới Tide Fabric Quorum (Các Nút Đồng Thuận Độc Lập) ──► Xác Thực Danh Tính BYOiD ──► Quyền Hạn Tự Sinh (Emergent Key)" },
+    "diag-step4": { en: "✓ Decryption key emerges ONLY IN LISTENER RAM ephemerally and vaporizes immediately upon playback end!", vi: "✓ Khóa giải mã CHỈ TỰ SINH TRÊN RAM người nghe trong tích tắc và TỰ HỦY khi bản nhạc phát xong!" },
+
+    "sec3-tag": { en: "03 · PROJECT DEVELOPERS", vi: "03 · NHÀ PHÁT TRIỂN DỰ ÁN" },
+    "sec3-title": { en: "Engineering Team — Team Foodseekers", vi: "Đội ngũ kỹ thuật — Team Foodseekers" },
+    "sec3-desc": {
+      en: "Project SONARA was researched and engineered by 4 second-year students majoring in Computer Science & Artificial Intelligence at the University of Information Technology (UIT), VNU-HCM, competing at RMIT Hackathon 2026.",
+      vi: "Dự án SONARA được nghiên cứu và phát triển bởi 4 sinh viên năm 2 ngành Khoa học Máy tính & Trí tuệ Nhân tạo tại Trường Đại học Công nghệ Thông tin (UIT), ĐHQG-HCM tham gia tranh tài tại RMIT Hackathon 2026."
+    }
+  };
+
   // Mặc định là 'en' (Tiếng Anh), lưu trong localStorage
   let currentLang = localStorage.getItem('sonara_lang') || 'en';
 
@@ -528,6 +601,14 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background:radial-grad
     // Cập nhật trạng thái nút bấm
     document.querySelectorAll('.lang-btn').forEach(btn => {
       btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+    });
+
+    // Dịch các phần tử có thuộc tính data-i18n trực tiếp
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if(I18N_SECTIONS[key]){
+        el.textContent = I18N_SECTIONS[key][lang] || el.textContent;
+      }
     });
 
     // Quét toàn bộ text nodes trong trang
@@ -606,10 +687,10 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background:radial-grad
 <section class="hero">
   <div class="kicker"><span class="pulse"></span> RMIT Hackathon 2026 · Challenge 2 · Team Foodseekers</div>
   <h1 style="font-size:clamp(28px, 4.8vw, 50px);line-height:1.2;margin-bottom:18px">
-    Chia sẻ bản thu của bạn bảo mật bằng công nghệ<br>
+    <span data-i18n="hero-h1-prefix">Chia sẻ bản thu của bạn bảo mật bằng công nghệ</span><br>
     <span class="glow">"TideCloak Emergent Authority."</span>
   </h1>
-  <p style="font-size:16px;max-width:720px">
+  <p style="font-size:16px;max-width:720px" data-i18n="hero-sub">
     Hệ thống két sắt âm nhạc số phân tán đầu tiên tại Việt Nam loại bỏ hoàn toàn chìa khóa chủ máy chủ, trao 100% quyền kiểm soát tác phẩm master cho nghệ sĩ và phòng thu.
   </p>
 </section>
@@ -663,56 +744,54 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background:radial-grad
   
   <!-- 1. SONARA LÀ GÌ & DÙNG ĐỂ LÀM GÌ? -->
   <div class="info-box">
-    <div class="info-tag">01 · TỔNG QUAN GIẢI PHÁP</div>
-    <div class="info-title">SONARA là gì và dùng để làm gì?</div>
-    <p style="color:var(--muted);font-size:14px;line-height:1.7;margin-bottom:20px">
-      Trước khi ra mắt chính thức, các bài hát độc quyền (Unreleased Masters) thường xuyên bị rò rỉ khi gửi cho nhà sản xuất, kỹ sư hòa âm, giám đốc A&R hoặc đài phát thanh qua Google Drive, Dropbox hay SoundCloud Private. 
-      <strong>SONARA</strong> là nền tảng két sắt âm nhạc số <em>Zero-Custody (Không-Ủy-Thác)</em>, cho phép nghệ sĩ chia sẻ bản master chất lượng cao nhất (FLAC 24-bit/48kHz, WAV, 4K Video) để nghe thử mà <strong>không sợ bị tuồn trộm hay trích xuất trái phép</strong>.
+    <div class="info-tag" data-i18n="sec1-tag">01 · TỔNG QUAN GIẢI PHÁP</div>
+    <div class="info-title" data-i18n="sec1-title">SONARA là gì và dùng để làm gì?</div>
+    <p style="color:var(--muted);font-size:14px;line-height:1.7;margin-bottom:20px" data-i18n="sec1-desc">
+      Trước khi ra mắt chính thức, các bài hát độc quyền (Unreleased Masters) thường xuyên bị rò rỉ khi gửi cho nhà sản xuất, kỹ sư hòa âm, giám đốc A&R hoặc đài phát thanh qua Google Drive, Dropbox hay SoundCloud Private. SONARA là nền tảng két sắt âm nhạc số Zero-Custody (Không-Ủy-Thác), cho phép nghệ sĩ chia sẻ bản master chất lượng cao nhất (FLAC 24-bit/48kHz, WAV, 4K Video) để nghe thử mà không sợ bị tuồn trộm hay trích xuất trái phép.
     </p>
 
     <div class="info-grid">
       <div class="info-item">
-        <h4>Bộ Nhớ Đệm RAM Khép Kín</h4>
-        <p>Tệp âm thanh được giải mã tức thời trực tiếp trên bộ nhớ RAM qua Web Audio API của trình duyệt. Không bao giờ lưu file tạm (.mp3/.wav) xuống ổ cứng người nghe.</p>
+        <h4 data-i18n="feat1-title">Bộ Nhớ Đệm RAM Khép Kín</h4>
+        <p data-i18n="feat1-desc">Tệp âm thanh được giải mã tức thời trực tiếp trên bộ nhớ RAM qua Web Audio API của trình duyệt. Không bao giờ lưu file tạm (.mp3/.wav) xuống ổ cứng người nghe.</p>
       </div>
       <div class="info-item">
-        <h4>Thu Hồi Quyền Trong 0.069ms</h4>
-        <p>Ca sĩ có thể thu hồi quyền nghe thử bất cứ lúc nào. Luồng phát âm thanh của người nghe lập tức bị ngắt tức thì do mạng lưới ngừng cấp khóa giải mã.</p>
+        <h4 data-i18n="feat2-title">Thu Hồi Quyền Trong 0.069ms</h4>
+        <p data-i18n="feat2-desc">Ca sĩ có thể thu hồi quyền nghe thử bất cứ lúc nào. Luồng phát âm thanh của người nghe lập tức bị ngắt tức thì do mạng lưới ngừng cấp khóa giải mã.</p>
       </div>
       <div class="info-item">
-        <h4>Giám Sát Chống Can Thiệp</h4>
-        <p>Tích hợp cơ chế phát hiện phần mềm quay màn hình, mở F12 DevTools hoặc nỗ lực trích xuất âm thanh để tự động khóa vĩnh viễn quyền truy cập của người nghe đó.</p>
+        <h4 data-i18n="feat3-title">Giám Sát Chống Can Thiệp</h4>
+        <p data-i18n="feat3-desc">Tích hợp cơ chế phát hiện phần mềm quay màn hình, mở F12 DevTools hoặc nỗ lực trích xuất âm thanh để tự động khóa vĩnh viễn quyền truy cập của người nghe đó.</p>
       </div>
       <div class="info-item">
-        <h4>Watermark Bản Quyền Sóng Âm</h4>
-        <p>Chèn âm thanh đánh dấu bản quyền định kỳ (tiếng vịt kêu hoặc giọng đọc cảnh báo) để chống thu âm ngoài loa bằng điện thoại.</p>
+        <h4 data-i18n="feat4-title">Watermark Bản Quyền Sóng Âm</h4>
+        <p data-i18n="feat4-desc">Chèn âm thanh đánh dấu bản quyền định kỳ (tiếng vịt kêu hoặc giọng đọc cảnh báo) để chống thu âm ngoài loa bằng điện thoại.</p>
       </div>
     </div>
   </div>
 
   <!-- 2. CÔNG NGHỆ TIDECLOAK & EMERGENT AUTHORITY HOẠT ĐỘNG THẾ NÀO? -->
   <div class="info-box">
-    <div class="info-tag">02 · ĐỘT PHÁ MẬT MÃ HỌC</div>
-    <div class="info-title">Bản chất công nghệ TideCloak Emergent Authority</div>
-    <p style="color:var(--muted);font-size:14px;line-height:1.7">
-      Ở các dịch vụ đám mây truyền thống, quản trị viên máy chủ hoặc hacker nắm quyền Root AWS luôn có thể lấy trộm chìa khóa giải mã trong Database. 
-      Với công nghệ <strong>TideCloak</strong>, <span style="color:var(--accent);font-weight:600">hoàn toàn KHÔNG TỒN TẠI chìa khóa chủ ở bất kỳ máy chủ nào</span>:
+    <div class="info-tag" data-i18n="sec2-tag">02 · ĐỘT PHÁ MẬT MÃ HỌC</div>
+    <div class="info-title" data-i18n="sec2-title">Bản chất công nghệ TideCloak Emergent Authority</div>
+    <p style="color:var(--muted);font-size:14px;line-height:1.7" data-i18n="sec2-desc">
+      Ở các dịch vụ đám mây truyền thống, quản trị viên máy chủ hoặc hacker nắm quyền Root AWS luôn có thể lấy trộm chìa khóa giải mã trong Database. Với công nghệ TideCloak, hoàn toàn KHÔNG TỒN TẠI chìa khóa chủ ở bất kỳ máy chủ nào:
     </p>
 
     <div class="tech-diagram">
-      <div>[Ca Sĩ Tải Nhạc] ──► Mã Hóa Đầu Cuối (AES-256-GCM Client-side) ──► Máy Chủ S3 (Chỉ Lưu Khối Nhị Phân Opaque)</div>
-      <div style="color:var(--accent);margin:6px 0">▼ Khi Người Nghe Được Cấp Quyền:</div>
-      <div>Mạng Lưới Tide Fabric Quorum (Các Nút Đồng Thuận Độc Lập) ──► Xác Thực Danh Tính BYOiD ──► Quyền Hạn Tự Sinh (Emergent Key)</div>
-      <div style="color:#3ee88f;margin-top:6px">✓ Khóa giải mã CHỈ TỰ SINH TRÊN RAM người nghe trong tích tắc và TỰ HỦY khi bản nhạc phát xong!</div>
+      <div data-i18n="diag-step1">[Ca Sĩ Tải Nhạc] ──► Mã Hóa Đầu Cuối (AES-256-GCM Client-side) ──► Máy Chủ S3 (Chỉ Lưu Khối Nhị Phân Opaque)</div>
+      <div style="color:var(--accent);margin:6px 0" data-i18n="diag-step2">▼ Khi Người Nghe Được Cấp Quyền:</div>
+      <div data-i18n="diag-step3">Mạng Lưới Tide Fabric Quorum (Các Nút Đồng Thuận Độc Lập) ──► Xác Thực Danh Tính BYOiD ──► Quyền Hạn Tự Sinh (Emergent Key)</div>
+      <div style="color:#3ee88f;margin-top:6px" data-i18n="diag-step4">✓ Khóa giải mã CHỈ TỰ SINH TRÊN RAM người nghe trong tích tắc và TỰ HỦY khi bản nhạc phát xong!</div>
     </div>
   </div>
 
   <!-- 3. ĐỘI NGŨ PHÁT TRIỂN (DEVELOPERS) -->
   <div class="info-box">
-    <div class="info-tag">03 · NHÀ PHÁT TRIỂN DỰ ÁN</div>
-    <div class="info-title">Đội ngũ kỹ thuật — Team Foodseekers</div>
-    <p style="color:var(--muted);font-size:14.5px;line-height:1.75">
-      Dự án SONARA được nghiên cứu và phát triển bởi <strong>4 sinh viên năm 2 ngành Khoa học Máy tính & Trí tuệ Nhân tạo tại Trường Đại học Công nghệ Thông tin (UIT), ĐHQG-HCM</strong> tham gia tranh tài tại <em>RMIT Hackathon 2026</em>.
+    <div class="info-tag" data-i18n="sec3-tag">03 · NHÀ PHÁT TRIỂN DỰ ÁN</div>
+    <div class="info-title" data-i18n="sec3-title">Đội ngũ kỹ thuật — Team Foodseekers</div>
+    <p style="color:var(--muted);font-size:14.5px;line-height:1.75" data-i18n="sec3-desc">
+      Dự án SONARA được nghiên cứu và phát triển bởi 4 sinh viên năm 2 ngành Khoa học Máy tính & Trí tuệ Nhân tạo tại Trường Đại học Công nghệ Thông tin (UIT), ĐHQG-HCM tham gia tranh tài tại RMIT Hackathon 2026.
     </p>
   </div>
 
