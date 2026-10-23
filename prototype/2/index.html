@@ -1327,8 +1327,11 @@ function selectTrack(trackId){
   syncActiveTrackView();
 }
 
-function playTrackDirect(trackId){
-  selectTrack(trackId);
+async function playTrackDirect(trackId){
+  activeTrackId = trackId;
+  stopAudio();
+  renderAlbumGrid();
+  await syncActiveTrackView();
   togglePlay();
 }
 
@@ -1677,8 +1680,13 @@ function togglePlay(){
     startWatermarkEngine(track);
     startTamperWatchdog(track);
 
+    // ĐẢM BẢO LUÔN GÁN STREAM URL CỦA TỆP ÂM THANH THẬT VÀO THẺ AUDIO!
+    if(track.streamUrl && (!na.src || na.src !== track.streamUrl)){
+      na.src = track.streamUrl;
+    }
+
     if(na && na.src && (na.src.startsWith('http') || na.src.startsWith('blob:'))){
-      na.play().catch(e=>console.log(e));
+      na.play().catch(e=>console.warn('Playback error:', e));
       na.ontimeupdate=()=>{
         const cur=Math.floor(na.currentTime), dur=Math.floor(na.duration)||222;
         document.getElementById('cur').textContent=Math.floor(cur/60)+':'+String(cur%60).padStart(2,'0');
