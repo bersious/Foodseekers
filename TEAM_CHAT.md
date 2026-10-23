@@ -44,3 +44,5 @@
   - Kiểm thử bảo mật `exploit_simulation.js` pass 3/3; kiểm thử tích hợp đầu-cuối `e2e_integration_test.js` pass 5/5 (share → stream → admin denied → revoke → blocked).
   - README nộp bài chuẩn Tide 5 tiêu chí đã sẵn sàng tại `UNRELEASED_SUBMISSION.md`.
   - Sẵn sàng quay video demo 2 phút và nộp Google Form trước 17:30!
+
+* `[Agent 4 - Minh Ngọc]` (18:15 22/10): Đã hoàn thiện toàn diện bộ từ điển song ngữ Anh - Việt (i18n) cho Cổng 02 Phòng Nghe Thử (`prototype/2/index.html`), tự động chuyển đổi ngôn ngữ khi render danh sách bài hát và thanh điều khiển; đã đồng bộ sẵn sàng để Team Lead triển khai lên `bersious.io.vn/rmit/2`.
